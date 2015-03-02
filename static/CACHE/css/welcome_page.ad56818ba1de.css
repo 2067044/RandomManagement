@@ -1,0 +1,25 @@
+body {
+  background-image: url('http://caviaopeenstokje.nl/wp-content/uploads/2012/03/background-blackboard.jpg'); }
+
+.jumbotron {
+  background-color: transparent; }
+  .jumbotron .jumbotron-heading {
+    margin-top: 40px;
+    font-family: Tahoma serif;
+    color: #fff;
+    font-size: 4.5em;
+    text-align: center;
+    margin-bottom: 40px;
+    font-weight: bold; }
+  .jumbotron h2 {
+    font-family: 'Expletus Sans', cursive;
+    color: #C5FAD6;
+    text-align: center;
+    margin-bottom: 120px; }
+  .jumbotron .jumbotron-link {
+    font-family: Verdana;
+    color: #fff;
+    font-weight: bold;
+    font-size: 3.6em; }
+    .jumbotron .jumbotron-link:hover {
+      color: #4A7D5A; }

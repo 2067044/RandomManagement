@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block title %} Random Management {% endblock %}
+
+{% block body_block %}
+    <div class="jumbotron">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-2 col-md-offset-5">
+                    <img class="img-rounded img-responsive" src="{% static 'images/logo.png' %}" alt="Site logo."/>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <h1 class="jumbotron-heading">Random Management</h1>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-10 col-md-offset-1">
+                    <h2>
+                        An application which provides tools for effective management of projects of every scale.
+                    </h2>
+
+                </div>
+            </div>
+            <br/>
+            <div class="row">
+                <div class="col-md-3 col-md-offset-3">
+                    <a class="jumbotron-link" href="#">Join us</a>
+
+                </div>
+                <div class="col-md-3 col-md-offset-1">
+                    <a class="jumbotron-link" href="#">Sign in</a>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+
+{% endblock %}
