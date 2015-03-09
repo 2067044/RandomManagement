@@ -41,7 +41,7 @@ INSTALLED_APPS = (
 )
 
 COMPRESS_PRECOMPILERS = (
-    ('text/x-scss', 'django_libsass.SassCompiler'),
+    ('text/x-scss', 'C:/Users\Timothy\Envs\management\Lib\site-packages\django_libsass.SassCompiler'),
 )
 
 MIDDLEWARE_CLASSES = (
@@ -105,3 +105,9 @@ COMPRESS_ROOT = os.path.join(BASE_DIR, 'static')
 TEMPLATE_PATH = os.path.join(BASE_DIR, 'templates')
 TEMPLATE_DIRS = [TEMPLATE_PATH,
                  ]
+
+REGISTRATION_OPEN = True
+ACCOUNT_ACTIVATION_DAYS = 7
+REGISTRATION_AUTO_LOGIN = True
+LOGIN_REDIRECT_URL = ''
+LOGIN_URL = 'accounts/login/'

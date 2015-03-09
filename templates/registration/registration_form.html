@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block title %} Random Management {% endblock %}
+
+{% block body_block %}
+
+<div class="row">
+        <div class="col-md-1">
+        </div>
+        <div class="com-md-10">
+		
+        <h1>Register Here</h1>
+        <form method="post" action=".">
+                {% csrf_token %}
+                {{ form.as_p }}
+
+                <input type="submit" value="Submit" />
+        </form>   
+			
+        </div>
+        <div class="col-md-1">
+        </div>
+
+    </div>
+	
+{% endblock %}

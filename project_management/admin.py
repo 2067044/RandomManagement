@@ -1,3 +1,4 @@
 from django.contrib import admin
+from project_management.models import UserDescription
 
-# Register your models here.
+admin.site.register(UserDescription)
