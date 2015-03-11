@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block title %} Random Management {% endblock %}
+
+{% block body_block %}
+		
+        <h1>Register Here</h1>
+        <form id = UserDescriptionForm method="post" action="project_management/addDescription">
+                {% csrf_token %}
+                {{ form.as_p }}
+		
+				{{UserDescriptionForm.as_P}}
+		
+                <input type="submit" value="Submit" />
+        </form>
+
+{% endblock %}
