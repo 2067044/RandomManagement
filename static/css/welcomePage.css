@@ -1,8 +1,9 @@
 body {
-  background-image: url('http://caviaopeenstokje.nl/wp-content/uploads/2012/03/background-blackboard.jpg'); }
+  background-image: url('http://caviaopeenstokje.nl/wp-content/uploads/2012/03/background-blackboard.jpg');
+    padding-bottom: 0;}
 
 .jumbotron {
-  background-color: transparent; }
+  background-color: transparent;  }
   .jumbotron .jumbotron-heading {
     margin-top: 40px;
     font-family: Tahoma serif;

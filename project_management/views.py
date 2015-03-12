@@ -1,7 +1,9 @@
 from django.shortcuts import render
+
 from project_management.forms import UserDescriptionForm
-from django.contrib.auth import authenticate, login
-from django.http import HttpResponseRedirect, HttpResponse
+from project_management.kris.kris_views import new_task
+from project_management.kris.kris_models import Task
+
 
 def index(request):
     return render(request, 'project_management/welcome_page.html', {})
@@ -21,4 +23,10 @@ def addDescription(request):
     return render(request, 'registration/registration_form.html', {'form': form})
 
 
-    
+def dashboard(request):
+    # Object responsible for handling the creation of new tasks
+    new_task_form = new_task(request)
+    # Displaying all tasks for now; will use project tasks later
+    tasks = Task.objects.all()
+
+    return render(request, 'project_management/dashboard.html', {'new_task_form': new_task_form, 'tasks': tasks})

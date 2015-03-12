@@ -1,0 +1,92 @@
+{% extends 'logged_in_base.html' %}
+
+{% block project_block %}
+    <div class="row">
+        {#  TASKS SECTION  #}
+        <div class="col-md-6">
+            <br/>
+            <!-- Button trigger modal -->
+            <button type="button" class="btn btn-success btn-lg btn-block" data-toggle="modal" data-target="#myModal">
+                Add task
+            </button>
+            <br/>
+
+            {#  THERE IS A SERIOUS ISSUE WITH INHERITANCE; THESE PARTS SHOULD BE INHERITED FROM THE tasks FOLDER :(  #}
+            <div class="modal fade" role='dialog' id="myModal">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                    aria-hidden="true">&times;</span></button>
+                            <h4 class="modal-title">New task</h4>
+                        </div>
+                        <div class="modal-body">
+                            <form id="task_form" method="post" action="{% url 'new_task' %}">
+                                {% csrf_token %}
+                                <div class="form-group new-task-form">
+                                    <label for="id_title">{{ new_task_form.fields.title.label }}</label>
+                                    <input class="form-control" id="id_title" maxlength="40" name="title" type="text"
+                                           placeholder="Please enter a title...">
+
+                                    <label for="id_description">{{ new_task_form.fields.description.label }}</label>
+                            <textarea class="form-control" cols="40" id="id_description" maxlength="300"
+                                      name="description"
+                                      rows="7" placeholder="Please enter a description..."></textarea>
+
+                                    <label for="id_due_date">{{ new_task_form.fields.due_date.label }}</label>
+                                    <input class="form-control datepicker" id="id_due_date" name="due_date" type="text">
+
+                                    <label for="id_users">{{ new_task_form.fields.users.label }}</label>
+                                    <select class="form-control" multiple="multiple" id="id_users" name="users">
+                                        {#                                OPTIONS SHOULD BE PICKED BY PROJECT MEMBERS#}
+                                        <option value="1">random</option>
+                                    </select>
+                                </div>
+                                <div class="modal-footer">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <button type="button" class="btn btn-block btn-default"
+                                                    data-dismiss="modal">
+                                                Close
+                                            </button>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <input id="new-task-submit" class="btn btn-block btn-success"
+                                                   type="submit" name="submit" value="Add"/>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    <!-- /.modal-content -->
+                </div>
+                <!-- /.modal-dialog -->
+            </div>
+            <!-- /.modal -->
+            {#  END TASK MODAL  #}
+
+
+            {% for task in tasks %}
+                <div class="task-panel">
+                    <h2 class="text-center">{{ task.title }}</h2>
+                    <p class="text-justify">{{ task.description }}</p>
+                    <p>Working:
+                        {% for user in task.users.all %}
+
+                            {{ user.username }}
+                        {% endfor %}
+                    </p>
+                    <p class="text-right">Due date: {{ task.due_date }}</p>
+                </div>
+
+            {% endfor %}
+        </div>
+        <div class="col-md-6">
+
+        </div>
+    </div>
+
+
+{% endblock project_block %}

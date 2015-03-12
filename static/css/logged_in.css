@@ -1,0 +1,64 @@
+.logged-style {
+    max-width: 99.15%;
+}
+
+.logged-style .side-panel {
+    background-color: #aaaaaa;
+}
+
+.logged-style .central-panel {
+    background-color: #dddddd;
+}
+
+.logged-style .col-md-2 {
+    padding: 0;
+}
+
+.logged-style .col-md-8 {
+    padding: 0 25px;
+}
+
+/* Task styling*/
+.new-task-form {
+    margin: 0 auto;
+    max-width: 75%;
+}
+
+.new-task-form input, textarea, select {
+    margin-bottom: 15px;
+}
+
+.new-task-form select {
+    height: 130px;
+}
+
+/* Needed because due to modal, this remained in the background*/
+.datepicker {
+    z-index: 1151 !important;
+}
+
+/* Bad modal input; input fields get coloured in red*/
+.bad-input {
+    -webkit-box-shadow: 0 0 8px 1px #ED666F;
+    -moz-box-shadow: 0 0 8px 1px #ED666F;
+    box-shadow: 0 0 8px 1px #ED666F;
+}
+/* These two handle the placeholder colouring of bad input modal*/
+/* individual: webkit */
+.bad-input::-webkit-input-placeholder { color: #ff7e4d; }
+/* individual: mozilla */
+.bad-input::-moz-placeholder { color: #ff7e4d; }
+
+/* Task display css */
+.task-panel {
+    background-color: #e2ffdd;
+    border-radius: 9px;
+    padding: 5px 30px;
+    width: 100%;
+    margin-bottom: 10px;
+}
+
+
+
+
+

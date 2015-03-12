@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+
+{% block body_block %}
+    {# Edit this later #}
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar"
+                        aria-expanded="false" aria-controls="navbar">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="#">Project name</a>
+            </div>
+            <div id="navbar" class="navbar-collapse collapse">
+                <form class="navbar-form navbar-right">
+                    <div class="form-group">
+                        <input type="text" placeholder="Email" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <input type="password" placeholder="Password" class="form-control">
+                    </div>
+                    <button type="submit" class="btn btn-success">Sign in</button>
+                </form>
+            </div>
+            <!--/.navbar-collapse -->
+        </div>
+    </nav>
+{#    THIS DOESNT WORK#}
+    {% block navigation_block %} {% endblock navigation_block%}
+
+    <div class="logged-style">
+        {#  Projects (left side)  #}
+        <div class="row">
+            <div class="col-md-2 side-panel">
+
+            </div>
+
+            {#  Open projects (center)  #}
+            <div class="col-md-8 central-panel">
+                {% block project_block %}{% endblock project_block%}
+            </div>
+
+            {#  Users (right side)  #}
+            <div class="col-md-2 side-panel">
+
+            </div>
+        </div>
+    </div>
+
+{% endblock body_block%}

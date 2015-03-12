@@ -1,0 +1,9 @@
+{% extends 'project_management/dashboard.html'%}
+
+{% block project_tasks %}
+
+    {% for task in tasks %}
+        {{ task }}
+    {% endfor %}
+
+{% endblock %}

@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 
 {% load staticfiles %}
-{% load compress %}
 
 
 <html lang="en">
@@ -18,7 +17,9 @@
     <link href="http://getbootstrap.com/examples/signin/signin.css" rel="stylesheet">
     <link href='http://fonts.googleapis.com/css?family=Expletus+Sans:400,600italic' rel='stylesheet' type='text/css'>
 
-<link rel="stylesheet" type='text/css' href="{% static 'css/welcomePage.css' %}" />
+    <link rel="stylesheet" type='text/css' href="{% static 'css/welcomePage.css' %}" />
+    <link rel="stylesheet" type="text/css" href="{% static 'css/logged_in.css' %}"/>
+    <link rel="stylesheet" href="{% static 'datepicker/datepicker.css' %}"/>
 
 
     <title>{% block title %}Random Management{% endblock %}</title>
@@ -30,9 +31,7 @@
 </head>
 
     <body>
-        {#    Navigation if logged in   #}
-
-        {% block body_block %}{% endblock %}
+        {% block body_block %}{% endblock body_block%}
     </body>
 
     <!-- Bootstrap core JavaScript
@@ -42,4 +41,8 @@
     <script src="http://getbootstrap.com/dist/js/bootstrap.min.js"></script>
     <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
     <script src="http://getbootstrap.com/assets/js/ie10-viewport-bug-workaround.js"></script>
+    <script src="{% static 'datepicker/bootstrap-datepicker.js' %}"></script>
+    <script src="{% static 'js/logged_in.js' %}"></script>
+    <script src="{% static 'js/tasks.js' %}"></script>
+
 </html>
