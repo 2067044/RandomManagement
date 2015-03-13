@@ -39,7 +39,9 @@
                                     <label for="id_users">{{ new_task_form.fields.users.label }}</label>
                                     <select class="form-control" multiple="multiple" id="id_users" name="users">
                                         {#                                OPTIONS SHOULD BE PICKED BY PROJECT MEMBERS#}
-                                        <option value="1">random</option>
+                                        {% for user in users %}
+                                            <option value="{{ user.id }}">{{ user.username }}</option>
+                                        {% endfor %}
                                     </select>
                                 </div>
                                 <div class="modal-footer">
@@ -70,11 +72,12 @@
 
             {% for task in tasks %}
                 <div class="task-panel">
-                    <h2 class="text-center">{{ task.title }}</h2>
+                    <h2 class="text-center">
+                        <a href="{% url 'task' task.id %}">{{ task.title }}</a>
+                    </h2>
                     <p class="text-justify">{{ task.description }}</p>
                     <p>Working:
                         {% for user in task.users.all %}
-
                             {{ user.username }}
                         {% endfor %}
                     </p>

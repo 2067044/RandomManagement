@@ -7,7 +7,8 @@ from project_management.kris import kris_views
 urlpatterns = patterns('',
         url(r'^$', views.index, name='index'),
         url(r'^dashboard', views.dashboard, name='dashboard'),
-        url(r'^new_task', kris_views.new_task, name='new_task')
+        url(r'^new_task', kris_views.new_task, name='new_task'),
+        url(r'^task/(?P<task_id>[\w\-]+)/$', kris_views.task, name="task"),
         )
 
 

@@ -58,6 +58,15 @@
     margin-bottom: 10px;
 }
 
+.task-panel h2 a {
+    color: #444;
+    text-decoration: underline;
+}
+
+.task-panel h2 a:hover {
+    color: #999;
+}
+
 
 
 

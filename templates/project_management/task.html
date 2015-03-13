@@ -1,0 +1,31 @@
+{% extends 'logged_in_base.html' %}
+
+{% block project_block %}
+    <h3>
+        <a href="{% url 'dashboard' %}">
+            <button class="btn btn-lg btn-primary" type="button">
+                <span class="glyphicon glyphicon-menu-left" aria-hidden="true"></span>
+            </button>
+        </a>
+    </h3>
+    <h1 class="text-center">{{ task.title }}</h1>
+    <h4 class="text-center">{{ task.description }}</h4>
+    <h4>Due date: {{ task.due_date }}</h4>
+    <h4>People working on this task:</h4>
+    <ul>
+        {%  for user in task.users.all %}
+            <li>{{ user.username }}</li>
+        {% endfor %}
+    </ul>
+
+    <br/>
+    <div class="row">
+        <div class="col-md-6">
+            {#  MESSAGES GO HERE     #}
+            <h1 class="text-center">MESSAGES</h1>
+        </div>
+        <div class="col-md-6">
+            <h1 class="text-center">FILE</h1>
+        </div>
+    </div>
+{% endblock %}
