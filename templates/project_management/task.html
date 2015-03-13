@@ -1,24 +1,37 @@
 {% extends 'logged_in_base.html' %}
 
 {% block project_block %}
-    <h3>
-        <a href="{% url 'dashboard' %}">
-            <button class="btn btn-lg btn-primary" type="button">
-                <span class="glyphicon glyphicon-menu-left" aria-hidden="true"></span>
-            </button>
-        </a>
-    </h3>
-    <h1 class="text-center">{{ task.title }}</h1>
-    <h4 class="text-center">{{ task.description }}</h4>
-    <h4>Due date: {{ task.due_date }}</h4>
-    <h4>People working on this task:</h4>
-    <ul>
-        {%  for user in task.users.all %}
-            <li>{{ user.username }}</li>
-        {% endfor %}
-    </ul>
-
     <br/>
+    <div class="panel task-view-panel">
+        <div class="row">
+            <div class="col-md-1">
+                <a href="{% url 'dashboard' %}">
+                    <button class="btn btn-lg btn-success" type="button">
+                        <span class="glyphicon glyphicon-menu-left" aria-hidden="true"></span>
+                    </button>
+                </a>
+            </div>
+            <div class="col-md-10">
+                <h1 class="text-center">{{ task.title }}</h1>
+            </div>
+        </div>
+
+        <h4 class="text-center">{{ task.description }}</h4>
+        <h4 class="text-center">Due date: {{ task.due_date }}</h4>
+        <h4 class="text-center">People working on this task:</h4>
+
+        <div class="row">
+            <div class="col-md-2 col-md-offset-5">
+                {% for user in task.users.all %}
+                <h5 class="text-center">{{ user.username }}</h5>
+            {% endfor %}
+            </div>
+        </div>
+
+
+    </div>
+
+    <hr/>
     <div class="row">
         <div class="col-md-6">
             {#  MESSAGES GO HERE     #}

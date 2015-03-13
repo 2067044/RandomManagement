@@ -4,6 +4,7 @@ from project_management.forms import UserDescriptionForm
 from project_management.kris.kris_views import new_task
 from project_management.kris.kris_models import Task
 from django.contrib.auth.models import User
+from datetime import date
 
 
 def index(request):
@@ -30,5 +31,21 @@ def dashboard(request):
     # Displaying all tasks for now; will use project tasks later
     tasks = Task.objects.all()
 
-    return render(request, 'project_management/dashboard.html', {'new_task_form': new_task_form, 'tasks': tasks,
-                                                                 'users': User.objects.all()})
+    # This determines which css style will be used in the template
+    # Tasks which are more than 9 days due are alright; 4 to 9 is kinda bad;
+    # less than 3 is critical
+    # format: task: [{task:task, colouring:css}]
+    tasks_and_colouring = []
+    current_date = date.today()
+    for task in tasks:
+        if (task.due_date - current_date).days >= 10:
+            tasks_and_colouring.append({'task': task, 'colouring': 'task-panel-normal-colour'})
+        elif 3 < (task.due_date - current_date).days < 10:
+            tasks_and_colouring.append({'task': task, 'colouring': 'task-panel-attention-colour'})
+        else:
+            tasks_and_colouring.append({'task': task, 'colouring': 'task-panel-critical-colour'})
+    return render(request, 'project_management/dashboard.html',
+                  {'new_task_form': new_task_form,
+                   'tasks': tasks_and_colouring,
+                   'users': User.objects.all(),
+                   })
