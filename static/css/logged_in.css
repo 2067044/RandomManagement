@@ -51,7 +51,6 @@
 
 /* Task display css */
 .task-panel {
-    background-color: #e2ffdd;
     border-radius: 9px;
     padding: 5px 30px;
     width: 100%;
@@ -63,9 +62,13 @@
     text-decoration: underline;
 }
 
-.task-panel h2 a:hover {
-    color: #999;
-}
+.task-panel h2 a:hover { color: #999; }
+
+.task-panel-normal-colour { background-color: #b8ffb3; }
+.task-panel-critical-colour { background-color: #ff9e9e; }
+.task-panel-attention-colour { background-color: #fff2ab; }
+
+.task-view-panel { padding: 20px; }
 
 
 

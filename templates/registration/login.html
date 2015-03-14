@@ -5,11 +5,17 @@
 {% block body_block %}
 
 
-	<form class="form-signin" role="form" method="post" action=".">
+	<form class="pure-form pure-form-aligned" method="post" action=".">
 		{% csrf_token %}
 
-			<h2 class="form-signin-heading">Login to RandomManagement</h2>
-			<input class="form-control" placeholder="Username" id="id_username" maxlength="254" name="username" type="text" required autofocus=""/>
+			<div class="pure-control-group">
+				<label for="username">Username</label>
+				<input id="id_username" placeholder="Enter username" maxlength="30" name="username" type="text"/>
+			</div>
+			<div class="pure-control-group">
+				<label for="password">Password</label>
+				<input id="id_password" placeholder="Enter password" name="password" type="password"/>
+			</div>
 			<input type="password" class="form-control" placeholder="Password" id="id_password" name="password" type="password" required />
 
 			<button class="btn btn-lg btn-primary btn-block" type="submit" value="Submit" />Login</button>

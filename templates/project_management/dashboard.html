@@ -69,22 +69,25 @@
             <!-- /.modal -->
             {#  END TASK MODAL  #}
 
-
+            {# Visualisation of tasks  #}
             {% for task in tasks %}
-                <div class="task-panel">
+                <div class="task-panel {{ task.colouring }}"">
                     <h2 class="text-center">
-                        <a href="{% url 'task' task.id %}">{{ task.title }}</a>
+                        <a href="{% url 'task' task.task.id %}">{{ task.task }}</a>
                     </h2>
-                    <p class="text-justify">{{ task.description }}</p>
+
+                    <p class="text-justify">{{ task.task.description }}</p>
+
                     <p>Working:
-                        {% for user in task.users.all %}
+                        {% for user in task.task.users.all %}
                             {{ user.username }}
                         {% endfor %}
                     </p>
-                    <p class="text-right">Due date: {{ task.due_date }}</p>
-                </div>
 
+                    <p class="text-right">Due date: {{ task.task.due_date }}</p>
+                </div>
             {% endfor %}
+            {# End visualisation  #}
         </div>
         <div class="col-md-6">
 
