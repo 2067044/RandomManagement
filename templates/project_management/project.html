@@ -5,4 +5,15 @@
     <h1 class="text-center">{{ Project.name }}</h1>
     <h4 class="text-center">{{ Project.description }}</h4>
 
+	<div class="member-sidebar">
+		<div class="col-md-2 side-panel">
+			{% for members in project %}
+				<p id="members-list">{{members.username}}</p>
+			{% endfor %}
+			<div id="footer">
+				<a href="{% url 'project' %}"><button class="btn btn-success btn-lg btn-block">Add user</button></a>
+			</div>
+		</div>
+	</div>
+		
 {% endblock %}

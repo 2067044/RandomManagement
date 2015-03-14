@@ -1,0 +1,14 @@
+
+.member-sidebar {
+	}
+	#members-list{
+	font-family: 'Expletus Sans', cursive;
+	margin-top: 10px;
+	color: #C5FAD6;
+	text-align: center;
+	}
+	#footer{
+	position: absolute;
+	bottom:0;
+	height:60px;
+	}
