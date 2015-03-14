@@ -37,23 +37,23 @@ def dashboard(request):
 
 def addProject(request):
 
-    user = User.objects.get(id)
     if request.method == 'POST':
         form = ProjectForm(request.POST)
 
         if form.is_valid():
             project = form.save(commit=False)
-            project.owner=user.username
+            project.owner=request.user
             project.save()
             return render(request,'project_management/project.html',{'project': project})
         else:
-            return redirect('/dashboard')
+            return redirect('/dashboard/')
     else:
         form = ProjectForm()
     return form
 
 def project(request):
-    return render(request, 'projct_management/project.html',{'project':Project.Objects.all()})
+    return redirect('/dashboard/')
+    #return render(request, 'projct_management/project.html',{'project':Project.Objects.all()})
 
 
     # This determines which css style will be used in the template
