@@ -8,6 +8,7 @@ from project_management.kris.kris_models import Task
 from project_management.models import Project
 from django.contrib.auth.models import User
 from datetime import date
+from django.contrib.auth.hashers import make_password
 
 
 def populate():
@@ -30,7 +31,7 @@ def add_user(username, password, email):
     '''
     u = User.objects.get_or_create(username=username)
     u = u[0]
-    u.password = password
+    u.password = make_password(password)
     u.email = email
     u.save()
     return u
