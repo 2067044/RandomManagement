@@ -71,10 +71,23 @@
 
             {# Visualisation of tasks  #}
             {% for task in tasks %}
-                <div class="task-panel {{ task.colouring }}"">
-                    <h2 class="text-center">
-                        <a href="{% url 'task' task.task.id %}">{{ task.task }}</a>
-                    </h2>
+                <div class="task-panel {{ task.colouring }}">
+
+                    <div class="row">
+                        <div class="col-md-10 col-md-offset-1">
+                        <h2 class="text-center">
+                            <a href="{% url 'task' task.task.id %}">{{ task.task }}</a>
+                        </h2>
+                        </div>
+                        <div class="col-md-1">
+
+                            {% if task.task.completed %}
+                                <h3><span class="glyphicon glyphicon-ok" aria-hidden="true"></span></h3>
+
+                            {% endif %}
+                        </div>
+                    </div>
+
 
                     <p class="text-justify">{{ task.task.description }}</p>
 
