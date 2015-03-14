@@ -5,13 +5,28 @@
 {% block body_block %}
 		
         <h1>Register Here</h1>
-        <form id = UserDescriptionForm method="post" action="project_management/addDescription">
-                {% csrf_token %}
-                {{ form.as_p }}
-		
-				{{UserDescriptionForm.as_P}}
-		
-                <input type="submit" value="Submit" />
+		<form class="pure-form pure-form-aligned" role="form" method="post" action=".">
+            {% csrf_token %}
+			
+			<div class="pure-control-group">
+				<label for="id_username">Username</label>
+				<input id="id_username" maxlength="30" name="username" type="text" placeholder="Enter Username"/>
+			</div>
+			<div class="pure-control-group">
+				<label for="id_email">E-mail</label>
+				<input id="id_email" name="email" type="email" placeholder="Enter e-mail"/>
+			</div>
+			<div class="pure-control-group">
+				<label for="id_password1">Password</label>
+				<input id="id_password1" name="password1" type="password" placeholder="Enter password"/>
+			</div>
+			<div class="pure-control-group">
+				<label for="id_password2">Password (again)</label>
+				<input id="id_password2" name="password2" type="password" placeholder="Enter password again"/>
+			</div>
+			<div class="pure-controls">
+                <button class="pure-button pure-button-primary" type="submit" value="Submit">Submit </button>
+			</div>
         </form>
 
 {% endblock %}

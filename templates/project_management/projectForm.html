@@ -1,0 +1,21 @@
+{% extends 'logged_in_base.html' %}
+
+{% block project_block %}
+
+	<form class="pure-form pure-form-aligned" method="post" action="project_management/views.addProject">
+		{% csrf_token %}
+		
+		<div class="pure-control-group">
+			<label for="name">Project Title</label>
+			<input id="id_name" placeholder="name" maxlength="20" name="name" type="text"/>
+		</div>
+		<div class="pure-control-group">
+			<label for="description">Give a brief description of the project:</label>
+			<input id="id_description" placeholder ="description" name="description" type="text" />
+		</div>
+
+		<div class="pure-controls">
+			<button type="submit" value="Submit" />Create</button>
+       </form>
+		
+{% endblock %}
