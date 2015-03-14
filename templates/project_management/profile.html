@@ -1,0 +1,39 @@
+{% extends 'logged_in_base.html' %}
+
+{% block project_block %}
+	<div class="panel panel-default">
+			<div class="panel-body">
+				<h2>{{ user.username }}</h2>
+				<form class="pure-form pure-form-aligned" type="UserDescriptionForm" method="post" action=".">
+					{% csrf_token %}
+					<h4>Add description:</h4>
+					<div>
+						<label for="description">tell us a bit about yourself</label>
+						<input size="80" id="id_description" placeholder="Brief description" name="description" type="text"/>
+					</div>
+					<div class="pure-controls">
+						<a href="{% url 'profile' %}">
+							<button class="btn btn-success">Submit</button>
+						</a>
+					</div>
+				</form>
+				<form class="pure-form pure-form-aligned" type="User" method="post" action=".">
+					{% csrf_token %}
+					<h4>Password reset:</h4>
+					<div class="pure-control-group">
+						<label for="password1">Password</label>
+						<input id="id_password1" placeholder="Enter password" name="password1" type="password"/>
+					</div>
+					<div class="pure-control-group">
+						<label for="password2">Password(again))</label>
+						<input id="id_password2" placeholder="Enter password again" name="password2" type="password"/>
+					</div>
+					<div class="pure-controls">
+						<a href="{% url 'profile' %}">
+							<button class="btn btn-success">Reset Password</button>
+						</a>
+					</div>
+				</form>
+			</div>
+		</div>
+{% endblock %}

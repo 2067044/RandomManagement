@@ -5,7 +5,7 @@ from registration.backends.simple.views import RegistrationView
 
 class MyRegistrationView(RegistrationView):
     def get_success_url(self,request, user):
-        return 'project_management/dashboard.html'
+        return redirect('/dashboard/')
 
 urlpatterns = patterns('',
     url(r'^admin/', include(admin.site.urls)),
