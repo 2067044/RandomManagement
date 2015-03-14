@@ -1,5 +1,4 @@
 from django.shortcuts import render
-
 from project_management.forms import UserDescriptionForm, ProjectForm
 from project_management.models import Project, UserDescription
 
