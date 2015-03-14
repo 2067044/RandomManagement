@@ -11,6 +11,7 @@ urlpatterns = patterns('',
         url(r'^new_task', kris_views.new_task, name='new_task'),
         url(r'^project/(?P<project_id>[\w\-]+)/$', views.project, name='project'),
         url(r'^task/(?P<task_id>[\w\-]+)/$', kris_views.task, name="task"),
+        url(r'^complete_task/', kris_views.complete_task, name="complete_task"),
         url(r'^profile/', views.profile, name='profile'),
         )
 

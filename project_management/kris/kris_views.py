@@ -2,6 +2,7 @@ from django.shortcuts import render
 from django.shortcuts import redirect
 from project_management.kris.kris_forms import TaskForm
 from project_management.kris.kris_models import Task
+from django.shortcuts import HttpResponse
 
 
 def new_task(request):
@@ -29,3 +30,12 @@ def task(request, task_id):
     # validate whether the current user is in this project
 
     return render(request, "project_management/task.html", {'task': task})
+
+
+def complete_task(request):
+    task = None
+    if request.method == "GET":
+        task = Task.objects.get(id=request.GET["task_id"])
+        task.completed = not task.completed
+        task.save()
+    return HttpResponse(task.completed)

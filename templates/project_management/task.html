@@ -14,9 +14,27 @@
             <div class="col-md-10">
                 <h1 class="text-center">{{ task.title }}</h1>
             </div>
+
         </div>
 
-        <h4 class="text-center">{{ task.description }}</h4>
+        <div class="row">
+            <div class="col-md-2">
+                <br/><br/><br/>
+                {# Add user logged in support #}
+                <button id="complete-task" data-taskid="{{ task.id }}"
+                        class="btn btn-block btn-lg
+                        {% if task.completed %}btn-warning{% else %}btn-primary{% endif %}" type="button">
+                        {% if task.completed %}
+                            Reverse completion
+                        {% else %}
+                            Complete task
+                        {% endif %}
+                </button>
+
+                {# Add owner task approval support #}
+            </div>
+            <div class="col-md-8">
+                <h4 class="text-center">{{ task.description }}</h4>
         <h4 class="text-center">Due date: {{ task.due_date }}</h4>
         <h4 class="text-center">People working on this task:</h4>
 
@@ -25,6 +43,8 @@
                 {% for user in task.users.all %}
                 <h5 class="text-center">{{ user.username }}</h5>
             {% endfor %}
+            </div>
+        </div>
             </div>
         </div>
 

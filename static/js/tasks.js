@@ -37,3 +37,18 @@ $("#task_form").submit(function(event){
     $(this).submit();
 });
 
+$('#complete-task').on("click", function(){
+    var taskId = $(this).attr("data-taskid");
+    var $button = $(this);
+    $.get("/complete_task/" , {task_id: taskId}, function(data) {
+        if (data == "True") {
+            $button.html("Reverse completion");
+            $button.removeClass("btn-primary");
+            $button.addClass("btn-warning");
+        } else {
+            $button.html("Complete task");
+            $button.removeClass("btn-warning");
+            $button.addClass("btn-primary");
+        }
+    });
+});
