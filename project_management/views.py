@@ -1,7 +1,6 @@
 from django.shortcuts import render
-
 from project_management.forms import UserDescriptionForm, ProjectForm
-from project_management.models import Project, ProjectMembers, UserDescription
+from project_management.models import Project, UserDescription
 
 from project_management.kris.kris_views import new_task
 from project_management.kris.kris_models import Task
