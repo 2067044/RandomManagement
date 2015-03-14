@@ -64,7 +64,8 @@ def addProject(request):
             return redirect('/dashboard/')
     else:
         form = ProjectForm()
-    return form
+
+    return render(request, 'project_management/ProjectForm.html', {'form':form})
 
 
 def project(request):

@@ -2,20 +2,28 @@
 
 {% block project_block %}
 
-	<form class="pure-form pure-form-aligned" id="ProjectForm "method="post" action="project_management/addProject">
-		{% csrf_token %}
-		
-		<div class="pure-control-group">
-			<label for="name">Project Title</label>
-			<input id="id_name" placeholder="name" maxlength="20" name="name" type="text"/>
-		</div>
-		<div class="pure-control-group">
-			<label for="description">Give a brief description of the project:</label>
-			<input id="id_description" placeholder ="description" name="description" type="text" />
-		</div>
 
-		<div class="pure-controls">
-			<button type="submit" value="create" />Create</button>
-       </form>
+	<div class="panel panel-default">
+		<div class="panel-body">
+			<h3>Create New Project:</h3>
+				<form class="pure-form pure-form-aligned" id="ProjectForm "method="post" action="project_management/addProject">
+					{% csrf_token %}
+		
+					<div class="pure-control-group">
+						<label for="name">Project Title</label>
+						<input id="id_name" placeholder="name" maxlength="20" name="name" type="text"/>
+					</div>
+					<div class="pure-control-group">
+						<label for="description">Give a brief description of the project:</label>
+						<input id="id_description" placeholder ="description" name="description" type="text" />
+					</div>
+
+					<div class="pure-controls">
+						<button type="submit" value="create" />Create</button>
+					</div>
+				</form>
+		</div>
+	</div>
+
 		
 {% endblock %}
