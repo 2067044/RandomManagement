@@ -1,6 +1,8 @@
 from django.shortcuts import render
 
 from project_management.forms import UserDescriptionForm, ProjectForm
+from project_management.models import Project, ProjectMembers, UserDescription
+
 from project_management.kris.kris_views import new_task
 from project_management.kris.kris_models import Task
 from django.contrib.auth.models import User
@@ -87,3 +89,21 @@ def project(request):
                    'tasks': tasks_and_colouring,
                    'users': User.objects.all(),
                    })
+
+def profile(request):
+    if request.method == 'POST':
+        description=UserDescriptionForm(request.POST)
+        if description.is_valid() and description!= "":
+            UserDescription.user=request.user
+            UserDescription.description = description
+            UserDescription.save()
+        if UserForm.is_valid():
+            password1=UserForm(request.POST['password1'])
+            password2=UserForm(request.POST['password2'])
+            if password1==password2:
+                user=User.objects.get(id=request.user.id)
+                user.set_password(password1)
+                user.save()
+        return render(request,'project_management/profile.html')
+       
+    return render(request, 'project_management/profile.html')
