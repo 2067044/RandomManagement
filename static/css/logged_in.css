@@ -57,6 +57,15 @@
     margin-bottom: 10px;
 }
 
+.task-panel .completed-task {
+    background-color: #eee;
+    margin-top: -10px;
+    margin-left: -10px;
+    border-radius: 8px;
+    padding: 5px;
+    color: #4e804e;
+}
+
 .task-panel h2 a {
     color: #444;
     text-decoration: underline;
