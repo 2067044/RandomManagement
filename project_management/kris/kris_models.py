@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from project_management.models import Project
 
 
 class Task(models.Model):
@@ -10,6 +11,7 @@ class Task(models.Model):
     due_date = models.DateField()
     app_label = 'project_management'
     users = models.ManyToManyField(User)
+    project = models.ForeignKey(Project, default=None)
 
     def __unicode__(self):
         return self.title
