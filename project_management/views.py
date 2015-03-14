@@ -1,7 +1,6 @@
 from django.shortcuts import render
 
 from project_management.forms import UserDescriptionForm, ProjectForm
-from project_management.models import Project
 from project_management.kris.kris_views import new_task
 from project_management.kris.kris_models import Task
 from django.contrib.auth.models import User
@@ -52,24 +51,23 @@ def dashboard(request):
 
 
 def addProject(request):
-    user = User.objects.get(id)
     if request.method == 'POST':
         form = ProjectForm(request.POST)
 
         if form.is_valid():
             project = form.save(commit=False)
-            project.owner=user.username
+            project.owner=request.user
             project.save()
             return render(request,'project_management/project.html',{'project': project})
         else:
-            return redirect('/dashboard')
+            return redirect('/dashboard/')
     else:
         form = ProjectForm()
     return form
 
 
 def project(request):
-    return render(request, 'projct_management/project.html', {'project': Project.Objects.all()})
+    return redirect('/dashboard/')
 
     # This determines which css style will be used in the template
     # Tasks which are more than 9 days due are alright; 4 to 9 is kinda bad;

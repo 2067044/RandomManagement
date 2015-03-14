@@ -25,3 +25,9 @@ body {
     font-size: 2.9em; }
     .jumbotron .jumbotron-link:hover {
       color: #4A7D5A; }
+	  
+.registration{
+	backgroung-color: transparent;  }
+	.registration.registration-text{
+	color: white;
+	margin-top: 40px;}

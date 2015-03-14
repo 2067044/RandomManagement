@@ -35,9 +35,10 @@
         {#  Projects (left side)  #}
         <div class="row">
             <div class="col-md-2 side-panel">
-				<a class="pure-button" href="{% url 'newProject' %}"/>Create Project</a>
-            </div>
-
+				<br/>
+					<a href="{% url 'newProject' %}"><button type="button"class="btn btn-success btn-lg btn-block">Create New Project</button></a>
+				<br/>
+			</div>
             {#  Open projects (center)  #}
             <div class="col-md-8 central-panel">
                 {% block project_block %}{% endblock project_block%}
