@@ -24,6 +24,12 @@ def populate():
     add_task("Task3", "Some task description", date(2015, 2, 11), [user4, user2], project1)
     add_task("Task4", "Some task description", date(2015, 3, 15), [user1], project1)
 
+    # New tasks in order to test pagination
+    add_task("Task5", "Some task description", date(2015, 4, 15), [user1, user2], project1)
+    add_task("Task6", "Some task description", date(2015, 3, 25), [user3], project1, True)
+    add_task("Task7", "Some task description", date(2015, 4, 25), [user4, user2], project1)
+    add_task("Task8", "Some task description", date(2015, 3, 15), [user1], project1)
+
 
 def add_user(username, password, email):
     '''

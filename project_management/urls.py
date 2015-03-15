@@ -13,6 +13,9 @@ urlpatterns = patterns('',
         url(r'^task/(?P<task_id>[\w\-]+)/$', kris_views.task, name="task"),
         url(r'^complete_task/', kris_views.complete_task, name="complete_task"),
         url(r'^profile/', views.profile, name='profile'),
+        url(r'^approve_task/(?P<task_id>[\w\-]+)/$', kris_views.approve_task, name="approve_task"),
+        url(r'^completed_tasks/', kris_views.completed_and_approved_tasks, name="completed_and_approved"),
+        url(r'^get_tasks/', kris_views.get_offset_task_json, name="offset_task")
         )
 
 

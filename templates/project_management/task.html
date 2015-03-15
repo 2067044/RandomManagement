@@ -20,7 +20,9 @@
         <div class="row">
             <div class="col-md-2">
                 <br/><br/><br/>
-                {# Add user logged in support #}
+                {#     If user is working on task, task can be completed     #}
+                {% if user in task.users.all %}
+
                 <button id="complete-task" data-taskid="{{ task.id }}"
                         class="btn btn-block btn-lg
                         {% if task.completed %}btn-warning{% else %}btn-primary{% endif %}" type="button">
@@ -30,6 +32,15 @@
                             Complete task
                         {% endif %}
                 </button>
+                    <br/>
+                {% endif %}
+
+                {# Give the owner of the project the ability to mark the task as completed #}
+                {% if task.project.owner == user and task.completed %}
+                    <a class="btn btn-block btn-lg btn-success" href="{% url 'approve_task' task.id %}">
+                        Approve completion
+                    </a>
+                {% endif %}
 
                 {# Add owner task approval support #}
             </div>
