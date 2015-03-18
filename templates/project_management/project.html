@@ -7,11 +7,19 @@
 
 	<div class="member-sidebar">
 		<div class="col-md-2 side-panel">
-			{% for members in project %}
+			{% for members in project.members %}
 				<p id="members-list">{{members.username}}</p>
 			{% endfor %}
 			<div id="footer">
-				<a href="{% url 'project' %}"><button class="btn btn-success btn-lg btn-block">Add user</button></a>
+				<form class="pure-form pure-form-aligned" id="add_user" type="Add_User" method="post" action=".">
+					{% csrf_token %}
+					<div class="pure-control-group">
+						<label for="add_user">Add new member</label>
+						<input id="add_user" maxlength="30" name="add_user" type="text" placeholder="Enter their Username"/>
+					</div>
+					<div class="pure-controls">
+						<a href="{% url 'project' %}" id="add_user"><button class="btn btn-success" type="subit">Add user</button></a>
+					</div>
 			</div>
 		</div>
 	</div>

@@ -1,6 +1,6 @@
 from django.shortcuts import render
-from project_management.forms import UserDescriptionForm, ProjectForm
-from project_management.models import Project, UserDescription
+from project_management.forms import UserDescriptionForm, ProjectForm, Add_User
+from project_management.models import Project, UserDescription, Membership
 from django.shortcuts import redirect
 from project_management.kris.kris_views import new_task
 from project_management.kris.kris_models import Task
@@ -27,6 +27,12 @@ def index(request):
 
 
 def dashboard(request):
+    users_projects = []
+    projects = Project.objects.all()
+    for project in projects:
+        if (project.owner == request.user):
+            users_projects.append(project)
+    
     # Object responsible for handling the creation of new tasks
     new_task_form = new_task(request)
     # Displaying all tasks for now; will use project tasks later
@@ -48,6 +54,7 @@ def dashboard(request):
                   {'new_task_form': new_task_form,
                    'tasks': tasks_and_colouring,
                    'users': User.objects.all(),
+                   'projects':users_projects,
                    })
 
 
@@ -69,6 +76,13 @@ def addProject(request):
 
 
 def project(request):
+
+    if request.method == 'POST':
+        add_user = request.POST['add_user']
+        if add_user: #and User.objects.get('username'==add_user):
+            membership= Membership(request.Project,User.objects.get('username'==add_user))
+            membership.save()
+    
     return redirect('/dashboard/')
 
     # This determines which css style will be used in the template

@@ -11,7 +11,7 @@
 }
 
 .logged-style .col-md-2 {
-    padding: 0;
+    padding: 0 25px;
 }
 
 .logged-style .col-md-8 {
@@ -78,6 +78,7 @@
 .task-panel-attention-colour { background-color: #fff2ab; }
 
 .task-view-panel { padding: 20px; }
+
 
 
 
