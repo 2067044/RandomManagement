@@ -1,6 +1,6 @@
 from django.shortcuts import render
-from project_management.forms import UserDescriptionForm, ProjectForm, Add_User
-from project_management.models import Project, UserDescription, Membership
+from project_management.forms import UserDescriptionForm, ProjectForm
+from project_management.models import Project, UserDescription
 from django.shortcuts import redirect
 from project_management.kris.kris_views import new_task
 from project_management.kris.kris_models import Task
@@ -75,15 +75,15 @@ def addProject(request):
     return render(request, 'project_management/projectForm.html', {'form':form})
 
 
-def project(request):
-
-    if request.method == 'POST':
-        add_user = request.POST['add_user']
-        if add_user: #and User.objects.get('username'==add_user):
-            membership= Membership(request.Project,User.objects.get('username'==add_user))
-            membership.save()
+def project(request, project_id):
+    project = Project.objects.get(id=project_id)
+##    if request.method == 'POST':
+##        add_user = request.POST['add_user']
+##        if add_user: #and User.objects.get('username'==add_user):
+##            membership.add(User.objects.get('username'==add_user))
+##            membership.save()
     
-    return redirect('/dashboard/')
+    return render(request,'project_management/project.html',{'project':project})
 
     # This determines which css style will be used in the template
     # Tasks which are more than 9 days due are alright; 4 to 9 is kinda bad;

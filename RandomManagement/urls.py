@@ -6,7 +6,7 @@ from django.shortcuts import redirect
 
 class MyRegistrationView(RegistrationView):
     def get_success_url(self,request, user):
-        return redirect('/dashboard/')
+        return '/dashboard'
 
 urlpatterns = patterns('',
     url(r'^admin/', include(admin.site.urls)),
