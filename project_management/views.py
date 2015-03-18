@@ -27,6 +27,12 @@ def index(request):
 
 
 def dashboard(request):
+    users_projects = []
+    projects = Project.objects.all()
+    for project in projects:
+        if (project.owner == request.user):
+            users_projects.append(project)
+    
     # Object responsible for handling the creation of new tasks
     new_task_form = new_task(request)
     # Displaying all tasks for now; will use project tasks later
@@ -48,6 +54,7 @@ def dashboard(request):
                   {'new_task_form': new_task_form,
                    'tasks': tasks_and_colouring,
                    'users': User.objects.all(),
+                   'projects':users_projects,
                    })
 
 
@@ -68,8 +75,15 @@ def addProject(request):
     return render(request, 'project_management/projectForm.html', {'form':form})
 
 
-def project(request):
-    return redirect('/dashboard/')
+def project(request, project_id):
+    project = Project.objects.get(id=project_id)
+##    if request.method == 'POST':
+##        add_user = request.POST['add_user']
+##        if add_user: #and User.objects.get('username'==add_user):
+##            membership.add(User.objects.get('username'==add_user))
+##            membership.save()
+    
+    return render(request,'project_management/project.html',{'project':project})
 
     # This determines which css style will be used in the template
     # Tasks which are more than 9 days due are alright; 4 to 9 is kinda bad;

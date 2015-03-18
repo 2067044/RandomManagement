@@ -6,6 +6,7 @@ from django.shortcuts import HttpResponse, redirect
 import json
 
 
+
 def new_task(request):
     '''
     ' New task generation. TODO missing form validation :)
@@ -52,6 +53,7 @@ def approve_task(request, task_id):
 
 def completed_and_approved_tasks(request):
     tasks = Task.objects.filter(approved=True)
+<<<<<<< HEAD
     return render(request, "project_management/tasks/completed_tasks.html", {'tasks': tasks})
 
 
@@ -70,3 +72,6 @@ def get_offset_task_json(request):
 
 def get_offset_tasks(page=0):
     return Task.objects.all()[page*4:page*4+4]
+=======
+    return render(request, "project_management/tasks/completed_tasks.html", {'tasks': tasks})
+>>>>>>> 427a044eb0b881b5849b1996aa7b5c405974f04d

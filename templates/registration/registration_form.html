@@ -12,9 +12,8 @@
 	<div class="col-md-4 col-md-offset-0">
 		<div class="panel panel-default">
 			<div class="panel-body">
-				<form class="pure-form pure-form-aligned" role="form" method="post" action=".">
-					<fieldset>
-						{% csrf_token %}
+				<form class="pure-form pure-form-aligned" method="post" action=".">
+					{% csrf_token %}
 			
 						<div class="pure-control-group">
 							<label for="id_username">Username</label>
@@ -35,7 +34,6 @@
 						<div class="pure-controls">
 							<button class="btn btn-success" type="submit" value="Submit">Submit </button>
 						</div>
-					</fieldset>
 				</form>
 			</div>
 		</div>

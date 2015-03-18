@@ -58,3 +58,6 @@ target/
 
 # Idea
 .idea/
+
+# Ignore migrations
+project_management/migrations/
