@@ -5,6 +5,7 @@ from django.shortcuts import redirect
 from project_management.kris.kris_views import new_task, get_offset_tasks
 from project_management.kris.kris_models import Task
 from django.contrib.auth.models import User
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from datetime import date
 
 
@@ -77,19 +78,36 @@ def addProject(request):
 
 def project(request, project_id):
     project = Project.objects.get(id=project_id)
-    tasks = get_offset_tasks(project=project)
-    tasks_and_colouring = []
+    # tasks = get_offset_tasks(project=project)
+    all_tasks = Task.objects.filter(project=project, approved=False)
+    paginator = Paginator(all_tasks, 4)
+    page = request.GET.get('page')
+
+    try:
+        tasks = paginator.page(page)
+    except PageNotAnInteger:
+        # If page is not an integer, deliver first page.
+        tasks = paginator.page(1)
+    except EmptyPage:
+        # If page is out of range (e.g. 9999), deliver last page of results.
+        tasks = paginator.page(paginator.num_pages)
+
     current_date = date.today()
 
+    # Object responsible for handling the creation of new tasks
+    new_task_form = new_task(request, project.id)
+
+    # Decide how each task is going to be coloured
     for task in tasks:
         if (task.due_date - current_date).days >= 10:
-            tasks_and_colouring.append({'task': task, 'colouring': 'task-panel-normal-colour'})
+            task.colouring = 'task-panel-normal-colour'
         elif 3 < (task.due_date - current_date).days < 10:
-            tasks_and_colouring.append({'task': task, 'colouring': 'task-panel-attention-colour'})
+            task.colouring = 'task-panel-attention-colour'
         else:
-            tasks_and_colouring.append({'task': task, 'colouring': 'task-panel-critical-colour'})
+            task.colouring = 'task-panel-critical-colour'
 
-    return render(request, 'project_management/project.html', {'project': project, 'tasks': tasks_and_colouring})
+    return render(request, 'project_management/project.html',
+                  {'project': project, 'tasks': tasks, 'new_task_form': new_task_form})
 
 
 def profile(request):

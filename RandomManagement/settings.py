@@ -36,8 +36,11 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'compressor',
+    'registration',
+    'dajaxice',
+    'dajax',
     'project_management',
+
 )
 
 COMPRESS_PRECOMPILERS = (
