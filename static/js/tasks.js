@@ -67,3 +67,27 @@ $('#right-tasks').on("click", function() {
         console.log(data);
     });
 });
+
+// Task search function
+$("#task-search").keyup(function() {
+    var projectID = $(this).attr("data-projectid");
+    var query = $(this).val();
+    var $taskDisplay = $("#found-task-display");
+    if (query == "") {
+        $taskDisplay.empty();
+        return;
+    }
+
+
+    $.get("/find_task/", {query: query, project_id: projectID}, function(data) {
+        $taskDisplay.empty();
+        var text = "";
+        for (var i = 0; i < data.length; i++) {
+            text = "";
+            text += "<h3><a href=\"/task/" + data[i].id + "\">" + data[i].title + "</a></h3>";
+            text += "<p>" + data[i].description + "<p>";
+            $taskDisplay.append(text);
+        }
+
+    });
+});
