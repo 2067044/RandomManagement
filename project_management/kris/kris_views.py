@@ -83,7 +83,7 @@ def approve_task(request, task_id):
     task = Task.objects.get(id=task_id)
     task.approved = True
     task.save()
-    return redirect("/project/{0}".format(task.project.id))
+    return redirect("/project/{0}".format(task.project.slug))
 
 
 def completed_and_approved_tasks(request, project_slug):
