@@ -1,117 +1,33 @@
 {% extends 'logged_in_base.html' %}
+{% load staticfiles %}
+{% block user_projects %}
+<br>
+	{% if user_project %}
+	<div class="pure-menu custom-restricted-width">
+		<h3><span class = "label label-default">My Projects</span></h3>
+		<ul class="pure-menu-list">
+		{% for users_projects in user_project %}
+			{% if users_projects == project %}
+				<a class="pure-menu-link" href="/project/{{users_projects.slug}}"><li class="pure-menu-item pure-menu-selected">{{ users_projects.name }}</li></a>
+			{% else %}
+				<a class="pure-menu-link" href="/project/{{users_projects.slug}}"><li class="pure-menu-item">{{ users_projects.name }}</li></a>
+			{% endif %}
+		{% endfor %}
+		</ul>
+	</div>
+	{% else %}
+		<h5>You don't have any projects yet</h5>
+	{% endif %}
+</br>
+{% endblock %}
 
 {% block project_block %}
-    <div class="row">
-        {#  TASKS SECTION  #}
-        <div class="col-md-6">
-            <br/>
-            <!-- Button trigger modal -->
-            <button type="button" class="btn btn-success btn-lg btn-block" data-toggle="modal" data-target="#myModal">
-                Add task
-            </button>
-            <br/>
-
-            {#  THERE IS A SERIOUS ISSUE WITH INHERITANCE; THESE PARTS SHOULD BE INHERITED FROM THE tasks FOLDER :(  #}
-            <div class="modal fade" role='dialog' id="myModal">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-                                    aria-hidden="true">&times;</span></button>
-                            <h4 class="modal-title">New task</h4>
-                        </div>
-                        <div class="modal-body">
-                            <form id="task_form" method="post" action="{% url 'new_task'  %}">
-                                {% csrf_token %}
-                                <div class="form-group new-task-form">
-                                    <label for="id_title">{{ new_task_form.fields.title.label }}</label>
-                                    <input class="form-control" id="id_title" maxlength="40" name="title" type="text"
-                                           placeholder="Please enter a title...">
-
-                                    <label for="id_description">{{ new_task_form.fields.description.label }}</label>
-                            <textarea class="form-control" cols="40" id="id_description" maxlength="300"
-                                      name="description"
-                                      rows="7" placeholder="Please enter a description..."></textarea>
-
-                                    <label for="id_due_date">{{ new_task_form.fields.due_date.label }}</label>
-                                    <input class="form-control datepicker" id="id_due_date" name="due_date" type="text">
-
-                                    <label for="id_users">{{ new_task_form.fields.users.label }}</label>
-                                    <select class="form-control" multiple="multiple" id="id_users" name="users">
-                                        {#                                OPTIONS SHOULD BE PICKED BY PROJECT MEMBERS#}
-                                        {% for user in users %}
-                                            <option value="{{ user.id }}">{{ user.username }}</option>
-                                        {% endfor %}
-                                    </select>
-                                </div>
-                                <div class="modal-footer">
-                                    <div class="row">
-                                        <div class="col-md-6">
-                                            <button type="button" class="btn btn-block btn-default"
-                                                    data-dismiss="modal">
-                                                Close
-                                            </button>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <input id="new-task-submit" class="btn btn-block btn-success"
-                                                   type="submit" name="submit" value="Add"/>
-                                        </div>
-
-                                    </div>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                    <!-- /.modal-content -->
-                </div>
-                <!-- /.modal-dialog -->
-            </div>
-            <!-- /.modal -->
-            {#  END TASK MODAL  #}
-
-            {# Visualisation of tasks  #}
-            <div id="tasks">
-                {% for task in tasks %}
-                    <div class="task-panel {{ task.colouring }}">
-
-                        <div class="row">
-                            <div class="col-md-10 col-md-offset-1">
-                                <h2 class="text-center">
-                                    <a href="{% url 'task' task.task.id %}">{{ task.task }}</a>
-                                </h2>
-                            </div>
-                            <div class="col-md-1">
-
-                                {% if task.task.completed %}
-                                    <h3><span class="glyphicon completed-task glyphicon-ok" aria-hidden="true"></span>
-                                    </h3>
-
-                                {% endif %}
-                            </div>
-                        </div>
-
-
-                        <p class="text-justify">{{ task.task.description }}</p>
-
-                        <p>Working:
-                            {% for user in task.task.users.all %}
-                                {{ user.username }}
-                            {% endfor %}
-                        </p>
-
-                        <p class="text-right">Due date: {{ task.task.due_date }}</p>
-                    </div>
-                {% endfor %}
-                {# End visualisation  #}
-            </div>
-
-            <button id="left-tasks">Left</button><button id="right-tasks">Right</button>
-        </div>
-
-        <div class="col-md-6">
-
-        </div>
-    </div>
-
-
-{% endblock project_block %}
+	<br>
+		<div class="col-md-2 col-md-offset-4">
+			<img class="img-rounded img-responsive" src="{% static 'images/logo.png' %}" alt="Site logo."/>
+		</div>
+		<div class="col-md-1 text-centre">
+			<h1>Welcome to RandomManagement {{user.username}}<h1>
+		</div>
+	</br>
+{% endblock %}

@@ -18,6 +18,11 @@
     padding: 0 25px;
 }
 
+#project-name{
+	text-align: centre;
+	color=white;
+}
+
 /* Task styling*/
 .new-task-form {
     margin: 0 auto;
@@ -80,6 +85,7 @@
 .task-view-panel { padding: 20px; }
 
 
+#projects-panel li{ color:red }
 
 
 

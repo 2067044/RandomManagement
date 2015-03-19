@@ -13,8 +13,3 @@ class ProjectForm(forms.ModelForm):
     class Meta:
         model = Project
         fields = ('name','description',)
-
-##class Add_User(forms.ModelForm):
-##    class Meta:
-##        model = Membership
-##        fields = ('member',)

@@ -2,7 +2,7 @@ from django.shortcuts import render
 from project_management.forms import UserDescriptionForm, ProjectForm
 from project_management.models import Project, UserDescription
 from django.shortcuts import redirect
-from project_management.kris.kris_views import new_task, get_offset_tasks
+from project_management.kris.kris_views import new_task
 from project_management.kris.kris_models import Task
 from django.contrib.auth.models import User
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
@@ -26,40 +26,21 @@ def index(request):
 ##        form = UserDescriptionForm()
 ##    return render(request, 'registration/registration_form.html', {'form': form})
 
-
-def dashboard(request):
+def getUserProjects(user):
     users_projects = []
     projects = Project.objects.all()
     for project in projects:
-        if (project.owner == request.user):
+        if (project.owner == user):
             users_projects.append(project)
-    
-    # Object responsible for handling the creation of new tasks
-    new_task_form = new_task(request)
-    # Displaying all tasks for now; will use project tasks later
-    tasks = get_offset_tasks()
-    # This determines which css style will be used in the template
-    # Tasks which are more than 9 days due are alright; 4 to 9 is kinda bad;
-    # less than 3 is critical
-    # format: task: [{task:task, colouring:css}]
-    tasks_and_colouring = []
-    current_date = date.today()
-    for task in tasks:
-        if (task.due_date - current_date).days >= 10:
-            tasks_and_colouring.append({'task': task, 'colouring': 'task-panel-normal-colour'})
-        elif 3 < (task.due_date - current_date).days < 10:
-            tasks_and_colouring.append({'task': task, 'colouring': 'task-panel-attention-colour'})
-        else:
-            tasks_and_colouring.append({'task': task, 'colouring': 'task-panel-critical-colour'})
-    return render(request, 'project_management/dashboard.html',
-                  {'new_task_form': new_task_form,
-                   'tasks': tasks_and_colouring,
-                   'users': User.objects.all(),
-                   'projects': users_projects,
-                   })
+    return users_projects
+
+def dashboard(request):
+    return render(request,'project_management/dashboard.html', {'user_project':getUserProjects(request.user)})
 
 
 def addProject(request):
+    users_projects = getUserProjects(request.user)
+    
     if request.method == 'POST':
         form = ProjectForm(request.POST)
 
@@ -67,18 +48,42 @@ def addProject(request):
             project = form.save(commit=False)
             project.owner=request.user
             project.save()
-            return render(request,'project_management/project.html',{'project': project})
+            return redirect('/project/{0}'.format(project.slug))
         else:
             return redirect('/dashboard/')
     else:
         form = ProjectForm()
 
-    return render(request, 'project_management/projectForm.html', {'form': form})
+    return render(request, 'project_management/projectForm.html', {'form':form})
+
+# def project(request, project_slug):
+#     project = Project.objects.get(slug=project_slug)
+#
+#
+#     if request.method == 'POST':
+#         print 'TEST 1'
+#         member_username = request.POST['add_user']
+#         print request.POST['add_user']
+#         if member_username.is_valid():
+#             new_member = User.objects.filter(username=member_username)
+#             project.members.add(new_member)
+#             project.save()
+#
+#     return render(request,'project_management/project.html',{'project':project, 'user_project':users_projects})
+#
+#     # This determines which css style will be used in the template
+#     # Tasks which are more than 9 days due are alright; 4 to 9 is kinda bad;
+#     # less than 3 is critical
+#     # format: task: [{task:task, colouring:css}]
+#     tasks_and_colouring = []
+#     current_date = date.today()
 
 
-def project(request, project_id):
-    project = Project.objects.get(id=project_id)
-    # tasks = get_offset_tasks(project=project)
+def project(request, project_slug):
+    project = Project.objects.get(slug=project_slug)
+
+    users_projects = Project.objects.filter(owner=request.user)
+
     all_tasks = Task.objects.filter(project=project, approved=False)
     paginator = Paginator(all_tasks, 4)
     page = request.GET.get('page')
@@ -98,6 +103,7 @@ def project(request, project_id):
     new_task_form = new_task(request, project.id)
 
     # Decide how each task is going to be coloured
+
     for task in tasks:
         if (task.due_date - current_date).days >= 10:
             task.colouring = 'task-panel-normal-colour'
@@ -107,7 +113,8 @@ def project(request, project_id):
             task.colouring = 'task-panel-critical-colour'
 
     return render(request, 'project_management/project.html',
-                  {'project': project, 'tasks': tasks, 'new_task_form': new_task_form})
+                  {'project': project, 'tasks': tasks, 'new_task_form': new_task_form,
+                    'user_project': users_projects})
 
 
 def profile(request):
