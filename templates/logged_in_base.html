@@ -1,5 +1,4 @@
 {% extends 'base.html' %}
-
 {% block body_block %}
     {# Edit this later #}
     <nav class="navbar navbar-inverse navbar-fixed-top">
@@ -12,11 +11,11 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="#">Project name</a>
-            </div>
+				<a class="navbar-brand" href="{% url 'dashboard' %}">RandomManagement</a>
+			</div>
             <div id="navbar" class="navbar-collapse collapse">
+				{% block project-name %} {% endblock %}
                 <div class="navbar-form navbar-right">
-
                     {% if user.is_authenticated %}
                     <a href="{% url 'profile' %}">profile</a>
                     <a href="{% url 'auth_logout' %}?next=/">Logout</a>
@@ -33,15 +32,10 @@
         {#  Projects (left side)  #}
         <div class="row">
             <div class="col-md-2 side-panel">
-				<br/>
-					<a href="{% url 'newProject' %}"><button type="button"class="btn btn-success btn-lg btn-block">Create New Project</button></a>
-					<h3><span class = "label label-default">My Projects</span></h3>
-					<ul class="list-group">
-						{% for project in projects %}
-							<a href="{% url 'dashboard' %}"><li class="list-group-item">{{ project.name }}</li>
-						{% endfor %}
-					</ul>
-				<br/>
+			<br>
+				<a href="{% url 'newProject' %}"><button type="button"class="btn btn-success btn-lg btn-block">Create New Project</button></a>
+				{%block user_projects%}{%endblock%}
+				
 			</div>
             {#  Open projects (center)  #}
             <div class="col-md-8 central-panel">

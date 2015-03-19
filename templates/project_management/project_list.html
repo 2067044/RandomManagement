@@ -1,0 +1,18 @@
+<br>
+	{% if user_project %}
+	<div class="pure-menu custom-restricted-width">
+		<h3><span class = "label label-default">My Projects</span></h3>
+		<ul class="pure-menu-list">
+		{% for users_projects in user_projects %}
+			{% if users_projects == acting_project %}
+				<a class="pure-menu-link" href="/project/{{users_projects.slug}}"><li class="pure-menu-item active">{{ users_projects.name }}</li></a>
+			{% else %}
+				<a class="pure-menu-link" href="/project/{{users_projects.slug}}"><li class="pure-menu-item">{{ users_projects.name }}</li></a>
+			{% endif %}
+		{% endfor %}
+		</ul>
+	</div>
+	{% else %}
+		<h5>You don't have any projects yet</h5>
+	{% endif %}
+</br>
