@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.shortcuts import redirect
-from project_management.kris.kris_forms import TaskForm
-from project_management.kris.kris_models import Task
+from project_management.kris.kris_forms import TaskForm, MessageForm
+from project_management.kris.kris_models import Task, Message
 from django.shortcuts import HttpResponse, redirect
 
 
@@ -52,3 +52,20 @@ def approve_task(request, task_id):
 def completed_and_approved_tasks(request):
     tasks = Task.objects.filter(approved=True)
     return render(request, "project_management/tasks/completed_tasks.html", {'tasks': tasks})
+
+#---------Konstantin-----------------------
+def new_message(request):
+
+    if request.method == "POST":
+        formM = MessageForm(request.POST)
+
+        # Need to consider validation later
+        if formM.is_valid():
+            formM.save(commit=True)
+            return redirect('/dashboard/')
+        else:
+            return redirect("/dashboard/")
+    else:
+        formM = MessageForm()
+
+    return formM
