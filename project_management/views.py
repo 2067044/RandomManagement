@@ -116,7 +116,6 @@ def project(request, project_slug):
                   {'project': project, 'tasks': tasks, 'new_task_form': new_task_form, 'user_project': users_projects})
 
 
-
 def profile(request):
     if request.method == 'POST':
         description=UserDescriptionForm(request.POST)

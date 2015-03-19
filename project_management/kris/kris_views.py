@@ -34,9 +34,9 @@ def new_task(request, project_id):
             task.save()
             task.users.add(*form.cleaned_data['users'])
             task.save()
-            return redirect('/project/{0}'.format(project_id))
+            return redirect('/project/{0}'.format(project.slug))
         else:
-            return redirect('/project/{0}'.format(project_id))
+            return redirect('/project/{0}'.format(project.slug))
     else:
         form = TaskForm()
 
