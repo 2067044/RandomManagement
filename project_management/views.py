@@ -2,7 +2,7 @@ from django.shortcuts import render
 from project_management.forms import UserDescriptionForm, ProjectForm
 from project_management.models import Project, UserDescription
 from django.shortcuts import redirect
-from project_management.kris.kris_views import new_task
+from project_management.kris.kris_views import new_task, get_offset_tasks
 from project_management.kris.kris_models import Task
 from django.contrib.auth.models import User
 from datetime import date
@@ -43,7 +43,7 @@ def dashboard(request):
     # Object responsible for handling the creation of new tasks
     new_task_form = new_task(request)
     # Displaying all tasks for now; will use project tasks later
-    tasks = Task.objects.all()
+    tasks = get_offset_tasks()
     # This determines which css style will be used in the template
     # Tasks which are more than 9 days due are alright; 4 to 9 is kinda bad;
     # less than 3 is critical
@@ -61,7 +61,7 @@ def dashboard(request):
                   {'new_task_form': new_task_form,
                    'tasks': tasks_and_colouring,
                    'users': User.objects.all(),
-                   'projects':users_projects,
+                   'projects': users_projects,
                    })
 
 
@@ -79,7 +79,7 @@ def addProject(request):
     else:
         form = ProjectForm()
 
-    return render(request, 'project_management/projectForm.html', {'form':form})
+    return render(request, 'project_management/projectForm.html', {'form': form})
 
 
 def project(request, project_id):
@@ -97,8 +97,10 @@ def project(request, project_id):
     # Tasks which are more than 9 days due are alright; 4 to 9 is kinda bad;
     # less than 3 is critical
     # format: task: [{task:task, colouring:css}]
+
     tasks_and_colouring = []
     current_date = date.today()
+
     for task in tasks:
         if (task.due_date - current_date).days >= 10:
             tasks_and_colouring.append({'task': task, 'colouring': 'task-panel-normal-colour'})
@@ -106,11 +108,9 @@ def project(request, project_id):
             tasks_and_colouring.append({'task': task, 'colouring': 'task-panel-attention-colour'})
         else:
             tasks_and_colouring.append({'task': task, 'colouring': 'task-panel-critical-colour'})
-    return render(request, 'project_management/dashboard.html',
-                  {'new_task_form': new_task_form,
-                   'tasks': tasks_and_colouring,
-                   'users': User.objects.all(),
-                   })
+
+    return render(request, 'project_management/project.html', {'project': project, 'tasks': tasks_and_colouring})
+
 
 def profile(request):
     if request.method == 'POST':

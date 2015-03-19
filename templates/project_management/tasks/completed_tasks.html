@@ -1,22 +1,30 @@
 {% extends 'logged_in_base.html' %}
 
 {% block project_block %}
-    <br/>
-        {% for task in tasks %}
-            {% if forloop.counter0|divisibleby:2 %}
-                <div class="row">
+    <h1>
+        <a href="{% url 'project' tasks.first.project.id %}">
+            <button class="btn btn-lg btn-success" type="button">
+                <span class="glyphicon glyphicon-menu-left" aria-hidden="true"></span>
+            </button>
+        </a>
+    </h1>
 
-            {% endif %}
-            <div class="col-md-5 {% if forloop.counter0|add:1|divisibleby:2 %}col-md-offset-2{% endif %} panel">
-                <h3 class="text-center">{{ task.title }}</h3>
-                <h4 class="text-center">{{ task.description }}</h4>
-            </div>
-             {% if forloop.counter0|add:1|divisibleby:2 %}
-               </div>
-            {% endif %}
-        {% empty %}
-            <h1>Sorry, no completed tasks.</h1>
-        {% endfor %}
+
+    {% for task in tasks %}
+        {% if forloop.counter0|divisibleby:2 %}
+            <div class="row">
+
+        {% endif %}
+    <div class="col-md-5 {% if forloop.counter0|add:1|divisibleby:2 %}col-md-offset-2{% endif %} panel">
+        <h3 class="text-center">{{ task.title }}</h3>
+        <h4 class="text-center">{{ task.description }}</h4>
+    </div>
+    {% if forloop.counter0|add:1|divisibleby:2 %}
+        </div>
+    {% endif %}
+    {% empty %}
+        <h1>Sorry, no completed tasks.</h1>
+    {% endfor %}
     </div>
 
 {% endblock project_block %}
