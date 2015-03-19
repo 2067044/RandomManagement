@@ -56,9 +56,31 @@ def addProject(request):
 
     return render(request, 'project_management/projectForm.html', {'form':form})
 
+# def project(request, project_slug):
+#     project = Project.objects.get(slug=project_slug)
+#
+#
+#     if request.method == 'POST':
+#         print 'TEST 1'
+#         member_username = request.POST['add_user']
+#         print request.POST['add_user']
+#         if member_username.is_valid():
+#             new_member = User.objects.filter(username=member_username)
+#             project.members.add(new_member)
+#             project.save()
+#
+#     return render(request,'project_management/project.html',{'project':project, 'user_project':users_projects})
+#
+#     # This determines which css style will be used in the template
+#     # Tasks which are more than 9 days due are alright; 4 to 9 is kinda bad;
+#     # less than 3 is critical
+#     # format: task: [{task:task, colouring:css}]
+#     tasks_and_colouring = []
+#     current_date = date.today()
+
+
 def project(request, project_slug):
     project = Project.objects.get(slug=project_slug)
-
     users_projects = getUserProjects(request.user)
 
     all_tasks = Task.objects.filter(project=project, approved=False)
@@ -91,6 +113,7 @@ def project(request, project_slug):
 
     return render(request, 'project_management/project.html',
                   {'project': project, 'tasks': tasks, 'new_task_form': new_task_form, 'user_project': users_projects})
+
 
 
 def profile(request):
