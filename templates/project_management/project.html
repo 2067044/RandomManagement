@@ -1,5 +1,17 @@
 {% extends 'logged_in_base.html' %}
 
+{% block user_projects %}
+<br>
+	<a href="{% url 'newProject' %}"><button type="button"class="btn btn-success btn-lg btn-block">Create New Project</button></a>
+	<h3><span class = "label label-default">My Projects</span></h3>
+	<ul class="list-group">
+	{% for project in user_projects %}
+		<a href="{% url 'project/' project.id %}"><li class="list-group-item">{{ project.name }}</li>
+	{% endfor %}
+	</ul>
+</br>
+{% endblock %}
+
 {% block project_block %}
 
     <h1 class="text-center">{{ Project.name }}</h1>
@@ -8,18 +20,18 @@
 {% endblock %}
 
 {% block project_members %}
-			{% for members in project.members.all %}
-				<p id="members-list">{{members.username}}</p>
-			{% endfor %}
-			
-				<form class="pure-form pure-form-aligned" id="add_user" type="Add_User" method="post" action=".">
-					{% csrf_token %}
-					<div class="pure-control-group">
-						<label for="add_user">Add new member</label>
-						<input id="add_user" maxlength="30" name="add_user" type="text" placeholder="Enter their Username"/>
-					</div>
-					<div class="pure-controls">
-						<a href="{% url 'project' project.id %}" id="add_user"><button class="btn btn-success" type="subit">Add user</button></a>
-					</div>
-			
-	{% endblock project_members %}
+	<br>
+		{% for members in project.members.all %}
+			<p id="members-list">{{members.username}}</p>
+		{% endfor %}
+		<form class="pure-form pure-form-aligned" id="add_user" type="Add_User" method="post" action=".">
+			{% csrf_token %}
+			<div class="pure-control-group">
+				<label for="add_user">Add new member</label>
+				<input id="add_user" maxlength="30" name="add_user" type="text" placeholder="Enter their Username"/>
+			</div>
+			<div class="pure-controls">
+				<a href="{% url 'project' project.id %}" id="add_user"><button class="btn btn-success" type="subit">Add user</button></a>
+			</div>
+	</br>	
+{% endblock project_members %}

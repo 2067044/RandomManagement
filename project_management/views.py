@@ -25,6 +25,13 @@ def index(request):
 ##        form = UserDescriptionForm()
 ##    return render(request, 'registration/registration_form.html', {'form': form})
 
+def getUserProjects(user):
+    users_projects = []
+    projects = Project.objects.all()
+    for project in projects:
+        if (project.owner == user):
+            users_projects.append(project)
+    return users_projects
 
 def dashboard(request):
     users_projects = []
@@ -77,13 +84,14 @@ def addProject(request):
 
 def project(request, project_id):
     project = Project.objects.get(id=project_id)
+    users_projects = getUserProjects(request.user)
 ##    if request.method == 'POST':
 ##        add_user = request.POST['add_user']
 ##        if add_user: #and User.objects.get('username'==add_user):
 ##            membership.add(User.objects.get('username'==add_user))
 ##            membership.save()
     
-    return render(request,'project_management/project.html',{'project':project})
+    return render(request,'project_management/project.html',{'project':project, 'user_projects':users_projects})
 
     # This determines which css style will be used in the template
     # Tasks which are more than 9 days due are alright; 4 to 9 is kinda bad;
