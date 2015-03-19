@@ -8,17 +8,19 @@
 {% block project_block %}
 
     <div class="row">
-        {#  TASKS SECTION  #}
+        {# Task part #}
         <div class="col-md-6">
             <br/>
-            <!-- Button trigger modal -->
+            {# Two buttons at the top left #}
             <div class="row">
+                {# New task model trigger button #}
                 <div class="col-md-6">
                     <button type="button" class="btn btn-success btn-lg btn-block" data-toggle="modal"
                             data-target="#myModal">
                         Add task
                     </button>
                 </div>
+                {# View completed and approved tasks button #}
                 <div class="col-md-6">
                     <a class="btn btn-success btn-lg btn-block" href="{% url 'completed_and_approved' project.id %}">
                         Completed tasks
@@ -28,7 +30,8 @@
 
             <br/>
 
-            {#  THERE IS A SERIOUS ISSUE WITH INHERITANCE; THESE PARTS SHOULD BE INHERITED FROM THE tasks FOLDER :(  #}
+            {# HERE IS A SERIOUS ISSUE WITH INHERITANCE; THESE PARTS SHOULD BE INHERITED FROM THE tasks FOLDER :(  #}
+            {# New task modal definition #}
             <div class="modal fade" role='dialog' id="myModal">
                 <div class="modal-dialog">
                     <div class="modal-content">
@@ -60,7 +63,7 @@
 
                                     <label for="id_users">{{ new_task_form.fields.users.label }}</label>
                                     <select class="form-control" multiple="multiple" id="id_users" name="users">
-                                        {#                                OPTIONS SHOULD BE PICKED BY PROJECT MEMBERS#}
+
                                         {% for user in project.members.all %}
                                             <option value="{{ user.id }}">{{ user.username }}</option>
                                         {% endfor %}
@@ -89,9 +92,9 @@
                 <!-- /.modal-dialog -->
             </div>
             <!-- /.modal -->
-            {#  END TASK MODAL  #}
+            {#  End new task modal definition  #}
 
-            {# Visualisation of tasks  #}
+            {# Visualisation of tasks #}
             <div id="tasks">
                 {% for task in tasks %}
                     <div class="task-panel {{ task.colouring }}">
@@ -99,12 +102,12 @@
                         <div class="row">
                             <div class="col-md-10 col-md-offset-1">
                                 <h2 class="text-center">
-                                    <a href="{% url 'task' task.task.id %}">{{ task.task }}</a>
+                                    <a href="{% url 'task' task.id %}">{{ task }}</a>
                                 </h2>
                             </div>
                             <div class="col-md-1">
 
-                                {% if task.task.completed %}
+                                {% if task.completed %}
                                     <h3><span class="glyphicon completed-task glyphicon-ok" aria-hidden="true"></span>
                                     </h3>
 
@@ -112,25 +115,42 @@
                             </div>
                         </div>
 
-
-                        <p class="text-justify">{{ task.task.description }}</p>
+                        <p class="text-justify">{{ task.description }}</p>
 
                         <p>Working:
-                            {% for user in task.task.users.all %}
+                            {% for user in task.users.all %}
                                 {{ user.username }}
                             {% endfor %}
                         </p>
 
-                        <p class="text-right">Due date: {{ task.task.due_date }}</p>
+                        <p class="text-right">Due date: {{ task.due_date }}</p>
                     </div>
                 {% endfor %}
                 {# End visualisation  #}
+
             </div>
 
-            <button id="left-tasks">Left</button>
-            <button id="right-tasks">Right</button>
+            {# Pagination #}
+
+            <div class="pagination">
+            <span class="step-links">
+                {% if tasks.has_previous %}
+                    <a href="?page={{ tasks.previous_page_number }}">previous</a>
+                {% endif %}
+
+                <span class="current">
+                Page {{ tasks.number }} of {{ tasks.paginator.num_pages }}.
+                </span>
+
+                {% if tasks.has_next %}
+                    <a href="?page={{ tasks.next_page_number }}">next</a>
+                {% endif %}
+             </span>
+            </div>
+
         </div>
 
+        {# FILE uploads #}
         <div class="col-md-6">
 
         </div>
@@ -152,4 +172,23 @@
 		<a href="." id="add_user"><button class="btn btn-success" type="subit">Add user</button></a>
 	</br>	
 
+{% endblock project_members %}
+
+{% block project_members %}
+    {% for members in project.members.all %}
+        <p id="members-list">{{ members.username }}</p>
+    {% endfor %}
+
+    <form class="pure-form pure-form-aligned" id="add_user" type="Add_User" method="post" action=".">
+        {% csrf_token %}
+        <div class="pure-control-group">
+            <label for="add_user">Add new member</label>
+            <input id="add_user" maxlength="30" name="add_user" type="text" placeholder="Enter their Username"/>
+        </div>
+        <div class="pure-controls">
+            <a href="{% url 'project' project.id %}" id="add_user">
+                <button class="btn btn-success" type="subit">Add user</button>
+            </a>
+        </div>
+    </form>
 {% endblock project_members %}

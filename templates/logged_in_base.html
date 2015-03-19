@@ -27,7 +27,23 @@
     </nav>
 {#    THIS DOESNT WORK#}
     {% block navigation_block %} {% endblock navigation_block%}
+<!--
+    <div class="fluid-container">
+        {# Projects #}
+        <div class="row">
 
+            <div class="col-sm-3 col-md-2 sidebar">
+                <a href="{% url 'newProject' %}"><button type="button"class="btn btn-success btn-lg btn-block">Create New Project</button></a>
+                    <h3><span class = "label label-default">My Projects</span></h3>
+                {% for project in projects %}
+                    <div id="cats">
+                        <a href="{% url 'dashboard' %}"><li class="list-group-item">{{ project.name }}</li>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        -->
+<
     <div class="logged-style">
         {#  Projects (left side)  #}
         <div class="row">
@@ -36,17 +52,27 @@
 				<a href="{% url 'newProject' %}"><button type="button"class="btn btn-success btn-lg btn-block">Create New Project</button></a>
 				{%block user_projects%}{%endblock%}
 				
+            <div class="col-sm-2 side-panel">
+				<br/>
+					<a href="{% url 'newProject' %}"><button type="button"class="btn btn-success btn-lg btn-block">Create New Project</button></a>
+					<h3><span class = "label label-default">My Projects</span></h3>
+					<ul class="list-group">
+						{% for project in projects %}
+							<a href="{% url 'dashboard' %}"><li class="list-group-item">{{ project.name }}</li>
+						{% endfor %}
+					</ul>
+				<br/>
 			</div>
             {#  Open projects (center)  #}
-            <div class="col-md-8 central-panel">
+            <div class="col-sm-8 central-panel">
                 {% block project_block %}{% endblock project_block%}
             </div>
 
             {#  Users (right side)  #}
-            <div class="col-md-2 side-panel">
-				{%block project_members%}{%endblock%}
+            <div class="col-sm-2 side-panel">
+				{% block project_members %}{% endblock %}
             </div>
         </div>
     </div>
 
-{% endblock body_block%}
+{% endblock body_block %}
