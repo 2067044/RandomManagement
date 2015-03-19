@@ -1,4 +1,7 @@
 from django.shortcuts import render
+from django.shortcuts import redirect
+from project_management.kris.kris_forms import TaskForm, MessageForm
+from project_management.kris.kris_models import Task, Message
 from project_management.kris.kris_forms import TaskForm
 from project_management.kris.kris_models import Task
 from django.shortcuts import HttpResponse, redirect
@@ -94,6 +97,30 @@ def completed_and_approved_tasks(request, project_id):
     return render(request, "project_management/tasks/completed_tasks.html", {'tasks': tasks, 'project': project})
 
 
+
+# ---------Konstantin-----------------------
+def new_message(request, task_id):
+    task = Task.objects.get(id=task_id)
+    user = request.user
+    print user.id
+    if request.method == "POST":
+        formM = MessageForm(request.POST)
+
+        if formM.is_valid():
+            message = formM.save(commit=False)
+            message.task = task
+            message.user = user
+            message.save()
+
+            return redirect("/task/{0}/".format(task_id))
+        else:
+            return redirect("/task/{0}/".format(task_id))
+    else:
+        formM = MessageForm()
+
+    return formM
+
+
 def get_offset_task_json(request):
     page = 0
     response = []
@@ -110,6 +137,7 @@ def get_offset_task_json(request):
 def get_offset_tasks(page=0, project=None):
     # This part might need to be reworked
     if project is None:
-        return Task.objects.all()[page*4:page*4+4]
+        return Task.objects.all()[page * 4:page * 4 + 4]
     else:
-        return Task.objects.filter(project=project, approved=False)[page*4:page*4+4]
+        return Task.objects.filter(project=project, approved=False)[page * 4:page * 4 + 4]
+
