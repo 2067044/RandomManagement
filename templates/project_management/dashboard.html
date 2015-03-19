@@ -21,7 +21,7 @@
                             <h4 class="modal-title">New task</h4>
                         </div>
                         <div class="modal-body">
-                            <form id="task_form" method="post" action="{% url 'new_task' %}">
+                            <form id="task_form" method="post" action="{% url 'new_task'  %}">
                                 {% csrf_token %}
                                 <div class="form-group new-task-form">
                                     <label for="id_title">{{ new_task_form.fields.title.label }}</label>
@@ -70,38 +70,44 @@
             {#  END TASK MODAL  #}
 
             {# Visualisation of tasks  #}
-            {% for task in tasks %}
-                <div class="task-panel {{ task.colouring }}">
+            <div id="tasks">
+                {% for task in tasks %}
+                    <div class="task-panel {{ task.colouring }}">
 
-                    <div class="row">
-                        <div class="col-md-10 col-md-offset-1">
-                        <h2 class="text-center">
-                            <a href="{% url 'task' task.task.id %}">{{ task.task }}</a>
-                        </h2>
+                        <div class="row">
+                            <div class="col-md-10 col-md-offset-1">
+                                <h2 class="text-center">
+                                    <a href="{% url 'task' task.task.id %}">{{ task.task }}</a>
+                                </h2>
+                            </div>
+                            <div class="col-md-1">
+
+                                {% if task.task.completed %}
+                                    <h3><span class="glyphicon completed-task glyphicon-ok" aria-hidden="true"></span>
+                                    </h3>
+
+                                {% endif %}
+                            </div>
                         </div>
-                        <div class="col-md-1">
 
-                            {% if task.task.completed %}
-                                <h3><span class="glyphicon completed-task glyphicon-ok" aria-hidden="true"></span></h3>
 
-                            {% endif %}
-                        </div>
+                        <p class="text-justify">{{ task.task.description }}</p>
+
+                        <p>Working:
+                            {% for user in task.task.users.all %}
+                                {{ user.username }}
+                            {% endfor %}
+                        </p>
+
+                        <p class="text-right">Due date: {{ task.task.due_date }}</p>
                     </div>
+                {% endfor %}
+                {# End visualisation  #}
+            </div>
 
-
-                    <p class="text-justify">{{ task.task.description }}</p>
-
-                    <p>Working:
-                        {% for user in task.task.users.all %}
-                            {{ user.username }}
-                        {% endfor %}
-                    </p>
-
-                    <p class="text-right">Due date: {{ task.task.due_date }}</p>
-                </div>
-            {% endfor %}
-            {# End visualisation  #}
+            <button id="left-tasks">Left</button><button id="right-tasks">Right</button>
         </div>
+
         <div class="col-md-6">
 
         </div>

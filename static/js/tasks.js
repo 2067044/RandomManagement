@@ -37,6 +37,7 @@ $("#task_form").submit(function(event){
     $(this).submit();
 });
 
+// This call here allows for async task completion; and task completion reversal
 $('#complete-task').on("click", function(){
     var taskId = $(this).attr("data-taskid");
     var $button = $(this);
@@ -50,5 +51,19 @@ $('#complete-task').on("click", function(){
             $button.removeClass("btn-warning");
             $button.addClass("btn-primary");
         }
+    });
+});
+
+// Tasks AJAX calls
+var taskPage;
+$(document).ready(function(){taskPage = 0});
+$('#left-tasks').on("click", function() {
+    // go back
+});
+
+$('#right-tasks').on("click", function() {
+    taskPage += 1;
+    $.get("/get_tasks/", {page: taskPage}, function(data) {
+        console.log(data);
     });
 });

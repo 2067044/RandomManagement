@@ -5,7 +5,7 @@
     <div class="panel task-view-panel">
         <div class="row">
             <div class="col-md-1">
-                <a href="{% url 'dashboard' %}">
+                <a href="{% url 'project' task.project.id %}">
                     <button class="btn btn-lg btn-success" type="button">
                         <span class="glyphicon glyphicon-menu-left" aria-hidden="true"></span>
                     </button>
@@ -86,7 +86,7 @@
                             <h4 class="modal-title">New Message</h4>
                         </div>
                         <div class="modal-body">
-                            <form id="message_form" method="post" action="{% url 'new_message' %}">
+                            <form id="message_form" method="post" action="{% url 'new_message' task.id %}">
                                 {% csrf_token %}
                                 <div class="form-group new-message-form">
                                     <label for="id_title">{{ new_message_form.fields.title.label }}</label>

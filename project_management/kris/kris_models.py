@@ -31,7 +31,7 @@ class DummyProject(models.Model):
 class Message(models.Model):
     title = models.CharField(max_length=20)
     description = models.TextField(max_length = 1000)
-    users = models.ForeignKey(User)
+    user = models.ForeignKey(User)
     task = models.ForeignKey(Task)
 
     def __unicode__(self):
