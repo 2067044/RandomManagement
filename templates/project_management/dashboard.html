@@ -21,7 +21,7 @@
                             <h4 class="modal-title">New task</h4>
                         </div>
                         <div class="modal-body">
-                            <form id="task_form" method="post" action="{% url 'new_task' %}">
+                            <form id="task_form" method="post" action="{% url 'new_task'  %}">
                                 {% csrf_token %}
                                 <div class="form-group new-task-form">
                                     <label for="id_title">{{ new_task_form.fields.title.label }}</label>

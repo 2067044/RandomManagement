@@ -54,7 +54,7 @@ def dashboard(request):
                   {'new_task_form': new_task_form,
                    'tasks': tasks_and_colouring,
                    'users': User.objects.all(),
-                   'projects':users_projects,
+                   'projects': users_projects,
                    })
 
 
@@ -72,25 +72,15 @@ def addProject(request):
     else:
         form = ProjectForm()
 
-    return render(request, 'project_management/projectForm.html', {'form':form})
+    return render(request, 'project_management/projectForm.html', {'form': form})
 
 
 def project(request, project_id):
     project = Project.objects.get(id=project_id)
-##    if request.method == 'POST':
-##        add_user = request.POST['add_user']
-##        if add_user: #and User.objects.get('username'==add_user):
-##            membership.add(User.objects.get('username'==add_user))
-##            membership.save()
-    
-    return render(request,'project_management/project.html',{'project':project})
-
-    # This determines which css style will be used in the template
-    # Tasks which are more than 9 days due are alright; 4 to 9 is kinda bad;
-    # less than 3 is critical
-    # format: task: [{task:task, colouring:css}]
+    tasks = get_offset_tasks(project=project)
     tasks_and_colouring = []
     current_date = date.today()
+
     for task in tasks:
         if (task.due_date - current_date).days >= 10:
             tasks_and_colouring.append({'task': task, 'colouring': 'task-panel-normal-colour'})
@@ -98,11 +88,9 @@ def project(request, project_id):
             tasks_and_colouring.append({'task': task, 'colouring': 'task-panel-attention-colour'})
         else:
             tasks_and_colouring.append({'task': task, 'colouring': 'task-panel-critical-colour'})
-    return render(request, 'project_management/dashboard.html',
-                  {'new_task_form': new_task_form,
-                   'tasks': tasks_and_colouring,
-                   'users': User.objects.all(),
-                   })
+
+    return render(request, 'project_management/project.html', {'project': project, 'tasks': tasks_and_colouring})
+
 
 def profile(request):
     if request.method == 'POST':
