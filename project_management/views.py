@@ -115,7 +115,7 @@ def project(request, project_id):
                    'users': User.objects.all(),
                    })
 
-            task.colouring = 'task-panel-critical-colour'
+                task.colouring = 'task-panel-critical-colour'
 
     return render(request, 'project_management/project.html',
                   {'project': project, 'tasks': tasks, 'new_task_form': new_task_form})
