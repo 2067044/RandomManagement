@@ -1,4 +1,9 @@
-{% extends 'logged_in_base.html' %}
+{% extends 'project_management/dashboard.html' %}
+
+{% block project-name %}
+	<div class="navbar-brand" id="project-name">{{ project.name }}</div>
+{% endblock %}
+
 
 {% block project_block %}
 
@@ -17,7 +22,7 @@
                 </div>
                 {# View completed and approved tasks button #}
                 <div class="col-md-6">
-                    <a class="btn btn-success btn-lg btn-block" href="{% url 'completed_and_approved' project.id %}">
+                    <a class="btn btn-success btn-lg btn-block" href="{% url 'completed_and_approved' project.slug %}">
                         Completed tasks
                     </a>
                 </div>
@@ -162,21 +167,19 @@
 
 {% endblock %}
 
-{% block project_members %}
-    {% for members in project.members.all %}
-        <p id="members-list">{{ members.username }}</p>
-    {% endfor %}
 
-    <form class="pure-form pure-form-aligned" id="add_user" type="Add_User" method="post" action=".">
-        {% csrf_token %}
-        <div class="pure-control-group">
-            <label for="add_user">Add new member</label>
-            <input id="add_user" maxlength="30" name="add_user" type="text" placeholder="Enter their Username"/>
-        </div>
-        <div class="pure-controls">
-            <a href="{% url 'project' project.id %}" id="add_user">
-                <button class="btn btn-success" type="subit">Add user</button>
-            </a>
-        </div>
-    </form>
+{% block project_members %}
+	<br>
+		<p>
+			<h3><span class="label label-default">Members of {{ project.name }}:</span></h3>
+			{% for members in project.members.all %}
+				<p id="members-list">{{members.username}}</p>
+			{% endfor %}
+		</p>
+		<label for="add_user">Add new member</label>
+		<input method="post" id="add_user" maxlength="30" name="add_user" type="text" placeholder="Enter their Username"/>
+		<a href="." id="add_user"><button class="btn btn-success" type="subit">Add user</button></a>
+	</br>	
+
 {% endblock project_members %}
+
