@@ -22,7 +22,7 @@
                 </div>
                 {# View completed and approved tasks button #}
                 <div class="col-md-6">
-                    <a class="btn btn-success btn-lg btn-block" href="{% url 'completed_and_approved' project.id %}">
+                    <a class="btn btn-success btn-lg btn-block" href="{% url 'completed_and_approved' project.slug %}">
                         Completed tasks
                     </a>
                 </div>
@@ -132,10 +132,15 @@
 
             {# Pagination #}
 
-            <div class="pagination">
+            <div class="text-center">
+                <div class="pagination">
             <span class="step-links">
                 {% if tasks.has_previous %}
-                    <a href="?page={{ tasks.previous_page_number }}">previous</a>
+                    <a href="?page={{ tasks.previous_page_number }}">
+                        <button class="btn btn-default">
+                            <span class="glyphicon glyphicon-menu-left" aria-hidden="true"></span>
+                        </button>
+                    </a>
                 {% endif %}
 
                 <span class="current">
@@ -143,11 +148,15 @@
                 </span>
 
                 {% if tasks.has_next %}
-                    <a href="?page={{ tasks.next_page_number }}">next</a>
+                    <a href="?page={{ tasks.next_page_number }}">
+                        <button class="btn btn-default">
+                            <span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>
+                        </button>
+                    </a>
                 {% endif %}
              </span>
+                </div>
             </div>
-
         </div>
 
         {# FILE uploads #}
@@ -171,5 +180,5 @@
 		<input method="post" id="add_user" maxlength="30" name="add_user" type="text" placeholder="Enter their Username"/>
 		<a href="." id="add_user"><button class="btn btn-success" type="subit">Add user</button></a>
 	</br>	
-
 {% endblock project_members %}
+

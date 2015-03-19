@@ -86,16 +86,15 @@ def approve_task(request, task_id):
     return redirect("/project/{0}".format(task.project.id))
 
 
-def completed_and_approved_tasks(request, project_id):
+def completed_and_approved_tasks(request, project_slug):
     '''Display all completed and approved tasks.
     :param request:
     :param project_id Id of current project
     :return:
     '''
-    project = Project.objects.get(id=project_id)
+    project = Project.objects.get(slug=project_slug)
     tasks = Task.objects.filter(approved=True, project=project)
     return render(request, "project_management/tasks/completed_tasks.html", {'tasks': tasks, 'project': project})
-
 
 
 # ---------Konstantin-----------------------
