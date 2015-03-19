@@ -97,7 +97,6 @@ def completed_and_approved_tasks(request, project_id):
     return render(request, "project_management/tasks/completed_tasks.html", {'tasks': tasks, 'project': project})
 
 
-
 # ---------Konstantin-----------------------
 def new_message(request, task_id):
     task = Task.objects.get(id=task_id)
