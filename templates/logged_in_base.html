@@ -11,23 +11,56 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-				<a class="navbar-brand" href="{% url 'dashboard' %}">RandomManagement</a>
-			</div>
+                <a class="navbar-brand" href="{% url 'dashboard' %}">RandomManagement</a>
+            </div>
             <div id="navbar" class="navbar-collapse collapse">
-				{% block project-name %} {% endblock %}
-                <div class="navbar-form navbar-right">
+                {% block project-name %} {% endblock %}
+                <ul class="nav navbar-nav navbar-right">
                     {% if user.is_authenticated %}
-                    <a href="{% url 'profile' %}">profile</a>
-                    <a href="{% url 'auth_logout' %}?next=/">Logout</a>
+
+                        <li class="dropdown">
+                            <a id="dLabel" href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
+                               role="button" aria-expanded="false">
+
+                                <span class="glyphicon glyphicon-envelope
+                                {% if project_invitations %}has-invitations{% endif %}" aria-hidden="true"></span>
+                                <span class="caret"></span>
+                            </a>
+                            <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+                                {% for project_inv in project_invitations %}
+                                    <div>
+                                        <div class="row">
+                                            <div class="col-md-7">
+                                                <h5>You have been invited to join
+                                                    <strong>{{ project_inv.project }}</strong>.</h5>
+                                            </div>
+                                            <div class="col-md-2">
+                                                <a class="btn btn-primary"
+                                                   href="{% url 'accept_invitation' project_inv.id %}">Accept</a>
+                                            </div>
+                                            <div class="col-md-2">
+                                                <a class="btn btn-default"
+                                                   href="{% url 'decline_invitation' project_inv.id %}">Decline</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                            </ul>
+                        </li>
+
+
+                        <li><a href="{% url 'profile' %}">Profile</a></li>
+                        <li><a href="{% url 'auth_logout' %}?next=/">Logout</a></li>
+
                     {% endif %}
-                </div>
+                </ul>
             </div>
             <!--/.navbar-collapse -->
         </div>
     </nav>
-{#    THIS DOESNT WORK#}
-    {% block navigation_block %} {% endblock navigation_block%}
-<!--
+    {#    THIS DOESNT WORK#}
+    {% block navigation_block %} {% endblock navigation_block %}
+    <!--
     <div class="fluid-container">
         {# Projects #}
         <div class="row">
@@ -43,27 +76,30 @@
                 </div>
             </div>
         -->
-<
+    <
     <div class="logged-style">
         {#  Projects (left side)  #}
         <div class="row">
             <div class="col-md-2 side-panel">
-			<br>
-				<a href="{% url 'newProject' %}"><button type="button"class="btn btn-success btn-lg btn-block">Create New Project</button></a>
-				{%block user_projects%}{%endblock%}
-				
+                <br>
+                <a href="{% url 'newProject' %}">
+                    <button type="button" class="btn btn-success btn-lg btn-block">Create New Project</button>
+                </a>
+                {% block user_projects %}{% endblock %}
 
-			</div>
+
+            </div>
             {#  Open projects (center)  #}
             <div class="col-sm-8 central-panel">
-                {% block project_block %}{% endblock project_block%}
+                {% block project_block %}{% endblock project_block %}
             </div>
 
             {#  Users (right side)  #}
             <div class="col-sm-2 side-panel">
-				{% block project_members %}{% endblock %}
+                {% block project_members %}{% endblock %}
             </div>
         </div>
     </div>
 
 {% endblock body_block %}
+

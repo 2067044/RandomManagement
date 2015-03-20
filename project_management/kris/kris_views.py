@@ -1,13 +1,10 @@
 from django.shortcuts import render
-from django.shortcuts import redirect
-from project_management.kris.kris_forms import TaskForm, MessageForm
-from project_management.kris.kris_models import Task, Message
+from project_management.kris.kris_forms import MessageForm
 from project_management.kris.kris_forms import TaskForm
 from project_management.kris.kris_models import Task
 from django.shortcuts import HttpResponse, redirect
 from project_management.models import Project
-from django.contrib.auth.models import User
-from django.core.paginator import Paginator, InvalidPage, EmptyPage
+
 import json
 
 
@@ -121,6 +118,11 @@ def new_message(request, task_id):
 
 
 def search_for_tasks(request):
+    '''Function returns a json response with all the tasks that contain
+    a the expression in a query passed through a GET request.
+    :param request:
+    :return:
+    '''
     response = []
     query = None
     project_id = None
@@ -128,11 +130,12 @@ def search_for_tasks(request):
         query = request.GET["query"]
         project_id = request.GET["project_id"]
     project = Project.objects.get(id=project_id)
-    tasks = Task.objects.filter(title__contains=query, project=project)
+    tasks = Task.objects.filter(title__contains=query, project=project, approved=False)
     for task in tasks:
         response.append({"title": task.title, "description": task.description[:50], "id": task.id})
 
     return HttpResponse(json.dumps(response), content_type="application/json")
+
 
 def get_offset_task_json(request):
     page = 0

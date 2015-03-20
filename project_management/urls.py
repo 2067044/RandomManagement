@@ -15,6 +15,11 @@ urlpatterns = patterns('',
         url(r'^profile/', views.profile, name='profile'),
         url(r'^approve_task/(?P<task_id>[\w\-]+)/$', kris_views.approve_task, name="approve_task"),
         url(r'^find_task/$', kris_views.search_for_tasks, name="find_task"),
+        url(r'^accept_invitation/(?P<project_invitation_id>[\w\-]+)/$',
+            views.accept_invitation, name="accept_invitation"),
+        url(r'^decline_invitation/(?P<project_invitation_id>[\w\-]+)/$',
+            views.decline_invitation, name="decline_invitation"),
+        url(r'^send_invitation/$', views.send_invitation, name="send_invitation"),
 #----- Konstatin----------
         url(r'^new_message(?P<task_id>[\w\-]+)/$', kris_views.new_message, name = 'new_message'),
 #-----
