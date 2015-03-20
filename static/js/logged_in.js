@@ -18,7 +18,11 @@ $("#invite-user").on("click", function (e) {
     var username = $(this).prev().val();
     var $parentDiv = $(this);
     if (username == "") {
-        return;
+        $parentDiv.popover({"content": "Please enter a username", "placement": "left"});
+        $parentDiv.popover("show");
+        $parentDiv.popover().on('hidden.bs.popover', function () {
+            $parentDiv.popover("destroy");
+        });
     }
     var projectId = $(this).attr("data-projectid");
     $.get("/send_invitation/", {"project_id": projectId, "username": username}, function(data) {
