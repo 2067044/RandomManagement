@@ -120,6 +120,20 @@ def new_message(request, task_id):
     return formM
 
 
+def search_for_tasks(request):
+    response = []
+    query = None
+    project_id = None
+    if request.method == "GET":
+        query = request.GET["query"]
+        project_id = request.GET["project_id"]
+    project = Project.objects.get(id=project_id)
+    tasks = Task.objects.filter(title__contains=query, project=project)
+    for task in tasks:
+        response.append({"title": task.title, "description": task.description[:50], "id": task.id})
+
+    return HttpResponse(json.dumps(response), content_type="application/json")
+
 def get_offset_task_json(request):
     page = 0
     response = []

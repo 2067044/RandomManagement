@@ -19,8 +19,8 @@
 }
 
 #project-name{
-	text-align: centre;
-	color=white;
+	text-align: center;
+	color:white;
 }
 
 /* Task styling*/
@@ -86,6 +86,7 @@
 
 
 #projects-panel li{ color:red }
+
 
 
 

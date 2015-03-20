@@ -14,7 +14,7 @@ urlpatterns = patterns('',
         url(r'^complete_task/', kris_views.complete_task, name="complete_task"),
         url(r'^profile/', views.profile, name='profile'),
         url(r'^approve_task/(?P<task_id>[\w\-]+)/$', kris_views.approve_task, name="approve_task"),
-
+        url(r'^find_task/$', kris_views.search_for_tasks, name="find_task"),
 #----- Konstatin----------
         url(r'^new_message(?P<task_id>[\w\-]+)/$', kris_views.new_message, name = 'new_message'),
 #-----
