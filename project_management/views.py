@@ -81,6 +81,12 @@ def addProject(request):
 
 def project(request, project_slug):
     project = Project.objects.get(slug=project_slug)
+
+    # Users should not be able to view projects they are not a part
+    # of (admins should be included here when they're implemented)
+    if not (request.user in project.members.all() or request.user == project.owner):
+        return redirect('/dashboard/')
+
     users_projects = getUserProjects(request.user)
 
     all_tasks = Task.objects.filter(project=project, approved=False)

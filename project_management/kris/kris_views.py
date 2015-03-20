@@ -49,6 +49,10 @@ def task(request, task_id):
     :return: Rendering ot the task
     '''
     task = Task.objects.get(id=task_id)
+
+    # Users should not be able to view tasks of projects they're not members of
+    if not (request.user in task.project.members.all() or request.user == task.project.owner):
+        return redirect('/dashboard/')
     return render(request, "project_management/task.html", {'task': task})
 
 

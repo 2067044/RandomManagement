@@ -221,6 +221,7 @@
 
 
 {% block project_members %}
+    {% if project.owner == user %}
     <div id="add-user-to-project-div">
     <h3 class="text-center">Add user</h3>
     <input class="form-control user-invitation-field" id="add_user_field"
@@ -230,6 +231,7 @@
     </div>
 
     <hr/>
+    {% endif %}
     <p>
     <h3 class="text-center"><span class="label label-default">Members of {{ project.name }}:</span></h3>
     {% for members in project.members.all %}
