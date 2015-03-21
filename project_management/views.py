@@ -35,16 +35,7 @@ def getUserProjects(user):
     return users_projects
 
 def getOtherProjects(user):
-    other_projects = []
-    projects = Project.objects.filter(members=user)
-##    for project in projects:
-##        members = project.objects.values_list('members',flat=True)
-##        for member in members:
-##            if (member == user):
-##                other_projects.append(project)
-##    print other_projects
-    print projects
-    return projects
+    return Project.objects.filter(members=user)
 
 def dashboard(request):
     return render(request,'project_management/dashboard.html', {'user_project':getUserProjects(request.user), 'other_projects':getOtherProjects(request.user)})
@@ -106,11 +97,29 @@ def project(request, project_slug):
             task.colouring = 'task-panel-attention-colour'
         else:
             task.colouring = 'task-panel-critical-colour'
-    print project
-    print users_projects[0]
+
     return render(request, 'project_management/project.html',
                   {'project': project, 'tasks': tasks, 'new_task_form': new_task_form, 'user_project': users_projects, 'other_projects':getOtherProjects(request.user)})
 
+def project_details(request):
+    project = Project.objects.get(id=request.project.id)
+    if request.method == 'POST':
+        form = ProjectForm(request.POST)
+
+        if form.is_valid():
+            project.description = form
+            project.save()
+            return redirect('/project/{0}'.format(project.slug))
+    else:
+        return redirect('/dashboard/')
+        
+
+def end_project(request):
+    if request.method == "GET":
+        project_id = request.GET.get("project_id")
+    project = Project.objects.get(id=project_id)
+    project.delete()
+    return redirect('/dashboard/')
 
 def accept_invitation(request, project_invitation_id):
     '''Function responsible for adding a user to a project.
@@ -175,14 +184,31 @@ def send_invitation(request):
 
 def remove_admin(request):
     if request.method == "GET":
-        userid= request.GET.get("user_id")
-        projectid = request.GET.get("project_id")
-    project = project.objects.get(id=projectid)
-    user = User.objects.get(id=userid)
+        user_id= request.GET.get("user_id")
+        project_id = request.GET.get("project_id")
+    project = Project.objects.get(id=project_id)
+    user = User.objects.get(id=user_id)
     project.admin.remove(user)
-
     return redirect('/project/{0}'.format(project.slug))
-    
+
+def remove_member(request):
+    if request.method == "GET":
+        user_id= request.GET.get("user_id")
+        project_id = request.GET.get("project_id")
+    project = Project.objects.get(id=project_id)
+    user = User.objects.get(id=user_id)
+    project.members.remove(user)
+    return redirect('/project/{0}'.format(project.slug))
+
+def promote_member(request):
+    if request.method == "GET":
+        user_id= request.GET.get("user_id")
+        project_id = request.GET.get("project_id")
+    project = Project.objects.get(id=project_id)
+    user = User.objects.get(id=user_id)
+    project.members.remove(user)
+    project.admin.add(user)
+    return redirect('/project/{0}'.format(project.slug))
 
 
 def profile(request):

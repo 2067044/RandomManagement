@@ -36,10 +36,27 @@ $("#invite-user").on("click", function (e) {
 
 });
 
-$("#remove_admin").on("click", function(e){
+
+$("#end_project").on("click", function(){
+	var project_id = $(this).attr("data-projectid");
+	$.get("/end_project/",{"project_id": project_id});
+});
+
+$("#remove_admin").click(function(){
 	var user_id = $(this).attr("data-userid");
-	var project_id = $(this).attr("data-projectid")
+	var project_id = $(this).attr("data-projectid");
 	$.get("/remove_admin/",{"user_id": user_id, "project_id": project_id});
 });
 
+$("#remove_member").click(function(){
+	var user_id = $(this).attr("data-userid");
+	var project_id = $(this).attr("data-projectid");
+	$.get("/remove_member/",{"user_id": user_id, "project_id": project_id});
+});
+
+$("#promote_member").click(function(){
+	var user_id = $(this).attr("data-userid");
+	var project_id = $(this).attr("data-projectid");
+	$.get("/promote_member/",{"user_id": user_id, "project_id": project_id});
+});
 
