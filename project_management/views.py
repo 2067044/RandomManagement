@@ -34,8 +34,20 @@ def getUserProjects(user):
             users_projects.append(project)
     return users_projects
 
+def getOtherProjects(user):
+    other_projects = []
+    projects = Project.objects.filter(members=user)
+##    for project in projects:
+##        members = project.objects.values_list('members',flat=True)
+##        for member in members:
+##            if (member == user):
+##                other_projects.append(project)
+##    print other_projects
+    print projects
+    return projects
+
 def dashboard(request):
-    return render(request,'project_management/dashboard.html', {'user_project':getUserProjects(request.user)})
+    return render(request,'project_management/dashboard.html', {'user_project':getUserProjects(request.user), 'other_projects':getOtherProjects(request.user)})
 
 
 def addProject(request):
@@ -81,13 +93,13 @@ def addProject(request):
 
 def project(request, project_slug):
     project = Project.objects.get(slug=project_slug)
-
     # Users should not be able to view projects they are not a part
     # of (admins should be included here when they're implemented)
     if not (request.user in project.members.all() or request.user == project.owner):
         return redirect('/dashboard/')
 
     users_projects = getUserProjects(request.user)
+    other_projects = getOtherProjects(request.user)
 
     all_tasks = Task.objects.filter(project=project, approved=False)
     paginator = Paginator(all_tasks, 4)
@@ -119,7 +131,7 @@ def project(request, project_slug):
             task.colouring = 'task-panel-critical-colour'
 
     return render(request, 'project_management/project.html',
-                  {'project': project, 'tasks': tasks, 'new_task_form': new_task_form, 'user_project': users_projects})
+                  {'project': project, 'tasks': tasks, 'new_task_form': new_task_form, 'user_project': users_projects, 'other_projects':other_projects})
 
 
 def accept_invitation(request, project_invitation_id):

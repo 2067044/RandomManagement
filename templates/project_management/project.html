@@ -232,12 +232,45 @@
 
     <hr/>
     {% endif %}
-    <p>
-    <h3 class="text-center"><span class="label label-default">Members of {{ project.name }}:</span></h3>
-    {% for members in project.members.all %}
-        <p id="members-list">{{ members.username }}</p>
-    {% endfor %}
-    </p>
+
+	{% if project.admin.all %}
+		<h3 class="text-center"><span class="label label-default">Admin of {{ project.name }}:</span></h3>
+		<div class="pure-menu custom-restricted-width">
+			<ul class="pure-menu-list">
+			{% for admins in project.admin.all %}
+				<ul class="pure-menu-list">
+				<li class="pure-menu-item pure-menu-has-children">
+					<a href="#" id="menuLink1" class="pure-menu-link">{{admins.username}}</a>
+					<ul class="pure-menu-children">
+						<li class="pure-menu-item"><a class="pure-menu-link" href="#" id="promote">Promote</a></li>
+						<li class="pure-menu-item"><a class="pure-menu-link" href="#" id="remove-user">remove</a></li>
+					</ul>
+				</li>
+				</ul>
+			{% endfor %}
+			</ul>
+		</div>
+	{% endif %}
+	
+	{% if project.members.all %}
+		<h3 class="text-center"><span class="label label-default">Members of {{ project.name }}:</span></h3>
+		<div class="pure-menu custom-restricted-width">
+			<ul class="pure-menu-list">
+			{% for members in project.members.all %}
+				<ul class="pure-menu-list">
+				<li class="pure-menu-item pure-menu-has-children">
+					<a href="#" id="menuLink1" class="pure-menu-link">{{members.username}}</a>
+					<ul class="pure-menu-children">
+						<li class="pure-menu-item"><a class="pure-menu-link" href="#" id="promote">Promote</a></li>
+						<li class="pure-menu-item"><a class="pure-menu-link" href="#" id="remove-user">remove</a></li>
+					</ul>
+				</li>
+				</ul>
+			{% endfor %}
+			</ul>
+		</div>
+	
+	{% endif %}
 
 
 
