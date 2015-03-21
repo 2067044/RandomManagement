@@ -1,9 +1,9 @@
-from django.shortcuts import render
+from django.shortcuts import render, HttpResponseRedirect, HttpResponse
 from project_management.forms import UserDescriptionForm, ProjectForm
 from project_management.models import Project, UserDescription
 from django.shortcuts import redirect
 from project_management.kris.kris_views import new_task
-from project_management.kris.kris_models import Task
+from project_management.kris.kris_models import Task, ProjectInvitation
 from django.contrib.auth.models import User
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from datetime import date
@@ -81,11 +81,18 @@ def addProject(request):
 
 def project(request, project_slug):
     project = Project.objects.get(slug=project_slug)
+
+    # Users should not be able to view projects they are not a part
+    # of (admins should be included here when they're implemented)
+    if not (request.user in project.members.all() or request.user == project.owner):
+        return redirect('/dashboard/')
+
     users_projects = getUserProjects(request.user)
 
     all_tasks = Task.objects.filter(project=project, approved=False)
     paginator = Paginator(all_tasks, 4)
     page = request.GET.get('page')
+
 
     try:
         tasks = paginator.page(page)
@@ -114,6 +121,68 @@ def project(request, project_slug):
 
     return render(request, 'project_management/project.html',
                   {'project': project, 'tasks': tasks, 'new_task_form': new_task_form, 'user_project': users_projects})
+
+
+def accept_invitation(request, project_invitation_id):
+    '''Function responsible for adding a user to a project.
+
+    :param request:
+    :param project_invitation_id Id of the project invitation sent to this user.
+    :return:
+    '''
+    project_invitation = ProjectInvitation.objects.get(id=project_invitation_id)
+    user = project_invitation.user
+    project = project_invitation.project
+
+    project.members.add(user)
+    project_invitation.delete()
+
+    return redirect('/project/{0}'.format(project.slug))
+
+
+def decline_invitation(request, project_invitation_id):
+    '''Function responsible for declining a project invitation.
+
+    :param request:
+    :param project_invitation_id:
+    :return:
+    '''
+    project_invitation = ProjectInvitation.objects.get(id=project_invitation_id)
+    project_invitation.delete()
+    # Refreshes the current page
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+
+
+def send_invitation(request):
+    '''Function responsible for generating an invitation. Used inside logged_in.js.
+
+    :param request:
+    :return: Either a success message or an appropriate failure message, if the operation cannot be performed
+    '''
+    if request.method == "GET":
+        username = request.GET.get("username")
+        project_id = request.GET.get("project_id")
+
+    # Get user, send failure code if username is invalid
+    try:
+        user = User.objects.get(username=username)
+    except:
+        return HttpResponse("No such user.")
+
+    # Whether this particular invitation already exists, send failure code if it does
+    project = Project.objects.get(id=project_id)
+    if ProjectInvitation.objects.filter(user=user, project=project).exists():
+        return HttpResponse("You have already sent an invitation to this user.")
+
+    # If the user is a member of the project return a failure code
+    if user in project.members.all():
+        return HttpResponse("This user is a member of the project.")
+
+    # Generate an invitation of everything is alright
+    project_invitation = ProjectInvitation(user=user, project=project)
+    project_invitation.save()
+
+    return HttpResponse("Invitation sent.")
 
 
 def profile(request):

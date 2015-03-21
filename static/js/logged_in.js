@@ -1,5 +1,5 @@
-$(function() {
-    $(window).resize(function() {
+$(function () {
+    $(window).resize(function () {
         // These should refer to left panel and right panel
         var $sidePanel = $('.side-panel');
         var $centralPanel = $('.central-panel');
@@ -10,4 +10,28 @@ $(function() {
         }
     });
     $(window).resize();
+});
+
+// Function responsible for posting the required data to the view which sends invitations
+$("#invite-user").on("click", function (e) {
+    e.preventDefault();
+    var username = $(this).prev().val();
+    var $parentDiv = $(this);
+    if (username == "") {
+        $parentDiv.popover({"content": "Please enter a username", "placement": "left"});
+        $parentDiv.popover("show");
+        $parentDiv.popover().on('hidden.bs.popover', function () {
+            $parentDiv.popover("destroy");
+        });
+    }
+    var projectId = $(this).attr("data-projectid");
+    $.get("/send_invitation/", {"project_id": projectId, "username": username}, function(data) {
+        // Bootstrap call display error/succcess message to the user
+        $parentDiv.popover({"content": data, "placement": "left"});
+        $parentDiv.popover("show");
+        $parentDiv.popover().on('hidden.bs.popover', function () {
+            $parentDiv.popover("destroy");
+        });
+    });
+
 });

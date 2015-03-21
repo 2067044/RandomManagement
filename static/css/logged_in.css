@@ -84,10 +84,23 @@
 
 .task-view-panel { padding: 20px; }
 
-
 #projects-panel li{ color:red }
 
+.dropdown-menu {
+    width: 500px;
+}
 
+.has-invitations {
+    color: orangered;
+}
+
+.glyphicon-envelope {
+    font-size: 22px;
+}
+
+.user-invitation-field {
+    margin-bottom: 2px;
+}
 
 
 

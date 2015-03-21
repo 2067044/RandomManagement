@@ -122,20 +122,19 @@
                 <!-- /.modal-dialog -->
             </div>
             <!-- /.modal -->
-            <div id="tasks">
-                {% if message %}
+            <div id="messages">
                 <ul>
                 {% for message in message %}
                     <div class="task-panel">
                         <div class="row">
                             <div class="col-md-10 col-md-offset-1">
                                 <h2 class="text-center">
-                                    <a href="{% url 'message' message.id %}">{{ message. }}</a>
+                                    <a href="{% url 'message' message.id %}">{{ message }}</a>
                                 </h2>
                             </div>
                         </div>
-                        <p class="text-justify">{{ task.description }}</p>
-                        <p>Working:
+                        <p class="text-justify">{{ message.description }}</p>
+                        <p>Author:
                             {% for user in message.users.all %}
                                 {{ user.username }}
                             {% endfor %}
@@ -143,9 +142,9 @@
                    </div>
                 {% endfor %}
                 </ul>
-                {%else%}
-                    <strong>No messages</strong>
-                {% endif %}
+              
+                   
+               
                 
                 {# End visualisation  #}
 
@@ -155,6 +154,8 @@
 
         <div class="col-md-4">
             <h1 class="text-center">FILE</h1>
+
+            
         </div>
     </div>
 {% endblock %}
