@@ -20,6 +20,7 @@ urlpatterns = patterns('',
         url(r'^decline_invitation/(?P<project_invitation_id>[\w\-]+)/$',
             views.decline_invitation, name="decline_invitation"),
         url(r'^send_invitation/$', views.send_invitation, name="send_invitation"),
+		url(r'^remove_admin/$', views.remove_admin, name="remove_admin"),
 #----- Konstatin----------
         url(r'^new_message(?P<task_id>[\w\-]+)/$', kris_views.new_message, name = 'new_message'),
 #-----

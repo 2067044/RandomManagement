@@ -4,6 +4,41 @@
     <div class="navbar-brand" id="project-name">{{ project.name }}</div>
 {% endblock %}
 
+{% block user_projects %}
+<br>
+	{% if user_project %}
+	<div class="pure-menu custom-restricted-width">
+		<h3><span class="label label-default">My Projects</span></h3>
+		<ul class="pure-menu-list">
+		{% for users_projects in user_project %}
+			{% if users_projects == project %}
+				<li class="pure-menu-item pure-menu-selected"><a class="pure-menu-link activated" href="/project/{{users_projects.slug}}">{{ users_projects.name }}</a></li>
+			{% else %}
+				<li class="pure-menu-item"><a class="pure-menu-link" href="/project/{{users_projects.slug}}">{{ users_projects.name }}</a></li>
+			{% endif %}
+		{% endfor %}
+		</ul>
+	</div>
+	{% endif %}
+	{% if other_projects %}
+	<div class="pure-menu">
+		<h3><span class = "label label-default">Other Projects</span></h3>
+		<ul class="pure-menu-list">
+		{% for others_projects in other_projects %}
+			{% if others_projects == project %}
+				<li class="pure-menu-item pure-menu-selected"><a class="pure-menu-link" href="/project/{{users_projects.slug}}">{{ others_projects.name }}</a></li>
+			{% else %}
+				<li class="pure-menu-item"><a class="pure-menu-link" href="/project/{{others_projects.slug}}">{{ others_projects.name }}</a></li>
+			{% endif %}
+		{% endfor %}
+		</ul>
+	</div>
+	{% endif %}
+	{% if not user_project and not other_projects %}
+		<h5>You don't have any projects yet</h5>
+	{% endif %}
+</br>
+{% endblock %}
 
 {% block project_block %}
 
@@ -232,46 +267,78 @@
 
     <hr/>
     {% endif %}
-
+	
+	<div class="col-md-2">
 	{% if project.admin.all %}
 		<h3 class="text-center"><span class="label label-default">Admin of {{ project.name }}:</span></h3>
-		<div class="pure-menu custom-restricted-width">
-			<ul class="pure-menu-list">
+			<div class="pure-menu custom-restricted-width text-centre">
 			{% for admins in project.admin.all %}
-				<ul class="pure-menu-list">
-				<li class="pure-menu-item pure-menu-has-children">
-					<a href="#" id="menuLink1" class="pure-menu-link">{{admins.username}}</a>
-					<ul class="pure-menu-children">
-						<li class="pure-menu-item"><a class="pure-menu-link" href="#" id="promote">Promote</a></li>
-						<li class="pure-menu-item"><a class="pure-menu-link" href="#" id="remove-user">remove</a></li>
+				<div class="pure-menu pure-menu-horizontal">
+					<ul class="pure-menu-list">
+						<li class="pure-menu-item">{{admins.username}}</li>
+						{% if project.owner == user %}
+							<li class="pure-menu-item pure-menu-has-children pure-menu-allow-hover">
+								<a class="pure-menu-link"><span class="glyphicon glyphicon-pencil"/>edit</a>
+								<ul class="pure-menu-children">
+									<li class="pure-menu-item">
+										<a class="pure-menu-link" href=".">
+											<button type="button" id="demote-admin" method='POST' data-userid="{{ admins.id }}" data-projectid="{{ project.id }}">
+												<span class="glyphicon glyphicon-hand-down"/> Demote
+											</button>
+										</a>
+									</li>
+									<li class="pure-menu-item">
+										<a class="pure-menu-link" href="."> 
+											<button type="button" id="remove-admin" method='POST' data-userid="{{ admins.id }}" data-projectid="{{ project.id }}">
+												<span class="glyphicon glyphicon-remove"/> Remove
+											</button>
+										</a>
+									</li>
+								</ul>
+							</li>
+						{% endif %}
 					</ul>
-				</li>
-				</ul>
+				</div>
 			{% endfor %}
-			</ul>
-		</div>
+			</div>
 	{% endif %}
-	
+
+
 	{% if project.members.all %}
 		<h3 class="text-center"><span class="label label-default">Members of {{ project.name }}:</span></h3>
 		<div class="pure-menu custom-restricted-width">
-			<ul class="pure-menu-list">
 			{% for members in project.members.all %}
-				<ul class="pure-menu-list">
-				<li class="pure-menu-item pure-menu-has-children">
-					<a href="#" id="menuLink1" class="pure-menu-link">{{members.username}}</a>
-					<ul class="pure-menu-children">
-						<li class="pure-menu-item"><a class="pure-menu-link" href="#" id="promote">Promote</a></li>
-						<li class="pure-menu-item"><a class="pure-menu-link" href="#" id="remove-user">remove</a></li>
+				<div class="pure-menu pure-menu-horizontal">
+					<ul class="pure-menu-list">
+						<li class="pure-menu-item">{{members.username}}</li>
+						{% if project.owner == user %}
+							<li class="pure-menu-item pure-menu-has-children pure-menu-allow-hover">
+								<a class="pure-menu-link"><span class="glyphicon glyphicon-pencil"/>edit</a>
+								<ul class="pure-menu-children">
+									<li class="pure-menu-item">
+										<a class="pure-menu-link" href=".">
+											<button type="button" id="promote-admin" method='POST' data-userid="{{ members.id }}" data-projectid="{{ project.id }}">
+												<span class="glyphicon glyphicon-hand-up"/> Promote
+											</button>
+										</a>
+									</li>
+									<li class="pure-menu-item">
+										<a class="pure-menu-link" href=".">
+											<button type="button" id="remove-member" method='POST' data-userid="{{ members.id }}" data-projectid="{{ project.id }}">
+												<span class="glyphicon glyphicon-remove"/> Remove
+											</button>
+										</a>
+									</li>
+								</ul>
+							</li>
+						{% endif %}
 					</ul>
-				</li>
-				</ul>
+				</div>
 			{% endfor %}
-			</ul>
 		</div>
 	
 	{% endif %}
-
+	</div>
 
 
 {% endblock project_members %}

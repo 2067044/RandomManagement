@@ -7,12 +7,12 @@ from django.shortcuts import redirect
 class MyRegistrationView(RegistrationView):
     def get_success_url(self,request, user):
         print 'function'
-        return ('dashboard/')
+        return '/dashboard/'
 
 urlpatterns = patterns('',
     url(r'^admin/', include(admin.site.urls)),
     url(r'^', include('project_management.urls')),
-    url(r'^/accounts/register/?next=dashboard/', MyRegistrationView.as_view(), name='registration_register'),
-    url(r'^accounts/', include('registration.backends.simple.urls')),
+    url(r'^accounts/register/$', MyRegistrationView.as_view(), name='registration_register'),
+    (r'^accounts/', include('registration.backends.simple.urls')),
 )
 

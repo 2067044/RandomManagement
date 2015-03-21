@@ -35,3 +35,11 @@ $("#invite-user").on("click", function (e) {
     });
 
 });
+
+$("#remove_admin").on("click", function(e){
+	var user_id = $(this).attr("data-userid");
+	var project_id = $(this).attr("data-projectid")
+	$.get("/remove_admin/",{"user_id": user_id, "project_id": project_id});
+});
+
+

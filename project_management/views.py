@@ -68,38 +68,15 @@ def addProject(request):
 
     return render(request, 'project_management/projectForm.html', {'form':form})
 
-# def project(request, project_slug):
-#     project = Project.objects.get(slug=project_slug)
-#
-#
-#     if request.method == 'POST':
-#         print 'TEST 1'
-#         member_username = request.POST['add_user']
-#         print request.POST['add_user']
-#         if member_username.is_valid():
-#             new_member = User.objects.filter(username=member_username)
-#             project.members.add(new_member)
-#             project.save()
-#
-#     return render(request,'project_management/project.html',{'project':project, 'user_project':users_projects})
-#
-#     # This determines which css style will be used in the template
-#     # Tasks which are more than 9 days due are alright; 4 to 9 is kinda bad;
-#     # less than 3 is critical
-#     # format: task: [{task:task, colouring:css}]
-#     tasks_and_colouring = []
-#     current_date = date.today()
-
 
 def project(request, project_slug):
     project = Project.objects.get(slug=project_slug)
+
     # Users should not be able to view projects they are not a part
-    # of (admins should be included here when they're implemented)
-    if not (request.user in project.members.all() or request.user == project.owner):
+    if not (request.user in project.members.all() or request.user == project.owner or request.user in project.admin.all()):
         return redirect('/dashboard/')
 
     users_projects = getUserProjects(request.user)
-    other_projects = getOtherProjects(request.user)
 
     all_tasks = Task.objects.filter(project=project, approved=False)
     paginator = Paginator(all_tasks, 4)
@@ -129,9 +106,10 @@ def project(request, project_slug):
             task.colouring = 'task-panel-attention-colour'
         else:
             task.colouring = 'task-panel-critical-colour'
-
+    print project
+    print users_projects[0]
     return render(request, 'project_management/project.html',
-                  {'project': project, 'tasks': tasks, 'new_task_form': new_task_form, 'user_project': users_projects, 'other_projects':other_projects})
+                  {'project': project, 'tasks': tasks, 'new_task_form': new_task_form, 'user_project': users_projects, 'other_projects':getOtherProjects(request.user)})
 
 
 def accept_invitation(request, project_invitation_id):
@@ -194,6 +172,17 @@ def send_invitation(request):
     project_invitation.save()
 
     return HttpResponse("Invitation sent.")
+
+def remove_admin(request):
+    if request.method == "GET":
+        userid= request.GET.get("user_id")
+        projectid = request.GET.get("project_id")
+    project = project.objects.get(id=projectid)
+    user = User.objects.get(id=userid)
+    project.admin.remove(user)
+
+    return redirect('/project/{0}'.format(project.slug))
+    
 
 
 def profile(request):
