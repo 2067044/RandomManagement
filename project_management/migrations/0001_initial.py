@@ -3,6 +3,7 @@ from __future__ import unicode_literals
 
 from django.db import models, migrations
 from django.conf import settings
+import project_management.kris.kris_models
 
 
 class Migration(migrations.Migration):
@@ -23,11 +24,23 @@ class Migration(migrations.Migration):
             bases=(models.Model,),
         ),
         migrations.CreateModel(
+            name='File',
+            fields=[
+                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('taskFile', models.FileField(upload_to=project_management.kris.kris_models.get_upload_file_name)),
+                ('date', models.DateField(auto_now_add=True)),
+            ],
+            options={
+            },
+            bases=(models.Model,),
+        ),
+        migrations.CreateModel(
             name='Message',
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
                 ('title', models.CharField(max_length=20)),
                 ('description', models.TextField(max_length=1000)),
+                ('date', models.DateField(auto_now_add=True)),
             ],
             options={
             },
@@ -94,6 +107,18 @@ class Migration(migrations.Migration):
         ),
         migrations.AddField(
             model_name='message',
+            name='user',
+            field=models.ForeignKey(to=settings.AUTH_USER_MODEL),
+            preserve_default=True,
+        ),
+        migrations.AddField(
+            model_name='file',
+            name='task',
+            field=models.ForeignKey(to='project_management.Task'),
+            preserve_default=True,
+        ),
+        migrations.AddField(
+            model_name='file',
             name='user',
             field=models.ForeignKey(to=settings.AUTH_USER_MODEL),
             preserve_default=True,

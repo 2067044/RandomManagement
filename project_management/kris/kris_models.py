@@ -1,7 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from project_management.models import Project
-
+from time import time
 
 class Task(models.Model):
     title = models.CharField(unique=True, max_length=40)
@@ -12,7 +12,7 @@ class Task(models.Model):
     app_label = 'project_management'
     users = models.ManyToManyField(User)
     project = models.ForeignKey(Project, default=None)
-
+    
     def __unicode__(self):
         return self.title
 
@@ -41,6 +41,16 @@ class Message(models.Model):
     description = models.TextField(max_length = 1000)
     user = models.ForeignKey(User)
     task = models.ForeignKey(Task)
-
+    date = models.DateField(auto_now_add = True) # to be changed to DateTimeField
     def __unicode__(self):
         return self.title
+
+# def get_upload_file_name(instance, filename):
+#     return "uploaded_files/%s_%s" % (str(time()).replace('.', '_'), filename)
+######## Model for files in tasks
+# class File(models.Model):
+#     title = models.CharField(max_length = 20)
+#     taskFile = models.FileField(upload_to = get_upload_file_name)
+#     task = models.ForeignKey(Task)
+#     user = models.ForeignKey(User)
+#     date = models.DateField(auto_now_add = True)

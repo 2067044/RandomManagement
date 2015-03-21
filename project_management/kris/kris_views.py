@@ -1,12 +1,13 @@
 from django.shortcuts import render, render_to_response
-from project_management.kris.kris_forms import MessageForm
+from project_management.kris.kris_forms import MessageForm, UploadFileForm
 from project_management.kris.kris_forms import TaskForm
-from project_management.kris.kris_models import Task, Message
+from project_management.kris.kris_models import Task, Message, File
 from django.shortcuts import HttpResponse, redirect
 from project_management.models import Project
 
 from .kris_forms import UploadFileForm
-from somewhere import handle_uploaded_file
+
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 import json
 
@@ -51,11 +52,40 @@ def task(request, task_id):
     :return: Rendering ot the task
     '''
     task = Task.objects.get(id=task_id)
-
-    # Users should not be able to view tasks of projects they're not members of
+    messages = Message.objects.filter(task = task)
+    msgs_desc = [{'msg' : x, 'desc' : x.description, 'date': x.date} for x in messages]
+    context_dict = {}
+    context_dict['task'] = task
+    context_dict['messages'] = messages
+    context_dict['msgs_desc'] = msgs_desc
+    # paginator = Paginator(messages, 4)
+    # page = request.Get.get('page')
+    # try:
+    #     messages = paginator.page(page)
+    # except PageNotAnInteger:
+    #     messages = paginator.page(1)
+    # except EmptyPage:
+    #     messages = paginator.page(paginator.num_pages)
+    # # Users should not be able to view tasks of projects they're not members of
     if not (request.user in task.project.members.all() or request.user == task.project.owner):
         return redirect('/dashboard/')
-    return render(request, "project_management/task.html", {'task': task})
+    return render(request, "project_management/task.html", context_dict)
+
+def message(request, task_id):
+    task = Task.objects.get(task = task_id)
+
+    all_messages  = Message.objects.filet( task = task)
+    paginator = Paginagor(all_messages, 4)
+    page = request.Get.get('page')
+
+    try:
+        messages = paginator.page(page)
+    except PageNotAnInteger:
+        messages = paginator.page(1)
+    except EmptyPage:
+        messages = paginator.page(paginator.num_pages)
+
+    return render(request, "project_management/message.html", {'messages': message})
 
 
 def complete_task(request, task_id):
@@ -105,7 +135,7 @@ def completed_and_approved_tasks(request, project_slug):
 def new_message(request, task_id):
     task = Task.objects.get(id=task_id)
     user = request.user
-    print user.id
+    #print user.id
     if request.method == "POST":
         formM = MessageForm(request.POST)
 
@@ -122,12 +152,6 @@ def new_message(request, task_id):
         formM = MessageForm()
 
     return formM
-
-def message(request, message_id):
-    message = Message.objects.get(id = message_id)
-    user = request.user
-    task = request.task
-    return render(request, "project_management/message.html", {'message': message})
 
 
 
@@ -171,17 +195,24 @@ def get_offset_tasks(page=0, project=None):
     else:
         return Task.objects.filter(project=project, approved=False)[page * 4:page * 4 + 4]
 
-def upload_file(request):
-    if request.method = 'POST':
-        form - UploadFileForm(request.POST, request.FILES)
-        if form.is_valid():
-            handle_uploaded_file(request.FILES['files'])
-            return HttpResponseRedirect('/success/url')
-        else:
-            form = UploadFileForm()
-        return render_to_response('upload.html', {'form': form})
 
-def handle_uploaded_file(f):
-    with open('some/file/name.txt', 'wb+') as destination:
-        for chunk in f.chunks():
-            destination.write(chunk)
+def addFile(request, task_id):
+    task = Task.objects.get(id=task_id)
+    user = request.user
+
+    if request.method == "POST":
+        fileForm = UploadFileForm(request.POST, request.FILES)
+
+        if fileForm.is_valid():
+            fileForm = fileForm.save(commit=False)
+            fileForm.task = task
+            fileForm.user = user
+            fileForm.save()
+
+            return redirect('/task/{0}/'.format(task_id))
+        else:
+            return redirect("/task/{0}/".format(task_id))
+    else:
+        fileForm = UploadFileForm()
+
+    return fileForm
