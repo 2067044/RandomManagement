@@ -119,6 +119,12 @@ def new_message(request, task_id):
 
     return formM
 
+def message(request, message_id):
+
+    message = Message.objects.get(id = message_id)
+    return render(request, "project_management/message.html", {'message': message})
+
+
 
 def search_for_tasks(request):
     response = []
