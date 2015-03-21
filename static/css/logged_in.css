@@ -87,7 +87,8 @@
 #projects-panel li{ color:red }
 
 .dropdown-menu {
-    width: 500px;
+    width: 540px;
+    padding: 25px 25px 0 25px;
 }
 
 .has-invitations {

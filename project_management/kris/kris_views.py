@@ -27,7 +27,6 @@ def new_task(request, project_id):
         form = TaskForm(request.POST)
 
         # Need to consider validation later
-        # TODO Doesn't add users
         if form.is_valid():
             task = form.save(commit=False)
             task.project = project
@@ -59,7 +58,7 @@ def task(request, task_id):
     return render(request, "project_management/task.html", {'task': task})
 
 
-def complete_task(request):
+def complete_task(request, task_id):
     '''View responsible for task completion by task members.
 
     This is used by with a script inside tasks.js.
@@ -67,12 +66,14 @@ def complete_task(request):
     :return: Boolean value of whether the task is completed.
     '''
 
-    task = None
-    if request.method == "GET":
-        task = Task.objects.get(id=request.GET["task_id"])
-        task.completed = not task.completed
-        task.save()
-    return HttpResponse(task.completed)
+    task = Task.objects.get(id=task_id)
+    task.completed = not task.completed
+    task.save()
+    # if request.method == "GET":
+    #     task = Task.objects.get(id=request.GET["task_id"])
+    #     task.completed = not task.completed
+    #     task.save()
+    return redirect("/task/{0}".format(task_id))
 
 
 def approve_task(request, task_id):

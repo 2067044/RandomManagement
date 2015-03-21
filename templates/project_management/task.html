@@ -11,8 +11,33 @@
                     </button>
                 </a>
             </div>
-            <div class="col-md-10">
+            <div class="col-md-3">
+                {#     If user is working on task, task can be completed     #}
+                {% if user in task.users.all %}
+
+                    <a href="{% url 'complete_task' task.id %}"
+                            class="btn btn-block btn-lg
+                        {% if task.completed %}btn-warning{% else %}btn-primary{% endif %}" type="button">
+                        {% if task.completed %}
+                            Reverse completion
+                        {% else %}
+                            Complete task
+                        {% endif %}
+                    </a>
+                    <br/>
+                {% endif %}
+            </div>
+            <div class="col-md-4">
                 <h1 class="text-center">{{ task.title }}</h1>
+            </div>
+
+            <div class="col-md-3 col-md-offset-1">
+                {# Give the owner of the project the ability to mark the task as completed #}
+                {% if task.project.owner == user and task.completed %}
+                    <a class="btn btn-block btn-lg btn-success" href="{% url 'approve_task' task.id %}">
+                        Approve completion
+                    </a>
+                {% endif %}
             </div>
 
         </div>
@@ -20,42 +45,22 @@
         <div class="row">
             <div class="col-md-2">
                 <br/><br/><br/>
-                {#     If user is working on task, task can be completed     #}
-                {% if user in task.users.all %}
 
-                <button id="complete-task" data-taskid="{{ task.id }}"
-                        class="btn btn-block btn-lg
-                        {% if task.completed %}btn-warning{% else %}btn-primary{% endif %}" type="button">
-                        {% if task.completed %}
-                            Reverse completion
-                        {% else %}
-                            Complete task
-                        {% endif %}
-                </button>
-                    <br/>
-                {% endif %}
-
-                {# Give the owner of the project the ability to mark the task as completed #}
-                {% if task.project.owner == user and task.completed %}
-                    <a class="btn btn-block btn-lg btn-success" href="{% url 'approve_task' task.id %}">
-                        Approve completion
-                    </a>
-                {% endif %}
 
                 {# Add owner task approval support #}
             </div>
             <div class="col-md-8">
                 <h4 class="text-center">{{ task.description }}</h4>
-        <h4 class="text-center">Due date: {{ task.due_date }}</h4>
-        <h4 class="text-center">People working on this task:</h4>
+                <h4 class="text-center">Due date: {{ task.due_date }}</h4>
+                <h4 class="text-center">People working on this task:</h4>
 
-        <div class="row">
-            <div class="col-md-2 col-md-offset-5">
-                {% for user in task.users.all %}
-                <h5 class="text-center">{{ user.username }}</h5>
-            {% endfor %}
-            </div>
-        </div>
+                <div class="row">
+                    <div class="col-md-2 col-md-offset-5">
+                        {% for user in task.users.all %}
+                            <h5 class="text-center">{{ user.username }}</h5>
+                        {% endfor %}
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -69,12 +74,13 @@
             {#  MESSAGES GO HERE     #}
             <h1 class="text-center">MESSAGES</h1>
 
-             <br/>
-                <!-- Button trigger modal -->
-                <button type="button" class="btn btn-success btn-lg btn-block" data-toggle="modal" data-target="#myModal">
-                    Add Message
-                </button>
-                <br/>
+            <br/>
+            <!-- Button trigger modal -->
+            <button type="button" class="btn btn-success btn-lg btn-block" data-toggle="modal" data-target="#myModal">
+                Add Message
+            </button>
+            <br/>
+
 
             <div class="modal fade" role='dialog' id="myModal">
                 <div class="modal-dialog">
@@ -97,7 +103,7 @@
                                       name="description"
                                       rows="7" placeholder="Please enter a description..."></textarea>
 
-                                    
+
                                 </div>
                                 <div class="modal-footer">
                                     <div class="row">
