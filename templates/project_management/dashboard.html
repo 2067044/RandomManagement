@@ -13,13 +13,19 @@
 		</ul>
 	</div>
 	{% endif %}
-	{% if other_projects %}
+	{% if admin_projects or member_projects %}
 	<div class="pure-menu">
 		<h3><span class = "label label-default">Other Projects</span></h3>
 		<ul class="pure-menu-list">
-		{% for others_projects in other_projects %}
-			<li class="pure-menu-item"><a class="pure-menu-link" href="/project/{{others_projects.slug}}">{{ others_projects.name }}</a></li>
-
+		{% for admin_of_projects in admin_projects %}
+			<li class="pure-menu-item">
+				<a class="pure-menu-link" href="/project/{{admin_of_projects.slug}}">
+					{{ admin_of_projects.name }} (<span class="glyphicon glyphicon-apple"/>admin)
+				</a>
+			</li>
+		{% endfor %}
+		{% for member_of_projects in member_projects %}
+			<li class="pure-menu-item"><a class="pure-menu-link" href="/project/{{member_of_projects.slug}}">{{ member_of_projects.name }}</a></li>
 		{% endfor %}
 		</ul>
 	</div>

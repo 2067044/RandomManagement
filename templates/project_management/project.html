@@ -22,14 +22,14 @@
 							<ul class="pure-menu-children">
 								<li class="pure-menu-item">
 									<a class="pure-menu-link" href="/project_details/">
-										<button type="button">
+										<button type="button" id="project_details" data-projectid="{{ project.id }}">
 											<span class="glyphicon glyphicon-cog"/> Details
 										</button>
 									</a>
 								</li>
 								<li class="pure-menu-item">
 									<a class="pure-menu-link" href=".">
-										<button type="button" id="end_project" method='POST' data-projectid="{{ project.id }}">
+										<button type="button" id="end_project" data-projectid="{{ project.id }}">
 											<span class="glyphicon glyphicon-remove"/> End Project
 										</button>
 									</a>
@@ -40,21 +40,42 @@
 				</div>
 						
 			{% else %}
-				<li class="pure-menu-item"><a class="pure-menu-link" href="/project/{{users_projects.slug}}">{{ users_projects.name }}</a></li>
+				<li class="pure-menu-item">
+					<a class="pure-menu-link" href="/project/{{users_projects.slug}}">{{ users_projects.name }}</a>
+				</li>
 			{% endif %}
 		{% endfor %}
 		</ul>
 	</div>
 	{% endif %}
-	{% if other_projects %}
+	{% if admin_projects or member_projects%}
 	<div class="pure-menu">
 		<h3><span class = "label label-default">Other Projects</span></h3>
 		<ul class="pure-menu-list">
-		{% for others_projects in other_projects %}
-			{% if others_projects == project %}
-				<li class="pure-menu-item pure-menu-selected"><a class="pure-menu-link" href="/project/{{users_projects.slug}}">{{ others_projects.name }}</a></li>
+		{% for admin_of_projects in admin_projects %}
+			{% if admin_of_projects == project %}
+				<li class="pure-menu-item pure-menu-selected">
+					<a class="pure-menu-link" href="/project/{{admin_of_projects.slug}}">
+						{{ admin_of_projects.name }} (<span class="glyphicon glyphicon-apple"/>admin)
+					</a>
+				</li>
 			{% else %}
-				<li class="pure-menu-item"><a class="pure-menu-link" href="/project/{{others_projects.slug}}">{{ others_projects.name }}</a></li>
+				<li class="pure-menu-item">
+					<a class="pure-menu-link" href="/project/{{admin_of_projects.slug}}">
+						{{ admin_of_projects.name }} (<span class="glyphicon glyphicon-apple"/>admin)
+					</a>
+				</li>
+			{% endif %}
+		{% endfor %}
+		{% for member_of_projects in member_projects %}
+			{% if member_of_projects == project %}
+				<li class="pure-menu-item pure-menu-selected">
+					<a class="pure-menu-link" href="/project/{{member_of_projects.slug}}">{{ member_of_projects.name }}</a>
+				</li>
+			{% else %}
+				<li class="pure-menu-item">
+					<a class="pure-menu-link" href="/project/{{member_of_projects.slug}}">{{ member_of_projects.name }}</a>
+				</li>
 			{% endif %}
 		{% endfor %}
 		</ul>
@@ -307,14 +328,14 @@
 								<ul class="pure-menu-children">
 									<li class="pure-menu-item">
 										<a class="pure-menu-link" href=".">
-											<button type="button" id="demote-admin" method='POST' data-userid="{{ admins.id }}" data-projectid="{{ project.id }}">
+											<button type="button" class="demote_admin" data-userid="{{ admins.id }}" data-projectid="{{ project.id }}">
 												<span class="glyphicon glyphicon-hand-down"/> Demote
 											</button>
 										</a>
 									</li>
 									<li class="pure-menu-item">
 										<a class="pure-menu-link" href="."> 
-											<button type="button" id="remove_admin" method='POST' data-userid="{{ admins.id }}" data-projectid="{{ project.id }}">
+											<button type="button" class="remove_admin" data-userid="{{ admins.id }}" data-projectid="{{ project.id }}">
 												<span class="glyphicon glyphicon-remove"/> Remove
 											</button>
 										</a>
@@ -342,14 +363,14 @@
 								<ul class="pure-menu-children">
 									<li class="pure-menu-item">
 										<a class="pure-menu-link" href=".">
-											<button type="button" id="promote_member" method='POST' data-userid="{{ members.id }}" data-projectid="{{ project.id }}">
+											<button type="button" class="promote_member" data-userid="{{ members.id }}" data-projectid="{{ project.id }}">
 												<span class="glyphicon glyphicon-hand-up"/> Promote
 											</button>
 										</a>
 									</li>
 									<li class="pure-menu-item">
 										<a class="pure-menu-link" href=".">
-											<button type="button" id="remove_member" method='POST' data-userid="{{ members.id }}" data-projectid="{{ project.id }}">
+											<button type="button" class="remove_member" data-userid="{{ members.id }}" data-projectid="{{ project.id }}">
 												<span class="glyphicon glyphicon-remove"/> Remove
 											</button>
 										</a>

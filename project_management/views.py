@@ -12,37 +12,27 @@ from datetime import date
 def index(request):
     return render(request, 'project_management/welcome_page.html', {})
 
-
-##def addDescription(request):
-##    if request.method == 'POST':
-##        form = UserDescriptionForm(request.POST)
-##
-##        if UserDescriptionForm.is_valid():
-##            userDescriptionForm.save(commit = False)
-##            return registration_completed(request)
-##        else:
-##            print UserDescriptionForm.errors
-##    else:
-##        form = UserDescriptionForm()
-##    return render(request, 'registration/registration_form.html', {'form': form})
-
+#returns all the projects which a user owns.
 def getUserProjects(user):
-    users_projects = []
-    projects = Project.objects.all()
-    for project in projects:
-        if (project.owner == user):
-            users_projects.append(project)
-    return users_projects
+    return Project.objects.filter(owner=user)
 
-def getOtherProjects(user):
+#returns all the projects which a user is a member of.
+def getMemberProjects(user):
     return Project.objects.filter(members=user)
 
-def dashboard(request):
-    return render(request,'project_management/dashboard.html', {'user_project':getUserProjects(request.user), 'other_projects':getOtherProjects(request.user)})
+#returns all the projects which a user is admin in.
+def getAdminProjects(user):
+    return Project.objects.filter(admin=user)
 
+# The dashboard is the user-specific homepage, displaying a menu of all their
+# projects on the left sidebar.
+def dashboard(request):
+    return render(request,'project_management/dashboard.html',
+                  {'user_project':getUserProjects(request.user),
+                   'admin_projects': getAdminProjects(request.user),
+                   'member_projects':getMemberProjects(request.user)})
 
 def addProject(request):
-    users_projects = getUserProjects(request.user)
     
     if request.method == 'POST':
         form = ProjectForm(request.POST)
@@ -99,10 +89,16 @@ def project(request, project_slug):
             task.colouring = 'task-panel-critical-colour'
 
     return render(request, 'project_management/project.html',
-                  {'project': project, 'tasks': tasks, 'new_task_form': new_task_form, 'user_project': users_projects, 'other_projects':getOtherProjects(request.user)})
+                  {'project': project, 'tasks': tasks, 'new_task_form': new_task_form,
+                   'user_project': users_projects,
+                   'admin_projects':getAdminProjects(request.user),
+                   'member_projects': getMemberProjects(request.user)})
 
+#Only visable to project owner - allows project description to be changed.
 def project_details(request):
-    project = Project.objects.get(id=request.project.id)
+    if request.method == "GET":
+        project_id = request.GET.get("project_id")
+    project = Project.objects.get(id=project_id)
     if request.method == 'POST':
         form = ProjectForm(request.POST)
 
@@ -113,11 +109,14 @@ def project_details(request):
     else:
         return redirect('/dashboard/')
         
-
+#Only visable to the projects owner - deletes the entire project including all it's
+# associated tasks from the database.
 def end_project(request):
     if request.method == "GET":
         project_id = request.GET.get("project_id")
     project = Project.objects.get(id=project_id)
+    for project_tasks in Task.objects.filter(project=project):
+        project_tasks.delete()
     project.delete()
     return redirect('/dashboard/')
 
@@ -182,6 +181,7 @@ def send_invitation(request):
 
     return HttpResponse("Invitation sent.")
 
+#Button only visable to project owner - removes an admin member from the project.
 def remove_admin(request):
     if request.method == "GET":
         user_id= request.GET.get("user_id")
@@ -191,6 +191,7 @@ def remove_admin(request):
     project.admin.remove(user)
     return redirect('/project/{0}'.format(project.slug))
 
+#Button only visable to project owner - removes member from the project.
 def remove_member(request):
     if request.method == "GET":
         user_id= request.GET.get("user_id")
@@ -200,6 +201,7 @@ def remove_member(request):
     project.members.remove(user)
     return redirect('/project/{0}'.format(project.slug))
 
+#Button only visable to project owner - makes member admin of project.
 def promote_member(request):
     if request.method == "GET":
         user_id= request.GET.get("user_id")
@@ -210,7 +212,18 @@ def promote_member(request):
     project.admin.add(user)
     return redirect('/project/{0}'.format(project.slug))
 
+#Button only visable to project owner - makes admin regular member of project.
+def demote_admin(request):
+    if request.method == "GET":
+        user_id= request.GET.get("user_id")
+        project_id = request.GET.get("project_id")
+    project = Project.objects.get(id=project_id)
+    user = User.objects.get(id=user_id)
+    project.admin.remove(user)
+    project.members.add(user)
+    return redirect('/project/{0}'.format(project.slug))
 
+#User profile allows user to change password and add a short description about themselves.
 def profile(request):
     if request.method == 'POST':
         description=UserDescriptionForm(request.POST)
@@ -227,4 +240,7 @@ def profile(request):
                 user.save()
         return render(request,'project_management/profile.html')
        
-    return render(request, 'project_management/profile.html')
+    return render(request, 'project_management/profile.html',
+                  {'user_project': getUserProjects(request.user),
+                   'admin_projects':getAdminProjects(request.user),
+                   'member_projects': getMemberProjects(request.user)})

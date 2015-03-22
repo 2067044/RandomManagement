@@ -25,6 +25,7 @@ urlpatterns = patterns('',
 	url(r'^remove_admin/$', views.remove_admin, name="remove_admin"),
         url(r'^remove_member/$', views.remove_member, name="remove_member"),
         url(r'^promote_member/$', views.promote_member, name="promote_member"),
+        url(r'^demote_admin/$', views.demote_admin, name="demote_admin"),
 #----- Konstatin----------
         url(r'^new_message(?P<task_id>[\w\-]+)/$', kris_views.new_message, name = 'new_message'),
 #-----
