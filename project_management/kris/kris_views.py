@@ -48,9 +48,10 @@ def task(request, task_id):
     :return: Rendering ot the task
     '''
     task = Task.objects.get(id=task_id)
-
+    logged_user = request.user
     # Users should not be able to view tasks of projects they're not members of
-    if not (request.user in task.project.members.all() or request.user == task.project.owner):
+    if not (logged_user in task.project.members.all() or logged_user == task.project.owner or
+             logged_user in task.project.admin.all()):
         return redirect('/dashboard/')
     return render(request, "project_management/task.html", {'task': task})
 
@@ -83,6 +84,8 @@ def approve_task(request, task_id):
     :return:
     '''
     task = Task.objects.get(id=task_id)
+    if not is_user_privileged(request.user, task.project):
+        return redirect("/dashboard/")
     task.approved = True
     task.save()
     return redirect("/project/{0}".format(task.project.slug))
@@ -95,9 +98,19 @@ def completed_and_approved_tasks(request, project_slug):
     :return:
     '''
     project = Project.objects.get(slug=project_slug)
+    if not user_in_project(request.user, project):
+        return redirect('/dashboard/')
     tasks = Task.objects.filter(approved=True, project=project)
     return render(request, "project_management/tasks/completed_tasks.html", {'tasks': tasks, 'project': project})
 
+
+def delete_task(request, task_id):
+    task = Task.objects.get(id=task_id)
+    if not is_user_privileged(request.user, task.project):
+        return redirect('/dashboard/')
+    task_project = task.project
+    task.delete()
+    return redirect("/project/{0}".format(task_project.slug))
 
 # ---------Konstantin-----------------------
 def new_message(request, task_id):
@@ -142,23 +155,27 @@ def search_for_tasks(request):
     return HttpResponse(json.dumps(response), content_type="application/json")
 
 
-def get_offset_task_json(request):
-    page = 0
-    response = []
-    if request.method == "GET":
-        page = request.GET["page"]
+def user_in_project(user, project):
+    '''
 
-    for task in get_offset_tasks(page=page, project=Project.objects.first()):
-        task_data = {"title": task.title, "description": task.description}
-        response.append(task_data)
+    :param user:
+    :param project:
+    :return: True if the user is either the owner, an admin or a member of a project.
+    '''
+    if user in project.members.all() or user == project.owner or user in project.admin.all():
+        return True
+    return False
 
-    return HttpResponse(json.dumps(response), content_type="application/json")
 
+def is_user_privileged(user, project):
+    '''
 
-def get_offset_tasks(page=0, project=None):
-    # This part might need to be reworked
-    if project is None:
-        return Task.objects.all()[page * 4:page * 4 + 4]
-    else:
-        return Task.objects.filter(project=project, approved=False)[page * 4:page * 4 + 4]
+    :param user:
+    :param project:
+    :return: True if the user is an owner or an admin.
+    '''
+    if user == project.owner or user in project.admin.all():
+        return True
+    return False
+
 

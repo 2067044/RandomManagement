@@ -2,7 +2,7 @@ from django.shortcuts import render, HttpResponseRedirect, HttpResponse
 from project_management.forms import UserDescriptionForm, ProjectForm
 from project_management.models import Project, UserDescription
 from django.shortcuts import redirect
-from project_management.kris.kris_views import new_task
+from project_management.kris.kris_views import new_task, user_in_project, is_user_privileged
 from project_management.kris.kris_models import Task, ProjectInvitation
 from django.contrib.auth.models import User
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
@@ -54,7 +54,7 @@ def project(request, project_slug):
     project = Project.objects.get(slug=project_slug)
 
     # Users should not be able to view projects they are not a part
-    if not (request.user in project.members.all() or request.user == project.owner or request.user in project.admin.all()):
+    if not user_in_project(request.user, project):
         return redirect('/dashboard/')
 
     users_projects = getUserProjects(request.user)
@@ -92,7 +92,8 @@ def project(request, project_slug):
                   {'project': project, 'tasks': tasks, 'new_task_form': new_task_form,
                    'user_project': users_projects,
                    'admin_projects':getAdminProjects(request.user),
-                   'member_projects': getMemberProjects(request.user)})
+                   'member_projects': getMemberProjects(request.user),
+                   'user_privileged': is_user_privileged(request.user, project)})
 
 #Only visable to project owner - allows project description to be changed.
 def project_details(request):
