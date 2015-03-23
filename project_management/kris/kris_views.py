@@ -1,3 +1,4 @@
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
 from project_management.kris.kris_forms import MessageForm
 from project_management.kris.kris_forms import TaskForm
@@ -8,6 +9,7 @@ from project_management.models import Project
 import json
 
 
+@login_required
 def new_task(request, project_id):
     '''Task is added to the appropriate project.
 
@@ -39,6 +41,7 @@ def new_task(request, project_id):
     return form
 
 
+@login_required
 def task(request, task_id):
     '''View responsible for displaying a particular task.
 
@@ -56,6 +59,7 @@ def task(request, task_id):
     return render(request, "project_management/task.html", {'task': task})
 
 
+@login_required
 def complete_task(request, task_id):
     '''View responsible for task completion by task members.
 
@@ -74,6 +78,7 @@ def complete_task(request, task_id):
     return redirect("/task/{0}".format(task_id))
 
 
+@login_required
 def approve_task(request, task_id):
     '''Approve task completion.
 
@@ -91,6 +96,7 @@ def approve_task(request, task_id):
     return redirect("/project/{0}".format(task.project.slug))
 
 
+@login_required
 def completed_and_approved_tasks(request, project_slug):
     '''Display all completed and approved tasks.
     :param request:
@@ -104,6 +110,7 @@ def completed_and_approved_tasks(request, project_slug):
     return render(request, "project_management/tasks/completed_tasks.html", {'tasks': tasks, 'project': project})
 
 
+@login_required
 def delete_task(request, task_id):
     task = Task.objects.get(id=task_id)
     if not is_user_privileged(request.user, task.project):
@@ -112,7 +119,9 @@ def delete_task(request, task_id):
     task.delete()
     return redirect("/project/{0}".format(task_project.slug))
 
+
 # ---------Konstantin-----------------------
+@login_required
 def new_message(request, task_id):
     task = Task.objects.get(id=task_id)
     user = request.user
@@ -135,6 +144,7 @@ def new_message(request, task_id):
     return formM
 
 
+@login_required
 def search_for_tasks(request):
     '''Function returns a json response with all the tasks that contain
     a the expression in a query passed through a GET request.
