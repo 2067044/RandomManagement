@@ -12,6 +12,7 @@
 
     {# Display all completed and approved tasks #}
     {% for task in tasks %}
+
         {% if forloop.counter0|divisibleby:2 %}
             <div class="row">
         {% endif %}
@@ -26,6 +27,8 @@
     {% empty %}
         <h1>Sorry, no completed tasks.</h1>
     {% endfor %}
-    </div>
+    {% if tasks|length|add:1|divisibleby:2 %}
+        </div>
+    {% endif %}
 
 {% endblock project_block %}

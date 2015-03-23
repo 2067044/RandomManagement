@@ -21,6 +21,14 @@ class Task(models.Model):
         ordering = ('due_date',)
 
 
+class ProjectInvitation(models.Model):
+    user = models.ForeignKey(User)
+    project = models.ForeignKey(Project)
+
+    def __unicode__(self):
+        return "User: {0}, Project: {1}".format(self.user, self.project)
+
+
 class DummyProject(models.Model):
     title = models.CharField(max_length=20)
 

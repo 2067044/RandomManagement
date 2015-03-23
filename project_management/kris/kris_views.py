@@ -1,13 +1,10 @@
 from django.shortcuts import render
-from django.shortcuts import redirect
-from project_management.kris.kris_forms import TaskForm, MessageForm
-from project_management.kris.kris_models import Task, Message
+from project_management.kris.kris_forms import MessageForm
 from project_management.kris.kris_forms import TaskForm
 from project_management.kris.kris_models import Task
 from django.shortcuts import HttpResponse, redirect
 from project_management.models import Project
-from django.contrib.auth.models import User
-from django.core.paginator import Paginator, InvalidPage, EmptyPage
+
 import json
 
 
@@ -27,7 +24,6 @@ def new_task(request, project_id):
         form = TaskForm(request.POST)
 
         # Need to consider validation later
-        # TODO Doesn't add users
         if form.is_valid():
             task = form.save(commit=False)
             task.project = project
@@ -52,10 +48,15 @@ def task(request, task_id):
     :return: Rendering ot the task
     '''
     task = Task.objects.get(id=task_id)
+    logged_user = request.user
+    # Users should not be able to view tasks of projects they're not members of
+    if not (logged_user in task.project.members.all() or logged_user == task.project.owner or
+             logged_user in task.project.admin.all()):
+        return redirect('/dashboard/')
     return render(request, "project_management/task.html", {'task': task})
 
 
-def complete_task(request):
+def complete_task(request, task_id):
     '''View responsible for task completion by task members.
 
     This is used by with a script inside tasks.js.
@@ -63,12 +64,14 @@ def complete_task(request):
     :return: Boolean value of whether the task is completed.
     '''
 
-    task = None
-    if request.method == "GET":
-        task = Task.objects.get(id=request.GET["task_id"])
-        task.completed = not task.completed
-        task.save()
-    return HttpResponse(task.completed)
+    task = Task.objects.get(id=task_id)
+    task.completed = not task.completed
+    task.save()
+    # if request.method == "GET":
+    #     task = Task.objects.get(id=request.GET["task_id"])
+    #     task.completed = not task.completed
+    #     task.save()
+    return redirect("/task/{0}".format(task_id))
 
 
 def approve_task(request, task_id):
@@ -81,9 +84,11 @@ def approve_task(request, task_id):
     :return:
     '''
     task = Task.objects.get(id=task_id)
+    if not is_user_privileged(request.user, task.project):
+        return redirect("/dashboard/")
     task.approved = True
     task.save()
-    return redirect("/project/{0}".format(task.project.id))
+    return redirect("/project/{0}".format(task.project.slug))
 
 
 def completed_and_approved_tasks(request, project_slug):
@@ -93,9 +98,19 @@ def completed_and_approved_tasks(request, project_slug):
     :return:
     '''
     project = Project.objects.get(slug=project_slug)
+    if not user_in_project(request.user, project):
+        return redirect('/dashboard/')
     tasks = Task.objects.filter(approved=True, project=project)
     return render(request, "project_management/tasks/completed_tasks.html", {'tasks': tasks, 'project': project})
 
+
+def delete_task(request, task_id):
+    task = Task.objects.get(id=task_id)
+    if not is_user_privileged(request.user, task.project):
+        return redirect('/dashboard/')
+    task_project = task.project
+    task.delete()
+    return redirect("/project/{0}".format(task_project.slug))
 
 # ---------Konstantin-----------------------
 def new_message(request, task_id):
@@ -120,23 +135,47 @@ def new_message(request, task_id):
     return formM
 
 
-def get_offset_task_json(request):
-    page = 0
+def search_for_tasks(request):
+    '''Function returns a json response with all the tasks that contain
+    a the expression in a query passed through a GET request.
+    :param request:
+    :return:
+    '''
     response = []
+    query = None
+    project_id = None
     if request.method == "GET":
-        page = request.GET["page"]
-
-    for task in get_offset_tasks(page=page, project=Project.objects.first()):
-        task_data = {"title": task.title, "description": task.description}
-        response.append(task_data)
+        query = request.GET["query"]
+        project_id = request.GET["project_id"]
+    project = Project.objects.get(id=project_id)
+    tasks = Task.objects.filter(title__contains=query, project=project, approved=False)
+    for task in tasks:
+        response.append({"title": task.title, "description": task.description[:50], "id": task.id})
 
     return HttpResponse(json.dumps(response), content_type="application/json")
 
 
-def get_offset_tasks(page=0, project=None):
-    # This part might need to be reworked
-    if project is None:
-        return Task.objects.all()[page * 4:page * 4 + 4]
-    else:
-        return Task.objects.filter(project=project, approved=False)[page * 4:page * 4 + 4]
+def user_in_project(user, project):
+    '''
+
+    :param user:
+    :param project:
+    :return: True if the user is either the owner, an admin or a member of a project.
+    '''
+    if user in project.members.all() or user == project.owner or user in project.admin.all():
+        return True
+    return False
+
+
+def is_user_privileged(user, project):
+    '''
+
+    :param user:
+    :param project:
+    :return: True if the user is an owner or an admin.
+    '''
+    if user == project.owner or user in project.admin.all():
+        return True
+    return False
+
 
