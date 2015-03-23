@@ -96,9 +96,7 @@ def project(request, project_slug):
                    'user_privileged': is_user_privileged(request.user, project)})
 
 #Only visable to project owner - allows project description to be changed.
-def project_details(request):
-    if request.method == "GET":
-        project_id = request.GET.get("project_id")
+def project_details(request, project_id):
     project = Project.objects.get(id=project_id)
     if request.method == 'POST':
         form = ProjectForm(request.POST)
@@ -107,17 +105,16 @@ def project_details(request):
             project.description = form
             project.save()
             return redirect('/project/{0}'.format(project.slug))
-    else:
-        return redirect('/dashboard/')
+
+    return render(request,'project_management/project_details.html', {'project':project})
+
         
 #Only visable to the projects owner - deletes the entire project including all it's
 # associated tasks from the database.
-def end_project(request):
-    if request.method == "GET":
-        project_id = request.GET.get("project_id")
+def end_project(request, project_id):
     project = Project.objects.get(id=project_id)
-    for project_tasks in Task.objects.filter(project=project):
-        project_tasks.delete()
+    #for project_tasks in Task.objects.filter(project=project):
+        #project_tasks.delete()
     project.delete()
     return redirect('/dashboard/')
 

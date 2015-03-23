@@ -40,8 +40,20 @@ class Migration(migrations.Migration):
                 ('name', models.CharField(unique=True, max_length=20)),
                 ('description', models.CharField(max_length=200, blank=True)),
                 ('slug', models.SlugField(unique=True)),
+                ('admin', models.ManyToManyField(related_name=b'Project_admin', to=settings.AUTH_USER_MODEL, blank=True)),
                 ('members', models.ManyToManyField(related_name=b'working_member', to=settings.AUTH_USER_MODEL, blank=True)),
                 ('owner', models.ForeignKey(related_name=b'owner', to=settings.AUTH_USER_MODEL)),
+            ],
+            options={
+            },
+            bases=(models.Model,),
+        ),
+        migrations.CreateModel(
+            name='ProjectInvitation',
+            fields=[
+                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('project', models.ForeignKey(to='project_management.Project')),
+                ('user', models.ForeignKey(to=settings.AUTH_USER_MODEL)),
             ],
             options={
             },
