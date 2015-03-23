@@ -5,12 +5,12 @@ from project_management.kris.kris_models import Task, Message, File
 from django.shortcuts import HttpResponse, redirect
 from project_management.models import Project
 
-from .kris_forms import UploadFileForm
-
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 import json
 
+from django.core.urlresolvers import reverse
+from django.template import RequestContext
 
 def new_task(request, project_id):
     '''Task is added to the appropriate project.
@@ -53,20 +53,14 @@ def task(request, task_id):
     '''
     task = Task.objects.get(id=task_id)
     messages = Message.objects.filter(task = task)
+    files = File.objects.filter (task = task)
     msgs_desc = [{'msg' : x, 'desc' : x.description, 'date': x.date} for x in messages]
     context_dict = {}
     context_dict['task'] = task
     context_dict['messages'] = messages
     context_dict['msgs_desc'] = msgs_desc
-    # paginator = Paginator(messages, 4)
-    # page = request.Get.get('page')
-    # try:
-    #     messages = paginator.page(page)
-    # except PageNotAnInteger:
-    #     messages = paginator.page(1)
-    # except EmptyPage:
-    #     messages = paginator.page(paginator.num_pages)
-    # # Users should not be able to view tasks of projects they're not members of
+    context_dict['files'] = files
+
     if not (request.user in task.project.members.all() or request.user == task.project.owner):
         return redirect('/dashboard/')
     return render(request, "project_management/task.html", context_dict)
@@ -195,24 +189,47 @@ def get_offset_tasks(page=0, project=None):
     else:
         return Task.objects.filter(project=project, approved=False)[page * 4:page * 4 + 4]
 
+# def handle_uploaded_file(f):
+#     with open('some/file/name.txt', 'wb+') as destination:
+#         for chunk in f.chunks():
+#             destination.write(chunk)
 
-def addFile(request, task_id):
-    task = Task.objects.get(id=task_id)
+def add_file(request, task_id):
+    task = Task.objects.get(id = task_id)
     user = request.user
-
-    if request.method == "POST":
-        fileForm = UploadFileForm(request.POST, request.FILES)
-
-        if fileForm.is_valid():
-            fileForm = fileForm.save(commit=False)
-            fileForm.task = task
-            fileForm.user = user
-            fileForm.save()
-
-            return redirect('/task/{0}/'.format(task_id))
-        else:
+    if request.method == 'POST':
+        form = UploadFileForm(request.POST, request.FILES)
+        if form.is_valid():
+            formF  = File(taskFile = request.FILES['taskFile'])
+            formF.save()
+            formF.task = task
+            formF.user = user
+            formF.save()
             return redirect("/task/{0}/".format(task_id))
     else:
-        fileForm = UploadFileForm()
+        form = UploadFileForm() # A empty, unbound form
+    files = File.objects.filter(task = task)
+    return render("/task/{0}/".format(task_id),{'files':files })
+    
 
-    return fileForm
+    # if request.method == "POST":
+    #     upload_file = UploadFileForm(request.POST, request.FILES)
+
+    #     if upload_file.is_valid():
+    #         upload_file = uploadedFile(taskFile=self.get_form_kwargs().get('files')['taskFile'])
+    #         upload_file.task = task
+    #         upload_file.user = user
+    #         upload_file.save()
+    # #         fileForm = fileForm.save(commit=False)
+    # #         fileForm.task = task
+    # #         fileForm.user = user
+    # #         fileForm.save()
+
+    #         return redirect('/task/{0}/'.format(task_id))
+    #     else:
+    #         return redirect("/task/{0}/".format(task_id))
+    # else:
+    #     upload_file = UploadFileForm()
+
+    # return upload_file
+

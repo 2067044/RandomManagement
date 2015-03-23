@@ -3,7 +3,6 @@ from __future__ import unicode_literals
 
 from django.db import models, migrations
 from django.conf import settings
-import project_management.kris.kris_models
 
 
 class Migration(migrations.Migration):
@@ -27,7 +26,8 @@ class Migration(migrations.Migration):
             name='File',
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
-                ('taskFile', models.FileField(upload_to=project_management.kris.kris_models.get_upload_file_name)),
+                ('title', models.CharField(max_length=20)),
+                ('taskFile', models.FileField(upload_to=b'uploads/%Y/%m/%d')),
                 ('date', models.DateField(auto_now_add=True)),
             ],
             options={
@@ -53,6 +53,7 @@ class Migration(migrations.Migration):
                 ('name', models.CharField(unique=True, max_length=20)),
                 ('description', models.CharField(max_length=200, blank=True)),
                 ('slug', models.SlugField(unique=True)),
+                ('admin', models.ManyToManyField(related_name=b'Project_admin', to=settings.AUTH_USER_MODEL, blank=True)),
                 ('members', models.ManyToManyField(related_name=b'working_member', to=settings.AUTH_USER_MODEL, blank=True)),
                 ('owner', models.ForeignKey(related_name=b'owner', to=settings.AUTH_USER_MODEL)),
             ],

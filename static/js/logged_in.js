@@ -35,3 +35,43 @@ $("#invite-user").on("click", function (e) {
     });
 
 });
+
+//Neither of these two functions are woking yet...?
+$("#project_details").on("click", function(){
+	var project_id = $(this).attr("data-projectid");
+	$.get("/project_details/",{"project_id": project_id});
+});
+
+$("#end_project").on("click", function(){
+	var conf = confirm("Are you sure?\nEnding this project will delete it and all its tasks.");
+	if (r==true){
+		var project_id = $(this).attr("data-projectid");
+		$.get("/end_project/",{"project_id": project_id});
+	}
+});
+// ........??
+
+$(".remove_admin").click(function(){
+	var user_id = $(this).attr("data-userid");
+	var project_id = $(this).attr("data-projectid");
+	$.get("/remove_admin/",{"user_id": user_id, "project_id": project_id});
+});
+
+$(".remove_member").click(function(){
+	var user_id = $(this).attr("data-userid");
+	var project_id = $(this).attr("data-projectid");
+	$.get("/remove_member/",{"user_id": user_id, "project_id": project_id});
+});
+
+$(".promote_member").click(function(){
+	var user_id = $(this).attr("data-userid");
+	var project_id = $(this).attr("data-projectid");
+	$.get("/promote_member/",{"user_id": user_id, "project_id": project_id});
+});
+
+$(".demote_admin").click(function(){
+	var user_id = $(this).attr("data-userid");
+	var project_id = $(this).attr("data-projectid");
+	$.get("/demote_admin/",{"user_id": user_id, "project_id": project_id});
+});
+

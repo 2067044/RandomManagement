@@ -45,12 +45,15 @@ class Message(models.Model):
     def __unicode__(self):
         return self.title
 
-# def get_upload_file_name(instance, filename):
-#     return "uploaded_files/%s_%s" % (str(time()).replace('.', '_'), filename)
+def filePath(self, filename):
+    url = "uploads/%s/%s/%s" % (self.task.title, self.user.username, filename)
+    return url
 ######## Model for files in tasks
-# class File(models.Model):
-#     title = models.CharField(max_length = 20)
-#     taskFile = models.FileField(upload_to = get_upload_file_name)
-#     task = models.ForeignKey(Task)
-#     user = models.ForeignKey(User)
-#     date = models.DateField(auto_now_add = True)
+class File(models.Model):
+    title = models.CharField(max_length = 20)
+    taskFile = models.FileField(upload_to = filePath)
+    task = models.ForeignKey(Task)
+    user = models.ForeignKey(User)
+    date = models.DateField(auto_now_add = True)
+    def __unicode__(self):
+        return self.title
