@@ -1,3 +1,4 @@
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, HttpResponseRedirect, HttpResponse
 from project_management.forms import UserDescriptionForm, ProjectForm
 from project_management.models import Project, UserDescription
@@ -24,11 +25,15 @@ def getMemberProjects(user):
 def getAdminProjects(user):
     return Project.objects.filter(admin=user)
 
+
 # The dashboard is the user-specific homepage, displaying a menu of all their
 # projects on the left sidebar.
+@login_required
 def dashboard(request):
     return render(request,'project_management/dashboard.html',{})
 
+
+@login_required
 def addProject(request):
     
     if request.method == 'POST':
@@ -47,6 +52,7 @@ def addProject(request):
     return render(request, 'project_management/projectForm.html', {'form':form})
 
 
+@login_required
 def project(request, project_slug):
     project = Project.objects.get(slug=project_slug)
 
@@ -92,7 +98,9 @@ def project(request, project_slug):
                    'member_projects': getMemberProjects(request.user),
                    'user_privileged': is_user_privileged(request.user, project)})
 
-#Only visable to project owner - allows project description to be changed.
+
+@login_required
+# Only visable to project owner - allows project description to be changed.
 def project_details(request, project_id):
     project = Project.objects.get(id=project_id)
     if request.method == 'POST':
@@ -105,8 +113,9 @@ def project_details(request, project_id):
 
     return render(request,'project_management/project_details.html', {'project':project})
 
-        
-#Only visable to the projects owner - deletes the entire project including all it's
+
+@login_required
+# Only visable to the projects owner - deletes the entire project including all it's
 # associated tasks from the database.
 def end_project(request, project_id):
     project = Project.objects.get(id=project_id)
@@ -115,6 +124,8 @@ def end_project(request, project_id):
     project.delete()
     return redirect('/dashboard/')
 
+
+@login_required
 def accept_invitation(request, project_invitation_id):
     '''Function responsible for adding a user to a project.
 
@@ -132,6 +143,7 @@ def accept_invitation(request, project_invitation_id):
     return redirect('/project/{0}'.format(project.slug))
 
 
+@login_required
 def decline_invitation(request, project_invitation_id):
     '''Function responsible for declining a project invitation.
 
@@ -145,6 +157,7 @@ def decline_invitation(request, project_invitation_id):
     return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
 
+@login_required
 def send_invitation(request):
     '''Function responsible for generating an invitation. Used inside logged_in.js.
 
@@ -176,6 +189,8 @@ def send_invitation(request):
 
     return HttpResponse("Invitation sent.")
 
+
+@login_required
 #Button only visable to project owner - removes an admin member from the project.
 def remove_admin(request):
     if request.method == "GET":
@@ -186,6 +201,8 @@ def remove_admin(request):
     project.admin.remove(user)
     return redirect('/project/{0}'.format(project.slug))
 
+
+@login_required
 #Button only visable to project owner - removes member from the project.
 def remove_member(request):
     if request.method == "GET":
@@ -196,6 +213,8 @@ def remove_member(request):
     project.members.remove(user)
     return redirect('/project/{0}'.format(project.slug))
 
+
+@login_required
 #Button only visable to project owner - makes member admin of project.
 def promote_member(request):
     if request.method == "GET":
@@ -207,6 +226,8 @@ def promote_member(request):
     project.admin.add(user)
     return redirect('/project/{0}'.format(project.slug))
 
+
+@login_required
 #Button only visable to project owner - makes admin regular member of project.
 def demote_admin(request):
     if request.method == "GET":
@@ -218,6 +239,8 @@ def demote_admin(request):
     project.members.add(user)
     return redirect('/project/{0}'.format(project.slug))
 
+
+@login_required
 #User profile allows user to change password and add a short description about themselves.
 def profile(request):
     if request.method == 'POST':
