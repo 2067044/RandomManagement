@@ -43,13 +43,12 @@ $("#project_details").on("click", function(){
 });
 
 $("#end_project").on("click", function(){
-	var conf = confirm("Are you sure?\nEnding this project will delete it and all its tasks.");
-	if (r==true){
+	if( confirm("Are you sure?\nEnding this project will delete it and all its tasks.")){
 		var project_id = $(this).attr("data-projectid");
 		$.get("/end_project/",{"project_id": project_id});
 	}
 });
-// ........??
+
 
 $(".remove_admin").click(function(){
 	var user_id = $(this).attr("data-userid");
