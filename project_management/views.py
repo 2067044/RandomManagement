@@ -27,10 +27,7 @@ def getAdminProjects(user):
 # The dashboard is the user-specific homepage, displaying a menu of all their
 # projects on the left sidebar.
 def dashboard(request):
-    return render(request,'project_management/dashboard.html',
-                  {'user_project':getUserProjects(request.user),
-                   'admin_projects': getAdminProjects(request.user),
-                   'member_projects':getMemberProjects(request.user)})
+    return render(request,'project_management/dashboard.html',{})
 
 def addProject(request):
     

@@ -1,40 +1,40 @@
 {% extends 'logged_in_base.html' %}
 {% load staticfiles %}
 
-{% block user_projects %}
-<br>
-	{% if user_project %}
-	<div class="pure-menu">
-		<h3><span class = "label label-default">My Projects</span></h3>
-		<ul class="pure-menu-list">
-		{% for users_projects in user_project %}
-			<li class="pure-menu-item"><a class="pure-menu-link" href="/project/{{users_projects.slug}}">{{ users_projects.name }}</a></li>
-		{% endfor %}
-		</ul>
-	</div>
-	{% endif %}
-	{% if admin_projects or member_projects %}
-	<div class="pure-menu">
-		<h3><span class = "label label-default">Other Projects</span></h3>
-		<ul class="pure-menu-list">
-		{% for admin_of_projects in admin_projects %}
-			<li class="pure-menu-item">
-				<a class="pure-menu-link" href="/project/{{admin_of_projects.slug}}">
-					{{ admin_of_projects.name }} (<span class="glyphicon glyphicon-apple"/>admin)
-				</a>
-			</li>
-		{% endfor %}
-		{% for member_of_projects in member_projects %}
-			<li class="pure-menu-item"><a class="pure-menu-link" href="/project/{{member_of_projects.slug}}">{{ member_of_projects.name }}</a></li>
-		{% endfor %}
-		</ul>
-	</div>
-	{% endif %}
-	{% if not user_project and not other_projects %}
-		<h5>You don't have any projects yet</h5>
-	{% endif %}
-</br>
-{% endblock %}
+{#{% block user_projects %}#}
+{#<br>#}
+{#	{% if user_project %}#}
+{#	<div class="pure-menu">#}
+{#		<h3><span class = "label label-default">My Projects</span></h3>#}
+{#		<ul class="pure-menu-list">#}
+{#		{% for users_projects in user_project %}#}
+{#			<li class="pure-menu-item"><a class="pure-menu-link" href="/project/{{users_projects.slug}}">{{ users_projects.name }}</a></li>#}
+{#		{% endfor %}#}
+{#		</ul>#}
+{#	</div>#}
+{#	{% endif %}#}
+{#	{% if admin_projects or member_projects %}#}
+{#	<div class="pure-menu">#}
+{#		<h3><span class = "label label-default">Other Projects</span></h3>#}
+{#		<ul class="pure-menu-list">#}
+{#		{% for admin_of_projects in admin_projects %}#}
+{#			<li class="pure-menu-item">#}
+{#				<a class="pure-menu-link" href="/project/{{admin_of_projects.slug}}">#}
+{#					{{ admin_of_projects.name }} (<span class="glyphicon glyphicon-apple"/>admin)#}
+{#				</a>#}
+{#			</li>#}
+{#		{% endfor %}#}
+{#		{% for member_of_projects in member_projects %}#}
+{#			<li class="pure-menu-item"><a class="pure-menu-link" href="/project/{{member_of_projects.slug}}">{{ member_of_projects.name }}</a></li>#}
+{#		{% endfor %}#}
+{#		</ul>#}
+{#	</div>#}
+{#	{% endif %}#}
+{#	{% if not user_project and not other_projects %}#}
+{#		<h5>You don't have any projects yet</h5>#}
+{#	{% endif %}#}
+{#</br>#}
+{#{% endblock %}#}
 
 {% block project_block %}
 	<br>

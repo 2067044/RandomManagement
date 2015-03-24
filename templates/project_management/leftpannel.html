@@ -1,35 +1,87 @@
-{% block user_projects %}
-<br>
-	{% if user_project %}
-	<div class="pure-menu">
-		<h3><span class = "label label-default">My Projects</span></h3>
-		<ul class="pure-menu-list">
-		{% for users_projects in user_project %}
-			{% if users_projects == project %}
-				<a class="pure-menu-link" href="/project/{{users_projects.slug}}"><li class="pure-menu-item pure-menu-selected">{{ users_projects.name }}</li></a>
+{% block owned %}
+	{% if current_project == project %}
+		<div class="pure-menu pure-menu-horizontal">
+		    <ul class="pure-menu-list">
+			    <li class="pure-menu-item pure-menu-selected">
+				    <a class="pure-menu-link activated" href="/project/{{current_project.slug}}">{{ current_project.name }}
+					</a>
+				</li>
+				<li class="pure-menu-item pure-menu-has-children pure-menu-allow-hover">
+                    <a class="pure-menu-link"><span class="glyphicon glyphicon-pencil"/>edit</a>
+                    <ul class="pure-menu-children">
+                        <li class="pure-menu-item">
+                            <a class="pure-menu-link" href="{% url 'project_details' project.id %}">
+                                <button type="button">
+                                    <span class="glyphicon glyphicon-cog"/> Details
+                                </button>
+                            </a>
+                        </li>
+                        <li class="pure-menu-item">
+                            <a class="pure-menu-link" href="#" data-toggle="modal" data-target="#delete-project">
+                                <button type="button">
+                                    <span class="glyphicon glyphicon-remove"/> End Project
+                                </button>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+				
+				{#  Task deletion modal  #}
+				<div class="modal fade" id="delete-project">
+					<div class="modal-dialog">
+						<div class="modal-content">
+							<div class="modal-header">
+								<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+										aria-hidden="true">&times;</span></button>
+								<h3 class="modal-title">Delete project</h3>
+							</div>
+							<div class="modal-body">
+								<h4>Are you sure you want to delete this project?</h4>
+							</div>
+							<div class="modal-footer">
+								<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+								<a href="{% url 'end_project' project.id %}" class="btn btn-danger">Delete</a>
+							</div>
+						</div>
+						<!-- /.modal-content -->
+					</div>
+					<!-- /.modal-dialog -->
+				</div>
+				<!-- /.modal -->
+				
 			{% else %}
-				<a class="pure-menu-link" href="/project/{{users_projects.slug}}"><li class="pure-menu-item">{{ users_projects.name }}</li></a>
+				<li class="pure-menu-item">
+					<a class="pure-menu-link" href="/project/{{current_project.slug}}">{{ current_project.name }}</a>
+				</li>
 			{% endif %}
-		{% endfor %}
-		</ul>
-	</div>
-	{% endif %}
-	{% if other_projects %}
-	<div class="pure-menu">
-		<h3><span class = "label label-default">Other Projects</span></h3>
-		<ul class="pure-menu-list">
-		{% for others_projects in other_projects %}
-			{% if others_projects == project %}
-				<a class="pure-menu-link" href="/project/{{users_projects.slug}}"><li class="pure-menu-item pure-menu-selected">{{ users_projects.name }}</li></a>
-			{% else %}
-				<a class="pure-menu-link" href="/project/{{others_projects.slug}}"><li class="pure-menu-item">{{ others_projects.name }}</li></a>
-			{% endif %}
-		{% endfor %}
-		</ul>
-	</div>
-	{% endif %}
-	{% if not user_project and not other_projects %}
-		<h5>You don't have any projects yet</h5>
-	{% endif %}
-</br>
 {% endblock %}
+
+{% block admin %}
+	{% if admin_of_projects == project %}
+		<li class="pure-menu-item pure-menu-selected">
+			<a class="pure-menu-link" href="/project/{{admin_of_projects.slug}}">
+				{{ admin_of_projects.name }} (<span class="glyphicon glyphicon-apple"/>admin)
+			</a>
+		</li>
+	{% else %}
+		<li class="pure-menu-item">
+			<a class="pure-menu-link" href="/project/{{admin_of_projects.slug}}">
+				{{ admin_of_projects.name }} (<span class="glyphicon glyphicon-apple"/>admin)
+			</a>
+		</li>
+	{% endif %}
+{% endblock %}
+
+{% block member %}
+	{% if member_of_projects == project %}
+		<li class="pure-menu-item pure-menu-selected">
+			<a class="pure-menu-link" href="/project/{{member_of_projects.slug}}">{{ member_of_projects.name }}</a>
+		</li>
+	{% else %}
+		<li class="pure-menu-item">
+			<a class="pure-menu-link" href="/project/{{member_of_projects.slug}}">{{ member_of_projects.name }}</a>
+		</li>
+	{% endif %}#}
+{% end block %}

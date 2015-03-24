@@ -87,8 +87,44 @@
                 <a href="{% url 'newProject' %}">
                     <button type="button" class="btn btn-success btn-lg btn-block">Create New Project</button>
                 </a>
-                {% block user_projects %}{% endblock %}
-			</br>
+              {#<br>#}
+
+	{% if user_projects %}
+	<div class="pure-menu">
+		<h3><span class = "label label-default">My Projects</span></h3>
+		<ul class="pure-menu-list">
+		{% for current_project in user_projects %}
+            {% block owned %}
+			    <li class="pure-menu-item"><a class="pure-menu-link" href="/project/{{current_project.slug}}">{{ current_project.name }}</a></li>
+            {% endblock %}
+		{% endfor %}
+		</ul>
+	</div>
+	{% endif %}
+	{% if admin_projects or member_projects %}
+	<div class="pure-menu">
+		<h3><span class = "label label-default">Other Projects</span></h3>
+		<ul class="pure-menu-list">
+		{% for admin_of_projects in admin_projects %}
+			{% block admin %}
+				<li class="pure-menu-item">
+					<a class="pure-menu-link" href="/project/{{admin_of_projects.slug}}">
+						{{ admin_of_projects.name }} (<span class="glyphicon glyphicon-apple"/>admin)
+					</a>
+				</li>
+			{% endblock %}
+		{% endfor %}
+		{% for member_of_projects in member_projects %}
+			{% block member %}
+				<li class="pure-menu-item"><a class="pure-menu-link" href="/project/{{member_of_projects.slug}}">{{ member_of_projects.name }}</a></li>
+			{% endblock %}
+		{% endfor %}
+		</ul>
+	</div>
+	{% endif %}
+	{% if not user_project and not member_projects and not admin_projects %}
+		<h5>You don't have any projects yet</h5>
+	{% endif %}
 
         </div>
 
