@@ -1,11 +1,10 @@
-<<<<<<< HEAD
+
 from django.shortcuts import render, render_to_response
 from project_management.kris.kris_forms import MessageForm, UploadFileForm
-=======
+
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
 from project_management.kris.kris_forms import MessageForm
->>>>>>> d8ccf4f8ada72524332d42fa2a981219445b4b2b
 from project_management.kris.kris_forms import TaskForm
 from project_management.kris.kris_models import Task, Message, File
 from django.shortcuts import HttpResponse, redirect
@@ -70,10 +69,10 @@ def task(request, task_id):
     context_dict['files'] = files
 
     if not (request.user in task.project.members.all() or request.user == task.project.owner):
-    logged_user = request.user
+        logged_user = request.user
     # Users should not be able to view tasks of projects they're not members of
     if not (logged_user in task.project.members.all() or logged_user == task.project.owner or
-             logged_user in task.project.admin.all()):
+        logged_user in task.project.admin.all()):
         return redirect('/dashboard/')
     return render(request, "project_management/task.html", context_dict)
 
@@ -156,6 +155,8 @@ def delete_task(request, task_id):
     return redirect("/project/{0}".format(task_project.slug))
 
 
+
+# ---------Konstantin-----------------------
 @login_required
 def new_message(request, task_id):
     task = Task.objects.get(id=task_id)

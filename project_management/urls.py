@@ -5,8 +5,6 @@ from project_management.kris import kris_views
 
 
 urlpatterns = patterns('',
-<<<<<<< HEAD
-
         url(r'^$', views.index, name='index'),
         url(r'^dashboard', views.dashboard, name='dashboard'),
         url(r'^addProject', views.addProject, name='newProject'),
@@ -35,7 +33,7 @@ urlpatterns = patterns('',
         url(r'^message/(?P<message_id>[\w\-]+)/$', kris_views.message, name = "message"),
         url(r'^project/(?P<project_slug>[\w\-]+)/completed_tasks/',
             kris_views.completed_and_approved_tasks, name="completed_and_approved"),
-        url(r'^get_tasks/', kris_views.get_offset_task_json, name="offset_task")
+        # url(r'^get_tasks/', kris_views.get_offset_task_json, name="offset_task")
         )
 
 
