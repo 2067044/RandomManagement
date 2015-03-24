@@ -1,5 +1,17 @@
 {% extends 'project_management/dashboard.html' %}
 
+{% block owned %}
+	{% include 'project_management/highlighting_owned_projects.html' %}
+{% endblock %}
+
+{% block admin %}
+	{% include 'project_management/highlighting_admin_projects.html' %}
+{% endblock %}
+
+{% block member %}
+	{% include 'project_management/highlighting_member_projects.html' %}	
+{% endblock %}
+
 {% block project_block %}
 	<div class="panel panel-default">
 		<div class="panel-body">

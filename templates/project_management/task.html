@@ -1,5 +1,17 @@
 {% extends 'logged_in_base.html' %}
 
+{% block owned %}
+	{% include "project_management/highlighting_owned_projects.html" with project=task.project %}
+{% endblock %}
+
+{% block admin %}
+	{% include "project_management/highlighting_admin_projects.html" with project=task.project %}
+{% endblock %}
+
+{% block member %}
+	{% include "project_management/highlighting_member_projects.html" with project=task.project %}	
+{% endblock %}
+
 {% block project_block %}
     <br/>
     <div class="panel task-view-panel">

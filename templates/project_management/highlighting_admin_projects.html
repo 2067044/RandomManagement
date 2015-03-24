@@ -1,0 +1,14 @@
+
+{% if admin_of_projects == project %}
+	<li class="pure-menu-item pure-menu-selected">
+		<a class="pure-menu-link" href="/project/{{admin_of_projects.slug}}">
+			{{ admin_of_projects.name }} (<span class="glyphicon glyphicon-apple"/>admin)
+		</a>
+	</li>
+{% else %}
+	<li class="pure-menu-item">
+		<a class="pure-menu-link" href="/project/{{admin_of_projects.slug}}">
+			{{ admin_of_projects.name }} (<span class="glyphicon glyphicon-apple"/>admin)
+		</a>
+	</li>
+{% endif %}

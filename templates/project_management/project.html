@@ -1,8 +1,20 @@
 {% extends 'project_management/dashboard.html' %}
-{% includes 'project_management/leftpannel.html' %}
+{% include 'project_management/leftpannel.html' with project=project %}
 
 {% block project-name %}
     <div class="navbar-brand" id="project-name">{{ project.name }}</div>
+{% endblock %}
+
+{% block owned %}
+	{% include 'project_management/highlighting_owned_projects.html' %}
+{% endblock %}
+
+{% block admin %}
+	{% include 'project_management/highlighting_admin_projects.html' %}
+{% endblock %}
+
+{% block member %}
+	{% include 'project_management/highlighting_member_projects.html' %}	
 {% endblock %}
 
 {% block project_block %}

@@ -11,7 +11,7 @@ from datetime import date
 
 
 def index(request):
-    return render(request, 'project_management/welcome_page.html', {})
+    return render(request, 'project_management/welcome_page.html')
 
 #returns all the projects which a user owns.
 def getUserProjects(user):
