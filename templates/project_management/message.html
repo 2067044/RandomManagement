@@ -1,0 +1,14 @@
+{% extends 'logged_in_base.html' %}
+
+{% block project_block %}
+
+            <div class="col-md-10">
+                <h1 class="text-center">{{ message.title }}</h1>
+            	<h4 class= "text-center">{{ message.user }}<h4>
+            </div>
+             <div class="col-md-8">
+                <p class="text-center">{{ message.description }}</p>
+           
+            </div>
+    
+{% endblock %}

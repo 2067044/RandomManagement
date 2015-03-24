@@ -4,6 +4,7 @@ from project_management import views
 from project_management.kris import kris_views
 
 
+
 urlpatterns = patterns('',
                        url(r'^$', views.index, name='index'),
                        url(r'^dashboard', views.dashboard, name='dashboard'),
@@ -28,11 +29,11 @@ urlpatterns = patterns('',
                        url(r'^demote_admin/$', views.demote_admin, name="demote_admin"),
                        url(r'^delete_task/(?P<task_id>[\w\-]+)/$', kris_views.delete_task,
                            name="delete_task"),
-                       # ----- Konstatin----------
-                       url(r'^new_message(?P<task_id>[\w\-]+)/$', kris_views.new_message, name='new_message'),
-                       # -----
+                       url(r'^new_message/(?P<task_id>[\w\-]+)/$', kris_views.new_message, name = 'new_message'),
+                       url(r'^add_file/(?P<task_id>[\w\-]+)/$', kris_views.add_file, name = 'add_file'),
+                       url(r'^message/(?P<message_id>[\w\-]+)/$', kris_views.message, name = "message"),
                        url(r'^project/(?P<project_slug>[\w\-]+)/completed_tasks/',
                            kris_views.completed_and_approved_tasks, name="completed_and_approved"),
-)
+                       )
 
 

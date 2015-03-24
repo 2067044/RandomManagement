@@ -89,6 +89,7 @@ def project(request, project_slug):
         elif 3 < (task.due_date - current_date).days < 10:
             task.colouring = 'task-panel-attention-colour'
         else:
+
             task.colouring = 'task-panel-critical-colour'
 
     return render(request, 'project_management/project.html',
