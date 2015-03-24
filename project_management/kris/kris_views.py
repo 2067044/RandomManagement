@@ -67,7 +67,7 @@ def task(request, task_id):
     context_dict['messages'] = messages
     context_dict['msgs_desc'] = msgs_desc
     context_dict['files'] = files
-
+    logged_user = request.user
     if not (request.user in task.project.members.all() or request.user == task.project.owner):
         logged_user = request.user
     # Users should not be able to view tasks of projects they're not members of
