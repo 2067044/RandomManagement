@@ -5,6 +5,7 @@ from project_management.kris import kris_views
 
 
 urlpatterns = patterns('',
+
         url(r'^$', views.index, name='index'),
         url(r'^dashboard', views.dashboard, name='dashboard'),
         url(r'^addProject', views.addProject, name='newProject'),
@@ -34,5 +35,6 @@ urlpatterns = patterns('',
         url(r'^get_tasks/', kris_views.get_offset_task_json, name="offset_task")
 
         )
+
 
 
