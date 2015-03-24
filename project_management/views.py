@@ -190,7 +190,6 @@ def send_invitation(request):
     return HttpResponse("Invitation sent.")
 
 
-@login_required
 #Button only visable to project owner - removes an admin member from the project.
 def remove_admin(request):
     if request.method == "GET":
@@ -202,7 +201,6 @@ def remove_admin(request):
     return redirect('/project/{0}'.format(project.slug))
 
 
-@login_required
 #Button only visable to project owner - removes member from the project.
 def remove_member(request):
     if request.method == "GET":
@@ -214,7 +212,6 @@ def remove_member(request):
     return redirect('/project/{0}'.format(project.slug))
 
 
-@login_required
 #Button only visable to project owner - makes member admin of project.
 def promote_member(request):
     if request.method == "GET":
@@ -227,7 +224,6 @@ def promote_member(request):
     return redirect('/project/{0}'.format(project.slug))
 
 
-@login_required
 #Button only visable to project owner - makes admin regular member of project.
 def demote_admin(request):
     if request.method == "GET":
