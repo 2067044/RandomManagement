@@ -1,10 +1,10 @@
 
-	{% if member_of_projects == project %}
+	{% if current_project == project %}
 		<li class="pure-menu-item pure-menu-selected">
-			<a class="pure-menu-link" href="/project/{{member_of_projects.slug}}">{{ member_of_projects.name }}</a>
+			<a class="pure-menu-link" href="/project/{{current_project.slug}}">{{ current_project.name }}</a>
 		</li>
 	{% else %}
 		<li class="pure-menu-item">
-			<a class="pure-menu-link" href="/project/{{member_of_projects.slug}}">{{ member_of_projects.name }}</a>
+			<a class="pure-menu-link" href="/project/{{current_project.slug}}">{{ current_project.name }}</a>
 		</li>
-	{% endif %}#}
+	{% endif %}
