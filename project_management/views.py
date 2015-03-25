@@ -196,9 +196,9 @@ def remove_admin(request):
     if request.method == "GET":
         user_id= request.GET.get("user_id")
         project_id = request.GET.get("project_id")
-    project = Project.objects.get(id=project_id)
+    current_project = Project.objects.get(id=project_id)
     user = User.objects.get(id=user_id)
-    project.admin.remove(user)
+    current_project.admin.remove(user)
     return redirect('/project/{0}'.format(project.slug))
 
 
