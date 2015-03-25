@@ -237,12 +237,12 @@ def add_file(request, task_id):
     if request.method == 'POST':
         form = UploadFileForm(request.POST, request.FILES)
         if form.is_valid():
-            formF  = File(taskFile = request.FILES['taskFile'])
-            formF.save()
+            formF  = form.save(commit = False)
             formF.task = task
+            formF.taskFile = request.FILES['file ']
             formF.user = user
             formF.save()
-            return redirect("/task/{0}/".format(task_id))
+        return redirect("/task/{0}/".format(task_id))
     else:
         form = UploadFileForm() # A empty, unbound form
     files = File.objects.filter(task = task)

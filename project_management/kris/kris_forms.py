@@ -15,7 +15,11 @@ class MessageForm(forms.ModelForm):
         fields = ('title', 'description')
 
 class UploadFileForm(forms.Form):
+ 	title = forms.CharField(max_length = 36, help_text = "Please enter a title")
+ 	taskFile = forms.FileField()
  	class Meta:
  		model = File
- 		fields = ('title')
- 		taskFileField = forms.FileField( label = "select a file", help_text='max. 5 megabytes')
+ 		fields = ['title', 'taskFile', 'task', 'user']
+
+
+ 		

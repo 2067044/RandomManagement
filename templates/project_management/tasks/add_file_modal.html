@@ -6,7 +6,7 @@
             </div>
             <br/> 
          
-           <!--- End of Button -->
+           <!--- End of Button
             <!-- End Modal for Adding Messages -->
             <!-- End of modal for files ---->
 
@@ -20,19 +20,13 @@
                             <h4 class="modal-title">Add File</h4>
                         </div>
                         <div class="modal-body">
-                            <div class="fileupload fileupload-new" data-provides="fileupload">
-                              <div class="input-append">
-                                <div class="uneditable-input span3">
-                                    <i class="icon-file fileupload-exists"></i>
-                                    <span class="fileupload-preview"></span>
-                                </div>
-                                <span class="btn btn-file">
-                                    <span class="fileupload-new">Select file</span>
-                                    <span class="fileupload-exists">Change</span>
-                                    <input type="file" /></span>
-                                    <a href="#" class="btn fileupload-exists" data-dismiss="fileupload">Remove</a>
-                              </div>
-                            </div>
+                                <form id="UploadFileForm" role="form" id="UploadFileForm" method="post" action="{% url 'add_file' task.id %}" enctype="multipart/form-data">
+                                    {% csrf_token %}
+                                    {{ formF.as_p }}
+                                    <br/>
+                                    <button type="submit" class="btn btn-primary">Submit</button>
+                                </form>
+
                                 <div class="modal-footer">
                                     <div class="row">
                                         <div class="col-md-6">
@@ -54,6 +48,6 @@
                     <!-- /.modal-content -->
                 </div>
                 <!-- /.modal-dialog -->
-            </div>
+            </div> 
             <!-- End of Upload file form -->
 {% endblock %}
