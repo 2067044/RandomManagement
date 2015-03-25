@@ -1,0 +1,10 @@
+{% block files_listing %}
+	{% if files %}
+                {% for file in files%}
+                    <p><a href="{{ file.taskFile.url }}"><strong>{{ file.title }} </strong> by {{ file.user }} </a></p>
+                {% endfor %}
+            {% else %}
+                <strong> No files</strong>
+            {% endif %}
+        </div>
+{% endblock %}

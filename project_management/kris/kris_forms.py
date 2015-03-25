@@ -18,4 +18,4 @@ class UploadFileForm(forms.Form):
  	class Meta:
  		model = File
  		fields = ('title')
- 		taskFile = forms.FileField( label = "select a file", help_text='max. 5 megabytes')
+ 		taskFileField = forms.FileField( label = "select a file", help_text='max. 5 megabytes')

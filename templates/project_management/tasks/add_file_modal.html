@@ -1,35 +1,38 @@
+{% block add_file_modal %}
 
+            <!-- Button trigger modal -->
+            <div class = "button-add-file">
+            <button type="button" class="btn btn-success btn-lg btn-block" data-toggle="modal" data-target="#myModal1">Add File</buton>
+            </div>
+            <br/> 
+         
+           <!--- End of Button -->
+            <!-- End Modal for Adding Messages -->
+            <!-- End of modal for files ---->
 
-	{% block new_message_modal %}
-
-	<button type="button" class="btn btn-success btn-lg btn-block" data-toggle="modal" data-target="#addMessageModal">
-                Add Message
-            </button>
-            <br/>
-
-            <div class="modal fade" role='dialog' id="addMessageModal">
+            <!-- Upload file form -->
+            <div class="modal fade" role='dialog' id="myModal1">
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-header">
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                                     aria-hidden="true">&times;</span></button>
-                            <h4 class="modal-title">New Message</h4>
+                            <h4 class="modal-title">Add File</h4>
                         </div>
                         <div class="modal-body">
-                            <form id="message_form" method="post" action="{% url 'new_message' task.id %}">
-                                {% csrf_token %}
-                                <div class="form-group new-message-form">
-                                    <label for="id_title">{{ new_message_form.fields.title.label }}</label>
-                                    <input class="form-control" id="id_title" maxlength="40" name="title" type="text"
-                                           placeholder="Please enter a title...">
-
-                                    <label for="id_description">{{ new_message_form.fields.description.label }}</label>
-                            <textarea class="form-control" cols="40" id="id_description" maxlength="300"
-                                      name="description"
-                                      rows="7" placeholder="Please enter a description..."></textarea>
-
-
+                            <div class="fileupload fileupload-new" data-provides="fileupload">
+                              <div class="input-append">
+                                <div class="uneditable-input span3">
+                                    <i class="icon-file fileupload-exists"></i>
+                                    <span class="fileupload-preview"></span>
                                 </div>
+                                <span class="btn btn-file">
+                                    <span class="fileupload-new">Select file</span>
+                                    <span class="fileupload-exists">Change</span>
+                                    <input type="file" /></span>
+                                    <a href="#" class="btn fileupload-exists" data-dismiss="fileupload">Remove</a>
+                              </div>
+                            </div>
                                 <div class="modal-footer">
                                     <div class="row">
                                         <div class="col-md-6">
@@ -52,6 +55,5 @@
                 </div>
                 <!-- /.modal-dialog -->
             </div>
-            <!-- End Modal for Adding Messages -->
-
-	{% endblock %}
+            <!-- End of Upload file form -->
+{% endblock %}
