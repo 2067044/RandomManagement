@@ -3,8 +3,8 @@
                 {% for file in files%}
                  	<div class="files-container">
                         <div class = "list-group">
-               				<button type="button" class="btn btn-link btn-lg btn-block">
-               					<a href="{{ file.taskFile.url }}"><strong>{{ file.title }} </strong> by {{ file.user }} </a></button>
+               				
+               					<a href="{{ file.taskFile.url }}"><strong>{{ file.title }} </strong> by {{ file.user }} </a>
                 {% endfor %}
             			</div>
             		</div>
