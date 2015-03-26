@@ -1,13 +1,15 @@
 .logged-style {
-    max-width: 99.15%;
+    max-width: 100vw;
 }
 
 .logged-style .side-panel {
     background-color: #aaaaaa;
+
 }
 
 .logged-style .central-panel {
     background-color: #dddddd;
+
 }
 
 .logged-style .col-md-2 {

@@ -3,6 +3,7 @@ from django.contrib.auth.models import User
 from project_management.models import Project
 from time import time
 
+
 class Task(models.Model):
     title = models.CharField(unique=True, max_length=40)
     completed = models.BooleanField(default=False)
@@ -12,7 +13,7 @@ class Task(models.Model):
     app_label = 'project_management'
     users = models.ManyToManyField(User)
     project = models.ForeignKey(Project, default=None)
-    
+
     def __unicode__(self):
         return self.title
 
@@ -38,38 +39,43 @@ class DummyProject(models.Model):
 
 class Message(models.Model):
     title = models.CharField(max_length=20)
-    description = models.TextField(max_length = 1000)
+    description = models.TextField(max_length=1000)
     user = models.ForeignKey(User)
     task = models.ForeignKey(Task)
-    date = models.DateField(auto_now_add = True) # to be changed to DateTimeField
+    date = models.DateField(auto_now_add=True)  # to be changed to DateTimeField
+
     def __unicode__(self):
         return self.title
+
 
 def filePath(self, filename):
     url = "uploads/%s/%s/%s" % (self.task.title, self.user.username, filename)
     return url
 
+
 ######## Model for files in tasks
 class File(models.Model):
-    title = models.CharField(max_length = 20)
-    taskFile = models.FileField(upload_to = filePath)
+    title = models.CharField(max_length=20)
+    taskFile = models.FileField(upload_to=filePath)
     task = models.ForeignKey(Task)
     user = models.ForeignKey(User)
-    date = models.DateField(auto_now_add = True)
-    
+    date = models.DateField(auto_now_add=True)
+
     def __unicode__(self):
         return self.title
+
 
 def filePathGlobal(self, filename):
     url = "uploads/%s/%s/%s" % (self.project.name, self.user.username, filename)
     return url
 
+
 class GlobalFile(models.Model):
-    title = models.CharField(max_length = 20)
-    projectFile = models.FileField(upload_to = filePathGlobal)
+    title = models.CharField(max_length=20)
+    projectFile = models.FileField(upload_to=filePathGlobal)
     project = models.ForeignKey(Project)
     user = models.ForeignKey(User)
-    date = models.DateField(auto_now_add = True)
-    
+    date = models.DateField(auto_now_add=True)
+
     def __unicode__(self):
         return self.title

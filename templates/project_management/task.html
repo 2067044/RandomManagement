@@ -89,6 +89,7 @@
         <!-- /.modal -->
 
     <div class="row">
+
         {#    Task body    #}
         <div class="col-md-8 col-md-offset-2">
             <h4 class="text-center">{{ task.description }}</h4>
@@ -122,7 +123,9 @@
         {% block messages_expand %}
             {% include "project_management/tasks/messages_expand.html"%}
         {% endblock %}
+
     </div>
+
 </div>
 
 {# FILES #}
@@ -138,7 +141,7 @@
     {% block files_listing %}
         {% include "project_management/tasks/files_listing.html"%}
     {% endblock %}
-</div>    
+</div>
 
 
 {% endblock %}
