@@ -1,4 +1,3 @@
-
 from django.shortcuts import render, render_to_response
 from project_management.kris.kris_forms import MessageForm, UploadFileForm
 
@@ -16,6 +15,7 @@ import json
 
 from django.core.urlresolvers import reverse
 from django.template import RequestContext
+
 
 @login_required
 def new_task(request, project_id):
@@ -59,9 +59,9 @@ def task(request, task_id):
     :return: Rendering ot the task
     '''
     task = Task.objects.get(id=task_id)
-    messages = Message.objects.filter(task = task)
-    files = File.objects.filter (task = task)
-    msgs_desc = [{'msg' : x, 'desc' : x.description, 'date': x.date} for x in messages]
+    messages = Message.objects.filter(task=task)
+    files = File.objects.filter(task=task)
+    msgs_desc = [{'msg': x, 'desc': x.description, 'date': x.date} for x in messages]
     context_dict = {}
     context_dict['task'] = task
     context_dict['messages'] = messages
@@ -72,15 +72,16 @@ def task(request, task_id):
         logged_user = request.user
     # Users should not be able to view tasks of projects they're not members of
     if not (logged_user in task.project.members.all() or logged_user == task.project.owner or
-        logged_user in task.project.admin.all()):
+                    logged_user in task.project.admin.all()):
         return redirect('/dashboard/')
     return render(request, "project_management/task.html", context_dict)
 
-def message(request, task_id):
-    task = Task.objects.get(task = task_id)
 
-    all_messages  = Message.objects.filet( task = task)
-    paginator = Paginagor(all_messages, 4)
+def message(request, task_id):
+    task = Task.objects.get(task=task_id)
+
+    all_messages = Message.objects.filter(task=task)
+    paginator = Paginator(all_messages, 4)
     page = request.Get.get('page')
 
     try:
@@ -90,7 +91,7 @@ def message(request, task_id):
     except EmptyPage:
         messages = paginator.page(paginator.num_pages)
 
-    return render(request, "project_management/message.html", {'messages': message})
+    return render(request, "project_management/message.html", {'messages': messages})
 
 
 @login_required
@@ -106,7 +107,7 @@ def complete_task(request, task_id):
     task.completed = not task.completed
     task.save()
     # if request.method == "GET":
-    #     task = Task.objects.get(id=request.GET["task_id"])
+    # task = Task.objects.get(id=request.GET["task_id"])
     #     task.completed = not task.completed
     #     task.save()
     return redirect("/task/{0}".format(task_id))
@@ -144,7 +145,6 @@ def completed_and_approved_tasks(request, project_slug):
     return render(request, "project_management/tasks/completed_tasks.html", {'tasks': tasks, 'project': project})
 
 
-
 @login_required
 def delete_task(request, task_id):
     task = Task.objects.get(id=task_id)
@@ -155,13 +155,12 @@ def delete_task(request, task_id):
     return redirect("/project/{0}".format(task_project.slug))
 
 
-
 # ---------Konstantin-----------------------
 @login_required
 def new_message(request, task_id):
     task = Task.objects.get(id=task_id)
     user = request.user
-    #print user.id
+    # print user.id
     if request.method == "POST":
         formM = MessageForm(request.POST)
 
@@ -178,7 +177,6 @@ def new_message(request, task_id):
         formM = MessageForm()
 
     return formM
-
 
 
 @login_required
@@ -227,27 +225,27 @@ def is_user_privileged(user, project):
 
 
 # def handle_uploaded_file(f):
-#     with open('some/file/name.txt', 'wb+') as destination:
+# with open('some/file/name.txt', 'wb+') as destination:
 #         for chunk in f.chunks():
 #             destination.write(chunk)
 
 def add_file(request, task_id):
-    task = Task.objects.get(id = task_id)
+    task = Task.objects.get(id=task_id)
     user = request.user
     if request.method == 'POST':
         form = UploadFileForm(request.POST, request.FILES)
         if form.is_valid():
-            formF  = File(taskFile = request.FILES['taskFile'])
+            formF = File(taskFile=request.FILES['taskFile'])
             formF.save()
             formF.task = task
             formF.user = user
             formF.save()
             return redirect("/task/{0}/".format(task_id))
     else:
-        form = UploadFileForm() # A empty, unbound form
-    files = File.objects.filter(task = task)
-    return render("/task/{0}/".format(task_id),{'files':files })
-    
+        form = UploadFileForm()  # A empty, unbound form
+    files = File.objects.filter(task=task)
+    return render("/task/{0}/".format(task_id), {'files': files})
+
 
     # if request.method == "POST":
     #     upload_file = UploadFileForm(request.POST, request.FILES)

@@ -17,7 +17,7 @@
                                     </div>
                                     <div class="modal-body">
                                         <div class = "user">
-                                            <p> <strong>User : </strong> {{message.msg.user }}</p.
+                                            <p> <strong>User : </strong> {{message.msg.user }}</p>
                                             <p> <strong>Date added: </strong> {{message.msg.date}} </p>
                                         </div>
                                        <div class="description">
@@ -45,6 +45,7 @@
                         <!-- /.modal -->
                    </div>
                 {% endfor %}
+
                 <div class="pagination">
                     <span class="step-links">
                         {% if messages.has_previous %}
@@ -52,6 +53,7 @@
                         {% endif %}
 
                         <span class="current">
+
                             Page {{ messages.number }} of {{ messages.paginator.num_pages }}.
                         </span>
 
@@ -65,4 +67,5 @@
                     <strong> No messages </strong>
                 {% endif %}
                <!-- End for showing the messages-->
+
                {% endblock %}
