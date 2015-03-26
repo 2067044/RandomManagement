@@ -73,7 +73,7 @@ def task(request, task_id):
         
 
     
-    paginator = Paginator(messages, 5)
+    paginator = Paginator(messages, 3)
     page = request.GET.get('page')
 
     try:
@@ -283,3 +283,9 @@ def add_global_file(request, project_id):
     else:
         form = GlobalFileForm()
     return redirect("/project/{0}".format(project.slug))
+
+def delete_message(request, message_id, task_id):
+    message = Message.objects.get(id = message_id)
+    message.delete()
+    return redirect("/task/{0}".format(task_id))
+

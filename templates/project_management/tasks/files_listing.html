@@ -1,15 +1,18 @@
 {% block files_listing %}
 
 {% if files %}
-    <div class="files-container">
-        <div class = "list-group">
+
+<div class="col-md-4">
+    <div class="container-fluid">
+        <div class = "list-group files">
             {% for file in files%}
                 <div class="text-center"> 
                     <a href="{{ file.taskFile.url }}"><strong>{{ file.title }} </strong> by {{ file.user }}</a>                        
                 </div>
             {% endfor %}	
         </div>
-    </div>    
+    </div>
+</div>
 {% else %}
     <div class="text-center">
         <strong> No files</strong>

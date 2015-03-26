@@ -108,6 +108,7 @@
 
 {#  Messages and files  #}
 <div class="row">
+
     {#  MESSAGES #}
     <div class="col-md-8">
         <h1 class="text-center">MESSAGES</h1>
@@ -118,8 +119,8 @@
         {% endblock %}
         
         <!-- List all the messages with modal-->
-        {% block messages_as_comments %}
-            {% include "project_management/tasks/messages_as_comments.html"%}
+        {% block messages_expand %}
+            {% include "project_management/tasks/messages_expand.html"%}
         {% endblock %}
     </div>
 </div>
