@@ -198,46 +198,34 @@ def send_invitation(request):
 
 
 #Button only visable to project owner - removes an admin member from the project.
-def remove_admin(request):
-    if request.method == "GET":
-        user_id= request.GET.get("user_id")
-        project_id = request.GET.get("project_id")
-    current_project = Project.objects.get(id=project_id)
-    user = User.objects.get(id=user_id)
-    current_project.admin.remove(user)
+def remove_admin(request,project_id,admin_id):
+    project = Project.objects.get(id=project_id)
+    user = User.objects.get(id=admin_id)
+    project.admin.remove(user)
     return redirect('/project/{0}'.format(project.slug))
 
 
 #Button only visable to project owner - removes member from the project.
-def remove_member(request):
-    if request.method == "GET":
-        user_id= request.GET.get("user_id")
-        project_id = request.GET.get("project_id")
+def remove_member(request,project_id,member_id):
     project = Project.objects.get(id=project_id)
-    user = User.objects.get(id=user_id)
+    user = User.objects.get(id=member_id)
     project.members.remove(user)
     return redirect('/project/{0}'.format(project.slug))
 
 
 #Button only visable to project owner - makes member admin of project.
-def promote_member(request):
-    if request.method == "GET":
-        user_id= request.GET.get("user_id")
-        project_id = request.GET.get("project_id")
+def promote_member(request,project_id, member_id):
     project = Project.objects.get(id=project_id)
-    user = User.objects.get(id=user_id)
+    user = User.objects.get(id=member_id)
     project.members.remove(user)
     project.admin.add(user)
     return redirect('/project/{0}'.format(project.slug))
 
 
 #Button only visable to project owner - makes admin regular member of project.
-def demote_admin(request):
-    if request.method == "GET":
-        user_id= request.GET.get("user_id")
-        project_id = request.GET.get("project_id")
+def demote_admin(request, project_id, admin_id):
     project = Project.objects.get(id=project_id)
-    user = User.objects.get(id=user_id)
+    user = User.objects.get(id=admin_id)
     project.admin.remove(user)
     project.members.add(user)
     return redirect('/project/{0}'.format(project.slug))
