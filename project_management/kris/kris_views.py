@@ -1,6 +1,6 @@
 
 from django.shortcuts import render, render_to_response
-from project_management.kris.kris_forms import MessageForm, UploadFileForm
+from project_management.kris.kris_forms import MessageForm, FileForm, GlobalFileForm
 
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
@@ -16,6 +16,8 @@ import json
 
 from django.core.urlresolvers import reverse
 from django.template import RequestContext
+
+from django.http import HttpResponseRedirect
 
 @login_required
 def new_task(request, project_id):
@@ -61,26 +63,40 @@ def task(request, task_id):
     task = Task.objects.get(id=task_id)
     messages = Message.objects.filter(task = task)
     files = File.objects.filter (task = task)
-    msgs_desc = [{'msg' : x, 'desc' : x.description, 'date': x.date} for x in messages]
-    context_dict = {}
-    context_dict['task'] = task
-    context_dict['messages'] = messages
-    context_dict['msgs_desc'] = msgs_desc
-    context_dict['files'] = files
+    # msgs_desc = [{'msg' : x, 'desc' : x.description, 'date': x.date} for x in messages]
+    # context_dict = {}
+    # context_dict['task'] = task
+    # context_dict['messages'] = messages
+    # context_dict['msgs_desc'] = msgs_desc
+    # context_dict['files'] = files
     logged_user = request.user
+        
+
+    
+    paginator = Paginator(messages, 5)
+    page = request.GET.get('page')
+
+    try:
+        messages = paginator.page(page)
+    except PageNotAnInteger:
+        messages = paginator.page(1)
+    except EmptyPage:
+        messages = paginator.page(paginator.num_pages)
+    
+    
     if not (request.user in task.project.members.all() or request.user == task.project.owner):
         logged_user = request.user
     # Users should not be able to view tasks of projects they're not members of
     if not (logged_user in task.project.members.all() or logged_user == task.project.owner or
         logged_user in task.project.admin.all()):
         return redirect('/dashboard/')
-    return render(request, "project_management/task.html", context_dict)
+    return render(request, "project_management/task.html", {'task':task, 'messages':messages, 'files':files,})
 
 def message(request, task_id):
     task = Task.objects.get(task = task_id)
 
     all_messages  = Message.objects.filet( task = task)
-    paginator = Paginagor(all_messages, 4)
+    paginator = Paginator(all_messages, 4)
     page = request.Get.get('page')
 
     try:
@@ -226,47 +242,44 @@ def is_user_privileged(user, project):
     return False
 
 
-# def handle_uploaded_file(f):
-#     with open('some/file/name.txt', 'wb+') as destination:
-#         for chunk in f.chunks():
-#             destination.write(chunk)
 
 def add_file(request, task_id):
     task = Task.objects.get(id = task_id)
     user = request.user
     if request.method == 'POST':
-        form = UploadFileForm(request.POST, request.FILES)
+        form = FileForm(request.POST, request.FILES)
+        # print task
+        # print user
+        # print form.is_valid()
         if form.is_valid():
-            formF  = form.save(commit = False)
-            formF.task = task
-            formF.taskFile = request.FILES['file ']
-            formF.user = user
-            formF.save()
-        return redirect("/task/{0}/".format(task_id))
+            newFile = form.save(commit = False)
+            newFile.taskFile = request.FILES['taskFile']
+            newFile.task = task
+            newFile.user = user
+            # print newFile
+            newFile.save()
+            return HttpResponseRedirect("/task/{0}/".format(task_id))
+        else:
+            print form.errors
     else:
-        form = UploadFileForm() # A empty, unbound form
-    files = File.objects.filter(task = task)
-    return render("/task/{0}/".format(task_id),{'files':files })
-    
+        form = FileForm() # A empty, unbound form
+    return redirect("/task/{0}".format(task_id))
 
-    # if request.method == "POST":
-    #     upload_file = UploadFileForm(request.POST, request.FILES)
 
-    #     if upload_file.is_valid():
-    #         upload_file = uploadedFile(taskFile=self.get_form_kwargs().get('files')['taskFile'])
-    #         upload_file.task = task
-    #         upload_file.user = user
-    #         upload_file.save()
-    # #         fileForm = fileForm.save(commit=False)
-    # #         fileForm.task = task
-    # #         fileForm.user = user
-    # #         fileForm.save()
-
-    #         return redirect('/task/{0}/'.format(task_id))
-    #     else:
-    #         return redirect("/task/{0}/".format(task_id))
-    # else:
-    #     upload_file = UploadFileForm()
-
-    # return upload_file
-
+def add_global_file(request, project_id):
+    project = Project.objects.get(id=project_id)
+    user = request.user
+    if request.method == 'POST':
+        form = GlobalFileForm(request.POST, request.FILES)
+        if form.is_valid():
+            newGlobalFile = form.save(commit = False)
+            newGlobalFile.projectFile = request.FILES['projectFile']
+            newGlobalFile.project = project
+            newGlobalFile.user = user
+            newGlobalFile.save()
+            return HttpResponseRedirect("/project/{0}".format(project.slug))
+        else:
+            print form.errors
+    else:
+        form = GlobalFileForm()
+    return redirect("/project/{0}".format(project.slug))

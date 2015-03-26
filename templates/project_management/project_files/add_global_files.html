@@ -1,0 +1,42 @@
+
+{% block add_global_files %}
+
+<button type="button" class="btn btn-success btn-lg btn-block" data-toggle="modal" data-target="#myGlobalFileModal">
+  Add File
+</button>
+
+<!-- Modal -->
+<div class="modal fade" id="myGlobalFileModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myGlobalFileModalLabel">Add File</h4>
+            </div>
+                <div class="modal-body">
+                    <div class="group">
+                        <form enctype="multipart/form-data" id="global_file_form" method="post" action="{% url 'add_global_file' project.id %}">
+                            {% csrf_token %}
+                            {% for hidden in form.hidden_fields %}
+                            {{ hidden }}
+                            {% endfor %}
+                            <div class="form-group new-global-file-form">
+                                <label for="title">{{ new_global_file_form.fields.title.label }}</label>
+                                <input class="form-control" id="title" maxlength="40" name="title" type="text" placeholder="Please enter a title...">
+
+                                <label for="projectFile">{{ new_global_file_form.fields.projectFile.label }}</label>
+                                <input class="form-control projectFile" id="projectFile" name="projectFile" type="file">
+
+                            </div>
+                    </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                            <input id="new-global-file-submit" class="btn btn-block btn-success" type="submit" name="submit" value="Add"/>
+                        </div>
+                        </form>
+                    </div>
+                </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

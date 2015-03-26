@@ -19,7 +19,7 @@
 {% block project_block %}
     <div class="row">
         {# Task part #}
-        <div class="col-md-6">
+        <div class="col-md-8">
             <br/>
             {# Two buttons at the top left #}
             <div class="row">
@@ -226,11 +226,20 @@
         </div>
 
         {# FILE uploads #}
-        <div class="col-md-6">
+        <div class="col-md-4">
+            <!-- <div class="col-md-10" -->
+            <h1 class="text-center">FILES</h1>
+            <!-- Add global file -->
+            {% block add_global_files %}
+                {% include "project_management/project_files/add_global_files.html" %}
+            {% endblock%}
 
+            <!-- List of all files -->
+            {% block list_global_files%}
+                {% include "project_management/project_files/list_global_files.html"%}
+            {% endblock%}
         </div>
-    </div>
-
+    
 {% endblock %}
 
 {% block project_members %}

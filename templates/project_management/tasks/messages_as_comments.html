@@ -1,0 +1,40 @@
+{% block messages_as_comments %}
+<div>
+
+        {% for message in messages %}
+            <div class="list-group">
+              <a href="#" class="list-group-item">
+                    <h4 class="list-group-item-heading"><strong>{{message.title}}</strong> by {{message.user}}</h4>
+                <p class="list-group-item-text">{{message.description}}</p>
+              </a>
+            </div>
+        {% endfor %}
+        
+        {# Pagination #}
+
+            <div class="text-center">
+                <div class="pagination">
+            <span class="step-links">
+                {% if messages.has_previous %}
+                    <a href="?page={{ messages.previous_page_number }}">
+                        <button class="btn btn-default">
+                            <span class="glyphicon glyphicon-menu-left" aria-hidden="true"></span>
+                        </button>
+                    </a> 
+                {% endif %}
+
+                <span class="current">
+                Page {{ messages.number }} of {{ messages.paginator.num_pages }}.
+                </span>
+
+                {% if messages.has_next %}
+                    <a href="?page={{ messages.next_page_number }}">
+                        <button class="btn btn-default">
+                            <span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>
+                        </button>
+                    </a>
+                {% endif %}
+             </span>
+                </div>
+            </div>
+{% endblock %}
