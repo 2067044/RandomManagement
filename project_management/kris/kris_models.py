@@ -48,6 +48,7 @@ class Message(models.Model):
 def filePath(self, filename):
     url = "uploads/%s/%s/%s" % (self.task.title, self.user.username, filename)
     return url
+
 ######## Model for files in tasks
 class File(models.Model):
     title = models.CharField(max_length = 20)
@@ -55,5 +56,20 @@ class File(models.Model):
     task = models.ForeignKey(Task)
     user = models.ForeignKey(User)
     date = models.DateField(auto_now_add = True)
+    
+    def __unicode__(self):
+        return self.title
+
+def filePathGlobal(self, filename):
+    url = "uploads/%s/%s/%s" % (self.project.name, self.user.username, filename)
+    return url
+
+class GlobalFile(models.Model):
+    title = models.CharField(max_length = 20)
+    projectFile = models.FileField(upload_to = filePathGlobal)
+    project = models.ForeignKey(Project)
+    user = models.ForeignKey(User)
+    date = models.DateField(auto_now_add = True)
+    
     def __unicode__(self):
         return self.title

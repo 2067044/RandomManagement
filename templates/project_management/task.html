@@ -1,146 +1,145 @@
 {% extends 'logged_in_base.html' %}
 
 {% block owned %}
-	{% include "project_management/highlighting_owned_projects.html" with project=task.project %}
+{% include "project_management/highlighting_owned_projects.html" with project=task.project %}
 {% endblock %}
 
 {% block admin %}
-	{% include "project_management/highlighting_admin_projects.html" with project=task.project %}
+{% include "project_management/highlighting_admin_projects.html" with project=task.project %}
 {% endblock %}
 
 {% block member %}
-	{% include "project_management/highlighting_member_projects.html" with project=task.project %}	
+{% include "project_management/highlighting_member_projects.html" with project=task.project %}	
 {% endblock %}
 
 {% block project_block %}
-    <br/>
-    <div class="panel task-view-panel">
-        <div class="row">
-            {# Back button #}
-            <div class="col-md-1">
-                <a href="{% url 'project' task.project.slug %}">
-                    <button class="btn btn-lg btn-success" type="button">
-                        <span class="glyphicon glyphicon-menu-left" aria-hidden="true"></span>
-                    </button>
-                </a>
-            </div>
-            <div class="col-md-3">
-                {#     If user is working on task, task can be completed     #}
-                {% if user in task.users.all %}
+<br/>
+<div class="panel task-view-panel">
+    <div class="row">
+        {# Back button #}
+        <div class="col-md-1">
+            <a href="{% url 'project' task.project.slug %}">
+                <button class="btn btn-lg btn-success" type="button">
+                    <span class="glyphicon glyphicon-menu-left" aria-hidden="true"></span>
+                </button>
+            </a>
+        </div>
+        <div class="col-md-3">
+            {#     If user is working on task, task can be completed     #}
+            {% if user in task.users.all %}
 
-                    <a href="{% url 'complete_task' task.id %}"
-                       class="btn btn-block btn-lg
-                        {% if task.completed %}btn-warning{% else %}btn-primary{% endif %}" type="button">
-                        {% if task.completed %}
-                            Reverse completion
-                        {% else %}
-                            Complete task
-                        {% endif %}
-                    </a>
-                    <br/>
-                {% endif %}
-            </div>
-            <div class="col-md-4">
-                <h1 class="text-center">{{ task.title }}</h1>
-            </div>
-
-            {#    Admin properties: task approval and task deletion    #}
-            {% if task.project.owner == user or user in task.project.admin.all %}
-                <div class="col-md-2">
-                    {# Give the owner/admins of the project the ability to mark the task as completed #}
+            <a href="{% url 'complete_task' task.id %}" class="btn btn-block btn-lg 
                     {% if task.completed %}
-                        <a class="btn btn-block btn-lg btn-success" href="{% url 'approve_task' task.id %}">
-                            Approve
-                        </a>
-                    {% endif %}
-                </div>
-                <div class="col-md-2">
-                    <button class="btn btn-block btn-lg btn-danger" data-toggle="modal" data-target="#task-deletion">
-                        Delete
-                    </button>
-                </div>
+                        btn-warning
+                    {% else %}
+                        btn-primary
+                    {% endif %}"
+                        type="button">
+                {% if task.completed %}
+                    Reverse completion
+                {% else %}
+                    Complete task
+                {% endif %}
+            </a>
+            <br/>
             {% endif %}
         </div>
-
-        {#  Task deletion modal  #}
-        <div class="modal fade" id="task-deletion">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-                                aria-hidden="true">&times;</span></button>
-                        <h3 class="modal-title">Delete task</h3>
-                    </div>
-                    <div class="modal-body">
-                        <h4>Are you sure you want to delete this task?</h4>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                        <a href="{% url 'delete_task' task.id %}" class="btn btn-danger">Delete</a>
-                    </div>
-                </div>
-                <!-- /.modal-content -->
-            </div>
-            <!-- /.modal-dialog -->
+        <div class="col-md-4">
+            <h1 class="text-center">{{ task.title }}</h1>
         </div>
+
+        {#    Admin properties: task approval and task deletion    #}
+        {% if task.project.owner == user or user in task.project.admin.all %}
+            <div class="col-md-2">
+                {# Give the owner/admins of the project the ability to mark the task as completed #}
+                {% if task.completed %}
+                    <a class="btn btn-block btn-lg btn-success" href="{% url 'approve_task' task.id %}">
+                        Approve
+                    </a>
+                {% endif %}
+            </div>
+            <div class="col-md-2">
+                <button class="btn btn-block btn-lg btn-danger" data-toggle="modal" data-target="#task-deletion">
+                    Delete
+                </button>
+            </div>
+        {% endif %}
+    </div>
+
+    {#  Task deletion modal  #}
+    <div class="modal fade" id="task-deletion">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h3 class="modal-title">Delete task</h3>
+                </div>
+                <div class="modal-body">
+                    <h4>Are you sure you want to delete this task?</h4>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <a href="{% url 'delete_task' task.id %}" class="btn btn-danger">Delete</a>
+                </div>
+            </div>
+                <!-- /.modal-content -->
+        </div>
+            <!-- /.modal-dialog -->
+    </div>
         <!-- /.modal -->
 
-        <div class="row">
-            {#    Task body    #}
-            <div class="col-md-8 col-md-offset-2">
-                <h4 class="text-center">{{ task.description }}</h4>
-                <h4 class="text-center">Due date: {{ task.due_date }}</h4>
-                <h4 class="text-center">People working on this task:</h4>
+    <div class="row">
+        {#    Task body    #}
+        <div class="col-md-8 col-md-offset-2">
+            <h4 class="text-center">{{ task.description }}</h4>
+            <h4 class="text-center">Due date: {{ task.due_date }}</h4>
+            <h4 class="text-center">People working on this task:</h4>
 
-                <div class="row">
-                    <div class="col-md-2 col-md-offset-5">
-                        {% for user in task.users.all %}
-                            <h5 class="text-center">{{ user.username }}</h5>
-                        {% endfor %}
-                    </div>
+            <div class="row">
+                <div class="col-md-2 col-md-offset-5">
+                    {% for user in task.users.all %}
+                        <h5 class="text-center">{{ user.username }}</h5>
+                    {% endfor %}
                 </div>
             </div>
         </div>
     </div>
+</div>
 
-    {#  Messages and files  #}
-    <div class="row">
-        <div class="col-md-8">
-            {#  MESSAGES GO HERE     #}
+{#  Messages and files  #}
+<div class="row">
 
-            <!-- Modal for adding messages -->
-            <h1 class="text-center">MESSAGES</h1>
-
-            <br/>
-            <!-- Button trigger modal -->
-            {% block new_message_modal %}
-                {% include "project_management/tasks/new_message_form_modal.html"%}
-            {% endblock %}
-            <!-- List all the messages with modal-->
-
-            {% block message_modal %}
-                {% include "project_management/tasks/message_modal.html"%}
-            {% endblock %}
-                
-                {# End visualisation  #}
-
-            </div>
-        </div>
-        {# FILES #}
-
-        <div class="col-md-4">
-            <h1 class="text-center">FILE</h1>
-            <br/>
-        <!----- Add files modal ------>
-        {% block add_file_modal %}
-            {% include "project_management/tasks/add_file_modal.html"%}
+    {#  MESSAGES #}
+    <div class="col-md-8">
+        <h1 class="text-center">MESSAGES</h1>
+        
+        <!-- New Message Modal -->
+        {% block new_message_modal %}
+            {% include "project_management/tasks/new_message_form_modal.html"%}
         {% endblock %}
-
-        <!-------Visualise all files ------>
-        {% block files_listing %}
-            {% include "project_management/tasks/files_listing.html"%}
+        
+        <!-- List all the messages with modal-->
+        {% block messages_expand %}
+            {% include "project_management/tasks/messages_expand.html"%}
         {% endblock %}
-        </div>    
     </div>
+</div>
+
+{# FILES #}
+<div class="col-md-4">
+    <h1 class="text-center">FILES</h1>
+
+    <!----- Add files modal ---->
+    {% block add_file_block %}
+        {% include "project_management/tasks/add_file_modal.html" %}
+    {% endblock %}
+
+    <!-------Visualise all files ------>
+    {% block files_listing %}
+        {% include "project_management/tasks/files_listing.html"%}
+    {% endblock %}
+</div>    
+
+
 {% endblock %}
 

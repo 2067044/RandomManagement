@@ -36,6 +36,18 @@ class Migration(migrations.Migration):
             bases=(models.Model,),
         ),
         migrations.CreateModel(
+            name='GlobalFile',
+            fields=[
+                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('title', models.CharField(max_length=20)),
+                ('projectFile', models.FileField(upload_to=project_management.kris.kris_models.filePathGlobal)),
+                ('date', models.DateField(auto_now_add=True)),
+            ],
+            options={
+            },
+            bases=(models.Model,),
+        ),
+        migrations.CreateModel(
             name='Message',
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
@@ -109,6 +121,18 @@ class Migration(migrations.Migration):
         ),
         migrations.AddField(
             model_name='message',
+            name='user',
+            field=models.ForeignKey(to=settings.AUTH_USER_MODEL),
+            preserve_default=True,
+        ),
+        migrations.AddField(
+            model_name='globalfile',
+            name='project',
+            field=models.ForeignKey(to='project_management.Project'),
+            preserve_default=True,
+        ),
+        migrations.AddField(
+            model_name='globalfile',
             name='user',
             field=models.ForeignKey(to=settings.AUTH_USER_MODEL),
             preserve_default=True,

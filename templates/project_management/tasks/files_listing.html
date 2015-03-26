@@ -1,14 +1,22 @@
 {% block files_listing %}
-	{% if files %}
-                {% for file in files%}
-                 	<div class="files-container">
-                        <div class = "list-group">
-               				
-               					<a href="{{ file.taskFile.url }}"><strong>{{ file.title }} </strong> by {{ file.user }} </a>
-                {% endfor %}
-            			</div>
-            		</div>
-            {% else %}
-                <strong> No files</strong>
-            {% endif %}
+
+{% if files %}
+
+<div class="col-md-4">
+    <div class="container-fluid">
+        <div class = "list-group files">
+            {% for file in files%}
+                <div class="text-center"> 
+                    <a href="{{ file.taskFile.url }}"><strong>{{ file.title }} </strong> by {{ file.user }}</a>                        
+                </div>
+            {% endfor %}	
+        </div>
+    </div>
+</div>
+{% else %}
+    <div class="text-center">
+        <strong> No files</strong>
+    </div>
+{% endif %}
+
 {% endblock %}

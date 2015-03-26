@@ -1,0 +1,19 @@
+{% block list_global_files %}
+
+{% if files %}
+    <div class="files-container-fluid">
+        <div class = "list-group">
+            {% for file in files%}
+                <div class="text-center">  
+                    <a href="{{ file.projectFile.url }}"><strong>{{ file.title }} </strong> by {{ file.user }}</a>                        
+                </div>
+            {% endfor %}	
+        </div>
+    </div>    
+{% else %}
+    <div class="text-center">
+        <strong> No files</strong>
+    </div>
+{% endif %}
+
+{% endblock %}

@@ -4,7 +4,7 @@ from project_management.forms import UserDescriptionForm, ProjectForm
 from project_management.models import Project, UserDescription
 from django.shortcuts import redirect
 from project_management.kris.kris_views import new_task, user_in_project, is_user_privileged
-from project_management.kris.kris_models import Task, ProjectInvitation
+from project_management.kris.kris_models import Task, ProjectInvitation, GlobalFile
 from django.contrib.auth.models import User
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from datetime import date
@@ -55,13 +55,14 @@ def addProject(request):
 @login_required
 def project(request, project_slug):
     project = Project.objects.get(slug=project_slug)
-
+    files = GlobalFile.objects.filter (project = project)
     # Users should not be able to view projects they are not a part
     if not user_in_project(request.user, project):
         return redirect('/dashboard/')
 
     users_projects = getUserProjects(request.user)
 
+    # PAGINATOR FOR TASKS
     all_tasks = Task.objects.filter(project=project, approved=False)
     paginator = Paginator(all_tasks, 4)
     page = request.GET.get('page')
@@ -76,6 +77,9 @@ def project(request, project_slug):
         # If page is out of range (e.g. 9999), deliver last page of results.
         tasks = paginator.page(paginator.num_pages)
 
+    
+
+    
     current_date = date.today()
 
     # Object responsible for handling the creation of new tasks
@@ -97,7 +101,9 @@ def project(request, project_slug):
                    'user_project': users_projects,
                    'admin_projects':getAdminProjects(request.user),
                    'member_projects': getMemberProjects(request.user),
-                   'user_privileged': is_user_privileged(request.user, project)})
+                   'user_privileged': is_user_privileged(request.user, project),
+                   'files': files,
+                   })
 
 
 @login_required
@@ -192,46 +198,34 @@ def send_invitation(request):
 
 
 #Button only visable to project owner - removes an admin member from the project.
-def remove_admin(request):
-    if request.method == "GET":
-        user_id= request.GET.get("user_id")
-        project_id = request.GET.get("project_id")
-    current_project = Project.objects.get(id=project_id)
-    user = User.objects.get(id=user_id)
-    current_project.admin.remove(user)
+def remove_admin(request,project_id,admin_id):
+    project = Project.objects.get(id=project_id)
+    user = User.objects.get(id=admin_id)
+    project.admin.remove(user)
     return redirect('/project/{0}'.format(project.slug))
 
 
 #Button only visable to project owner - removes member from the project.
-def remove_member(request):
-    if request.method == "GET":
-        user_id= request.GET.get("user_id")
-        project_id = request.GET.get("project_id")
+def remove_member(request,project_id,member_id):
     project = Project.objects.get(id=project_id)
-    user = User.objects.get(id=user_id)
+    user = User.objects.get(id=member_id)
     project.members.remove(user)
     return redirect('/project/{0}'.format(project.slug))
 
 
 #Button only visable to project owner - makes member admin of project.
-def promote_member(request):
-    if request.method == "GET":
-        user_id= request.GET.get("user_id")
-        project_id = request.GET.get("project_id")
+def promote_member(request,project_id, member_id):
     project = Project.objects.get(id=project_id)
-    user = User.objects.get(id=user_id)
+    user = User.objects.get(id=member_id)
     project.members.remove(user)
     project.admin.add(user)
     return redirect('/project/{0}'.format(project.slug))
 
 
 #Button only visable to project owner - makes admin regular member of project.
-def demote_admin(request):
-    if request.method == "GET":
-        user_id= request.GET.get("user_id")
-        project_id = request.GET.get("project_id")
+def demote_admin(request, project_id, admin_id):
     project = Project.objects.get(id=project_id)
-    user = User.objects.get(id=user_id)
+    user = User.objects.get(id=admin_id)
     project.admin.remove(user)
     project.members.add(user)
     return redirect('/project/{0}'.format(project.slug))

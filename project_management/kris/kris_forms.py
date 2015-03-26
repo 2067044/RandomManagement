@@ -1,5 +1,5 @@
 from django import forms
-from project_management.kris.kris_models import Task, Message, File
+from project_management.kris.kris_models import Task, Message, File, GlobalFile
 
 
 class TaskForm(forms.ModelForm):
@@ -14,8 +14,17 @@ class MessageForm(forms.ModelForm):
         model = Message
         fields = ('title', 'description')
 
-class UploadFileForm(forms.Form):
+class FileForm(forms.ModelForm):
+ 	title = forms.CharField(max_length = 64, help_text = "Please enter a title")
+ 	taskFile = forms.FileField(help_text = "Select a file")
  	class Meta:
  		model = File
- 		fields = ('title')
- 		taskFileField = forms.FileField( label = "select a file", help_text='max. 5 megabytes')
+ 		fields = ('title', 'taskFile',)
+
+class GlobalFileForm(forms.ModelForm):
+	title = forms.CharField(max_length = 64, help_text = "Please enter a title")
+	projectFile = forms.FileField(help_text = "Select a file")
+	class Meta:
+		model = GlobalFile
+		fields = ('title', 'projectFile',)
+ 		

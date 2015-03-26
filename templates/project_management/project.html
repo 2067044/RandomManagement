@@ -19,7 +19,7 @@
 {% block project_block %}
     <div class="row">
         {# Task part #}
-        <div class="col-md-6">
+        <div class="col-md-8">
             <br/>
             {# Two buttons at the top left #}
             <div class="row">
@@ -126,7 +126,7 @@
 
                                     <label for="id_users">{{ new_task_form.fields.users.label }}</label>
                                     <select class="form-control" multiple="multiple" id="id_users" name="users">
-                                        <option value="project.owner.id">{{ project.owner.username }}</option>
+                                        <option value="{{ project.owner.id }}">{{ project.owner.username }}</option>
                                         {% for user in project.members.all %}
                                             <option value="{{ user.id }}">{{ user.username }}</option>
                                         {% endfor %}
@@ -226,11 +226,20 @@
         </div>
 
         {# FILE uploads #}
-        <div class="col-md-6">
+        <div class="col-md-4">
+            <!-- <div class="col-md-10" -->
+            <h1 class="text-center">FILES</h1>
+            <!-- Add global file -->
+            {% block add_global_files %}
+                {% include "project_management/project_files/add_global_files.html" %}
+            {% endblock%}
 
+            <!-- List of all files -->
+            {% block list_global_files%}
+                {% include "project_management/project_files/list_global_files.html"%}
+            {% endblock%}
         </div>
-    </div>
-
+    
 {% endblock %}
 
 {% block project_members %}
@@ -259,15 +268,15 @@
 								<a class="pure-menu-link"><span class="glyphicon glyphicon-pencil"/>edit</a>
 								<ul class="pure-menu-children">
 									<li class="pure-menu-item">
-										<a class="pure-menu-link">
-											<button type="button" class="demote_admin" data-userid="{{ admins.id }}" data-projectid="{{ project.id }}">
+										<a class="pure-menu-link" href="{% url 'demote_admin' project.id admins.id %}">
+											<button type="button">
 												<span class="glyphicon glyphicon-hand-down"/> Demote
 											</button>
 										</a>
 									</li>
 									<li class="pure-menu-item">
-										<a class="pure-menu-link"> 
-											<button type="button" class="remove_admin" data-userid="{{ admins.id }}" data-projectid="{{ project.id }}">
+										<a class="pure-menu-link" href="{% url 'remove_admin' project.id admins.id %}"> 
+											<button type="button">
 												<span class="glyphicon glyphicon-remove"/> Remove
 											</button>
 										</a>
@@ -294,15 +303,15 @@
 								<a class="pure-menu-link"><span class="glyphicon glyphicon-pencil"/>edit</a>
 								<ul class="pure-menu-children">
 									<li class="pure-menu-item">
-										<a class="pure-menu-link">
-											<button type="button" class="promote_member" data-userid="{{ members.id }}" data-projectid="{{ project.id }}">
+										<a class="pure-menu-link" href="{% url 'promote_member' project.id members.id %}">
+											<button type="button">
 												<span class="glyphicon glyphicon-hand-up"/> Promote
 											</button>
 										</a>
 									</li>
 									<li class="pure-menu-item">
-										<a class="pure-menu-link">
-											<button type="button" class="remove_member" data-userid="{{ members.id }}" data-projectid="{{ project.id }}">
+										<a class="pure-menu-link"  href="{% url 'remove_member' project.id members.id %}">
+											<button type="button">
 												<span class="glyphicon glyphicon-remove"/> Remove
 											</button>
 										</a>
