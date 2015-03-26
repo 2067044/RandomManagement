@@ -40,7 +40,7 @@ class Migration(migrations.Migration):
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
                 ('title', models.CharField(max_length=20)),
-                ('projectFile', models.FileField(upload_to=project_management.kris.kris_models.filePath)),
+                ('projectFile', models.FileField(upload_to=project_management.kris.kris_models.filePathGlobal)),
                 ('date', models.DateField(auto_now_add=True)),
             ],
             options={

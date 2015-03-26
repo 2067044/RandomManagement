@@ -268,15 +268,15 @@
 								<a class="pure-menu-link"><span class="glyphicon glyphicon-pencil"/>edit</a>
 								<ul class="pure-menu-children">
 									<li class="pure-menu-item">
-										<a class="pure-menu-link">
-											<button type="button" class="demote_admin" data-userid="{{ admins.id }}" data-projectid="{{ project.id }}">
+										<a class="pure-menu-link" href="{% url 'demote_admin' project.id admins.id %}">
+											<button type="button">
 												<span class="glyphicon glyphicon-hand-down"/> Demote
 											</button>
 										</a>
 									</li>
 									<li class="pure-menu-item">
-										<a class="pure-menu-link"> 
-											<button type="button" class="remove_admin" data-userid="{{ admins.id }}" data-projectid="{{ project.id }}">
+										<a class="pure-menu-link" href="{% url 'remove_admin' project.id admins.id %}"> 
+											<button type="button">
 												<span class="glyphicon glyphicon-remove"/> Remove
 											</button>
 										</a>
@@ -303,15 +303,15 @@
 								<a class="pure-menu-link"><span class="glyphicon glyphicon-pencil"/>edit</a>
 								<ul class="pure-menu-children">
 									<li class="pure-menu-item">
-										<a class="pure-menu-link">
-											<button type="button" class="promote_member" data-userid="{{ members.id }}" data-projectid="{{ project.id }}">
+										<a class="pure-menu-link" href="{% url 'promote_member' project.id members.id %}">
+											<button type="button">
 												<span class="glyphicon glyphicon-hand-up"/> Promote
 											</button>
 										</a>
 									</li>
 									<li class="pure-menu-item">
-										<a class="pure-menu-link">
-											<button type="button" class="remove_member" data-userid="{{ members.id }}" data-projectid="{{ project.id }}">
+										<a class="pure-menu-link"  href="{% url 'remove_member' project.id members.id %}">
+											<button type="button">
 												<span class="glyphicon glyphicon-remove"/> Remove
 											</button>
 										</a>
