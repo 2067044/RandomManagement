@@ -36,6 +36,8 @@ urlpatterns = patterns('',
                        url(r'^project/(?P<project_slug>[\w\-]+)/completed_tasks/',
                            kris_views.completed_and_approved_tasks, name="completed_and_approved"),
                        url(r'^delete_message/(?P<message_id>[\w\-]+)/(?P<task_id>[\w\-]+)$', kris_views.delete_message, name="delete_message"),
+                       url(r'^delete_file/(?P<file_id>[\w\-]+)/(?P<task_id>[\w\-]+)$', kris_views.delete_file, name="delete_file"),
+                       url(r'^delete_global_file/(?P<file_id>[\w\-]+)/(?P<project_id>[\w\-]+)$', views.delete_global_file, name="delete_global_file"),
                        )
 
 

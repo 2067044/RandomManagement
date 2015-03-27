@@ -253,3 +253,9 @@ def profile(request):
                   {'user_project': getUserProjects(request.user),
                    'admin_projects':getAdminProjects(request.user),
                    'member_projects': getMemberProjects(request.user)})
+
+def delete_global_file(request, file_id, project_id):
+    file = GlobalFile.objects.get(id = file_id)
+    file.delete()
+    project = Project.objects.get(id=project_id)
+    return redirect('/project/{0}'.format(project.slug))

@@ -7,9 +7,6 @@ var main = function(){
         $(this).children('.description').show();
         
         });
-    $(document).keypress(function(event){
-        
-        });
-    };
-    
+
+  
 $(document).ready(main);

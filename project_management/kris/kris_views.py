@@ -283,3 +283,7 @@ def delete_message(request, message_id, task_id):
     message.delete()
     return redirect("/task/{0}".format(task_id))
 
+def delete_file(request, file_id, task_id):
+    file = File.objects.get(id = file_id)
+    file.delete()
+    return redirect("/task/{0}".format(task_id))

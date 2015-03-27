@@ -7,7 +7,15 @@
         <div class = "list-group files">
             {% for file in files%}
                 <div class="text-center"> 
-                    <a href="{{ file.taskFile.url }}"><strong>{{ file.title }} </strong> by {{ file.user }}</a>                        
+                    <a href="{{ file.taskFile.url }}"><strong>{{ file.title }} </strong> by {{ file.user }}</a>
+                        {% if user == file.user or user == task.project.owner or user in task.project.admin.all %}
+                        <a class="button-deletion " align="right" href="#" data-toggle="modal" data-target="#delete-file">
+                           <span class="glyphicon glyphicon-remove-circle" aria-hidden="false" ></span>
+                        </a>
+                    {% endif %}  
+                    {% block delete_message%}
+                        {% include "project_management/tasks/file_delete_modal.html" %}
+                     {% endblock %}                  
                 </div>
             {% endfor %}	
         </div>
