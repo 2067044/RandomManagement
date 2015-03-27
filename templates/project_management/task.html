@@ -118,7 +118,7 @@
         {% block new_message_modal %}
             {% include "project_management/tasks/new_message_form_modal.html"%}
         {% endblock %}
-        
+        <hr/>
         <!-- List all the messages with modal-->
         {% block messages_expand %}
             {% include "project_management/tasks/messages_expand.html"%}
@@ -136,7 +136,9 @@
     {% block add_file_block %}
         {% include "project_management/tasks/add_file_modal.html" %}
     {% endblock %}
-
+<br/>
+<br/>
+    <br/>
     <!-------Visualise all files ------>
     {% block files_listing %}
         {% include "project_management/tasks/files_listing.html"%}

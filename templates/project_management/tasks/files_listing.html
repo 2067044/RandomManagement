@@ -4,6 +4,7 @@
 <div class="col-md-4">
     <div class="container-fluid">
         <div class = "list-group files">
+            <hr/>
             {% for file in files%}
                 <div class="text-center"> 
                     <a class = "button-show-files" href="" data-toggle="modal" data-target="#show-file{{file.id}}"><strong>{{ file.title }} </strong> by {{ file.user }}</a>
