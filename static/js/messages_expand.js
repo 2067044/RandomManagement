@@ -4,7 +4,6 @@ var main = function(){
         $('.description').hide();   
         $(this).addClass('current');
         $(this).children('.description').show();  
-		recalculateHeight();
         });		
-		}
+}
 $(document).ready(main);

@@ -22,10 +22,15 @@
                             {% endfor %}
                             <div class="form-group new-global-file-form">
                                 <label for="title">{{ new_global_file_form.fields.title.label }}</label>
-                                <input class="form-control" id="title" maxlength="40" name="title" type="text" placeholder="Please enter a title...">
+                                <input class="form-control" id="title" maxlength="20" name="title" type="text" placeholder="Please enter a title...">
 
                                 <label for="projectFile">{{ new_global_file_form.fields.projectFile.label }}</label>
                                 <input class="form-control projectFile" id="projectFile" name="projectFile" type="file">
+
+                                <label for="description">{{ new_global_file_form.fields.description.label }}</label>
+                                <textarea class="form-control" cols="40" id="description" maxlength="1000"
+                                      name="description"
+                                      rows="5" placeholder="Please enter a description..."></textarea>
 
                             </div>
                     </div>

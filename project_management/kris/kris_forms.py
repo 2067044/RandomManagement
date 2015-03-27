@@ -27,5 +27,5 @@ class GlobalFileForm(forms.ModelForm):
 	projectFile = forms.FileField(help_text = "Select a file")
 	class Meta:
 		model = GlobalFile
-		fields = ('title', 'projectFile',)
+		fields = ('title', 'projectFile', 'description',)
  		
