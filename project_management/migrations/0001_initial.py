@@ -30,6 +30,7 @@ class Migration(migrations.Migration):
                 ('title', models.CharField(max_length=20)),
                 ('taskFile', models.FileField(upload_to=project_management.kris.kris_models.filePath)),
                 ('date', models.DateField(auto_now_add=True)),
+                ('description', models.TextField(max_length=500)),
             ],
             options={
             },

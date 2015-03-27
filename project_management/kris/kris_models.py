@@ -60,6 +60,7 @@ class File(models.Model):
     task = models.ForeignKey(Task)
     user = models.ForeignKey(User)
     date = models.DateField(auto_now_add=True)
+    description = models.TextField(max_length=500)
 
     def __unicode__(self):
         return self.title

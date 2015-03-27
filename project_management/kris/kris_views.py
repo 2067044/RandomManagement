@@ -242,7 +242,7 @@ def add_file(request, task_id):
     if request.method == 'POST':
         form = FileForm(request.POST, request.FILES)
         # print task
-        # print user
+        print user
         # print form.is_valid()
         if form.is_valid():
             newFile = form.save(commit=False)
@@ -287,3 +287,7 @@ def delete_file(request, file_id, task_id):
     file = File.objects.get(id = file_id)
     file.delete()
     return redirect("/task/{0}".format(task_id))
+
+# def show_file(request, file_id, task_id):
+#     file = File.objects.get(id= file_id)
+#     return redirect("/task/{0}".format(task_id))
