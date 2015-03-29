@@ -258,7 +258,7 @@
 	
 	<div class="col-md-2">
 	{% if project.admin.all %}
-		<h3 class="text-center"><span class="label label-default">Admin of {{ project.name }}:</span></h3>
+		<h3 class="text-center"><span class="label label-default" align="center">Admins</span></h3>
 			<div class="pure-menu custom-restricted-width text-centre">
 			{% for admins in project.admin.all %}
 				<div class="pure-menu pure-menu-horizontal">
@@ -271,7 +271,7 @@
 									<li class="pure-menu-item">
 										<a class="pure-menu-link" href="{% url 'demote_admin' project.id admins.id %}">
 											<button type="button">
-												<span class="glyphicon glyphicon-hand-down"/> Demote
+						  						<span class="glyphicon glyphicon-hand-down"/> Demote
 											</button>
 										</a>
 									</li>
@@ -293,7 +293,7 @@
 
 
 	{% if project.members.all %}
-		<h3 class="text-center"><span class="label label-default">Members of {{ project.name }}:</span></h3>
+		<h3 class="text-center"><span class="label label-default">Members</span></h3>
 		<div class="pure-menu custom-restricted-width">
 			{% for members in project.members.all %}
 				<div class="pure-menu pure-menu-horizontal">

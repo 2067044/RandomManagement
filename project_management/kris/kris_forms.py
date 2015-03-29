@@ -17,14 +17,15 @@ class MessageForm(forms.ModelForm):
 class FileForm(forms.ModelForm):
  	title = forms.CharField(max_length = 64, help_text = "Please enter a title")
  	taskFile = forms.FileField(help_text = "Select a file")
+	
  	class Meta:
  		model = File
- 		fields = ('title', 'taskFile',)
+ 		fields = ('title', 'taskFile', 'description',)
 
 class GlobalFileForm(forms.ModelForm):
 	title = forms.CharField(max_length = 64, help_text = "Please enter a title")
 	projectFile = forms.FileField(help_text = "Select a file")
 	class Meta:
 		model = GlobalFile
-		fields = ('title', 'projectFile',)
+		fields = ('title', 'projectFile', 'description',)
  		

@@ -61,3 +61,4 @@ target/
 
 # Ignore migrations
 project_management/migrations/
+files/
