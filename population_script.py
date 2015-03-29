@@ -4,10 +4,10 @@ os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'RandomManagement.settings')
 import django
 django.setup()
 
-from project_management.kris.kris_models import Task
+from project_management.kris.kris_models import Task, Message
 from project_management.models import Project
 from django.contrib.auth.models import User
-from datetime import date
+from datetime import date, datetime
 from django.contrib.auth.hashers import make_password
 
 
@@ -79,3 +79,12 @@ if __name__ == '__main__':
     print 'Starting rango population script...'
     populate()
     print 'Population complete.'
+
+def add_message(title, description, user, task):
+
+    msg = Message.objects.get_or_create(title = title, defaults={'date':datetime.now()})
+    msg.description = description
+    msg.user = user
+    msg.task = task
+    msg.save()
+    return msg
