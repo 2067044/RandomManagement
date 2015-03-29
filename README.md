@@ -19,4 +19,4 @@ To explore it, please log in with one of the following test accounts:
 
 Of course, you can always create a new account.
 
-This application is deployed to http://www.randomsquad.pythonanywhere.com
+This application is deployed to http://randomsquad.pythonanywhere.com
