@@ -88,3 +88,4 @@ def add_message(title, description, user, task):
     msg.task = task
     msg.save()
     return msg
+

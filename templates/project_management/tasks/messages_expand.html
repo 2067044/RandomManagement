@@ -2,8 +2,8 @@
 
 
 <div>
-	<div class="messages container-fluid ">
- 	{% for message in messages %}
+  <div class="messages container-fluid ">
+  {% for message in messages %}
 
       <div class="article">
         <div class="item row">
@@ -14,19 +14,19 @@
             <p class="title">{{message.title}}</p>
           </div>
           <div class="col-xs-3">
-          	<!-- Button for message deletions -->
-          	{% if user == message.user or user == task.project.owner or user in task.project.admin.all %}
-          	<p align="right">
-	          	<a class="button-deletion" align="right" href="#" data-toggle="modal" data-target="#delete-message">
-		            
-		            <span class="glyphicon glyphicon-remove-circle" aria-hidden="false"></span>
-	            </a>
-        	</p>
-        	{% endif %}
-        	<!-- End of button for message deletions -->
-        	{% block delete_message%}
-        		{% include "project_management/tasks/message_delete_modal.html" %}
- 			{% endblock %}
+            <!-- Button for message deletions -->
+            {% if user == message.user or user == task.project.owner or user in task.project.admin.all %}
+            <p align="right">
+              <a class="button-deletion" align="right" href="#" data-toggle="modal" data-target="#delete-message">
+                
+                <span class="glyphicon glyphicon-remove-circle" aria-hidden="false"></span>
+              </a>
+          </p>
+          {% endif %}
+          <!-- End of button for message deletions -->
+          {% block delete_message%}
+            {% include "project_management/tasks/message_delete_modal.html" %}
+          {% endblock %}
 
             <p class="pubdate">{{message.date}}</p>
           </div>
