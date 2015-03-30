@@ -88,11 +88,6 @@ def add_project(owner, name, description, members):
 
 def add_message(title, description, user, task):
     msg = Message.objects.get_or_create(title = title, description =description, user = user, task = task)
-    # msg = msg[0]
-    # msg.description = description
-    # msg.user = user
-    # msg.task = task
-    # msg.save()
     return msg
 
 # Start Population
