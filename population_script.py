@@ -19,10 +19,10 @@ def populate():
 
     project1 = add_project(user1, "First project", "First project description", [user2, user3, user4])
 
-    add_task("Task1", "Some task description", date(2015, 2, 15), [user1, user2], project1, True)
-    add_task("Task2", "Some task description", date(2015, 2, 12), [user3], project1)
-    add_task("Task3", "Some task description", date(2015, 2, 11), [user4, user2], project1)
-    add_task("Task4", "Some task description", date(2015, 3, 15), [user1], project1)
+    task1 = add_task("Task1", "Some task description", date(2015, 2, 15), [user1, user2], project1, True)
+    task2 = add_task("Task2", "Some task description", date(2015, 2, 12), [user3], project1)
+    task3 = add_task("Task3", "Some task description", date(2015, 2, 11), [user4, user2], project1)
+    task4 = add_task("Task4", "Some task description", date(2015, 3, 15), [user1], project1)
 
     # New tasks in order to test pagination
     add_task("Task5", "Some task description", date(2015, 4, 15), [user1, user2], project1)
@@ -39,9 +39,9 @@ def populate():
     add_message("Message 7", "Some message description", user4, task1)
     add_message("Message 8", "Some message description", user1, task4)
     add_message("Message 9", "Some message description", user1, task2)
-    add_message("Message 10", "Some message description", user3, task2)
+    add_message("Message 10", "Some message description", user3, task4)
     add_message("Message 11", "Some message description", user4, task2)
-    add_message("Message 12", "Some message description", user1, task3)
+    add_message("Message 12", "Some message description", user1, task1)
 
 
 def add_user(username, password, email):
@@ -87,15 +87,15 @@ def add_project(owner, name, description, members):
     return p
 
 def add_message(title, description, user, task):
-
-    msg = Message.objects.get_or_create(title = title, defaults={'date':datetime.now()})
-    msg.description = description
-    msg.user = user
-    msg.task = task
-    msg.save()
+    msg = Message.objects.get_or_create(title = title, description =description, user = user, task = task)
+    # msg = msg[0]
+    # msg.description = description
+    # msg.user = user
+    # msg.task = task
+    # msg.save()
     return msg
 
-# Start population
+# Start Population
 if __name__ == '__main__':
     print 'Starting rango population script...'
     populate()
