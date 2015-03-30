@@ -30,6 +30,19 @@ def populate():
     add_task("Task7", "Some task description", date(2015, 4, 25), [user4, user2], project1)
     add_task("Task8", "Some task description", date(2015, 3, 15), [user1], project1)
 
+    add_message("Message 1", "Some message description", user1, task1)
+    add_message("Message 2", "Some message description", user3, task1)
+    add_message("Message 3", "Some message description", user4, task1)
+    add_message("Message 4", "Some message description", user1, task2)
+    add_message("Message 5", "Some message description", user1, task1)
+    add_message("Message 6", "Some message description", user3, task3)
+    add_message("Message 7", "Some message description", user4, task1)
+    add_message("Message 8", "Some message description", user1, task4)
+    add_message("Message 9", "Some message description", user1, task2)
+    add_message("Message 10", "Some message description", user3, task2)
+    add_message("Message 11", "Some message description", user4, task2)
+    add_message("Message 12", "Some message description", user1, task3)
+
 
 def add_user(username, password, email):
     '''
@@ -73,13 +86,6 @@ def add_project(owner, name, description, members):
     p.save()
     return p
 
-
-# Start population
-if __name__ == '__main__':
-    print 'Starting rango population script...'
-    populate()
-    print 'Population complete.'
-
 def add_message(title, description, user, task):
 
     msg = Message.objects.get_or_create(title = title, defaults={'date':datetime.now()})
@@ -88,3 +94,9 @@ def add_message(title, description, user, task):
     msg.task = task
     msg.save()
      return msg
+
+# Start population
+if __name__ == '__main__':
+    print 'Starting rango population script...'
+    populate()
+    print 'Population complete.'

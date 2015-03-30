@@ -33,14 +33,3 @@ class ModelsTests(TestCase):
 #         message = Message(title = "first test", description = " first test description", task = self.task, user = self.user1, date = date.today())
         self.assertEqual(self.message.user, self.user1)
         
-
-# I think these are enough model tests
-# I will write the view tests later today
-
-# class IndexViewTests(TestCase):
-#     
-#     def test_project_view_with_no_tasks(self):
-#         response = self.client.get(reverse('dashboard'))
-#         
-#         self.asserEqual(response.status_code, 200)
-#         self.assertContains(response, "You don't have any projects yet")
