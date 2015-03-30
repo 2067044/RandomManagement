@@ -8,6 +8,7 @@ $(window).on("resize", function () {
 
 
 
+
 function recalculateHeight() {
     var viewPortH = $(window).height();
     var $sidePanel = $(".side-panel");
